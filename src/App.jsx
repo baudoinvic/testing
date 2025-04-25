@@ -22,7 +22,7 @@ import EditProfile from './components/Setting/EditProfile';
 import Overview from './components/Setting/Overview';
 import Postreview from './components/Postreview/Postreview';
 import Review from './components/Review/Review';
-import Medical from './components/Setting/Medical';
+
 
 
 const App = () => {
@@ -51,7 +51,7 @@ const App = () => {
         <Route path="profile" element={<EditProfile />} />
         <Route path="postreview" element={<Postreview />} />
         <Route path="view" element={<Review />} />
-        <Route path="medi" element={<Medical />} />
+       
       </Route>
     </Routes>
   </BrowserRouter>

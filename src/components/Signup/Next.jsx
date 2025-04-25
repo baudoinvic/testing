@@ -46,7 +46,6 @@ const Next = () => {
       });
   
       const data = await res.json();
-  
       // if (res.ok) {
       //   toast.success('Profile completed!');
       //   setTimeout(() => navigate('/login'), 2000);

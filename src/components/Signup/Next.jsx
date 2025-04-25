@@ -35,7 +35,7 @@ const Next = () => {
 
     try {
       
-      const res = await fetch('https://8d28-2c0f-2a80-2609-7c10-00-c93.ngrok-free.app/api/profile/dashboard/update', {
+      const res = await fetch('https://8eb0-2c0f-2a80-2609-7c10-00-c93.ngrok-free.app/api/profile/dashboard/update', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -55,6 +55,7 @@ const Next = () => {
         localStorage.setItem('userData', JSON.stringify(form));
   
         toast.success('Profile updated successfully!');
+        window.dispatchEvent(new Event('storage'));
         setTimeout(() => navigate('/login'), 2000);
       } else {
         toast.error(data.message || 'Update failed!');

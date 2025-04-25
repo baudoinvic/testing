@@ -8,30 +8,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 
 const Overview = () => {
-  // const savedUserData = JSON.parse(localStorage.getItem('userData')) || {};
-
-  // const fetchUsers  = async() => {
-  //   let token = localStorage.getItem("token");
-  //   const res = await fetch('https://8d28-2c0f-2a80-2609-7c10-00-c93.ngrok-free.app/api/profile/dashboard', {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'Authorization': `Bearer ${token}` 
-  //     }
-  //   })
-  //     .then((response) => {
-  //       const allUsers = response.data;
-  //       setUsers(allUsers);
-  //       toast.success(response.data.message);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   fetchUsers();
-  // }, []);
+  
 
   const fetchUsers = async () => {
     let token = localStorage.getItem("token");

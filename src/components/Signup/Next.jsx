@@ -33,7 +33,6 @@ const Next = () => {
    
     const token = localStorage.getItem('token');
 
-  
     try {
       
       const res = await fetch('https://8d28-2c0f-2a80-2609-7c10-00-c93.ngrok-free.app/api/profile/dashboard/update', {
@@ -44,7 +43,6 @@ const Next = () => {
         },
         body: JSON.stringify({ ...form })
       });
-  
       const data = await res.json();
       // if (res.ok) {
       //   toast.success('Profile completed!');

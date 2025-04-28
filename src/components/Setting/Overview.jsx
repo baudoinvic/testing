@@ -37,6 +37,7 @@ const Overview = () => {
       });
 
       const data = await res.json();
+      console.log(data)
       if (res.ok) {
         setUserData({
           first_name: data.user.first_name || '',

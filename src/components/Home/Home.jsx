@@ -19,9 +19,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const Home = () => {
-  const [category, setCategories] = useState([]);
+  // const [categorie, setCategories] = useState([]);
   const navigate = useNavigate();
-
   const fetchCategories = () => {
     let token = localStorage.getItem("token");
     axios({
@@ -32,8 +31,7 @@ const Home = () => {
       },
     })
       .then((response) => {
-        const allCategories = response.data;
-        setCategories(allCategories);
+        setCategories(response.data.categories); // Use the dynamically fetched categories
       })
       .catch((error) => {
         console.log(error);
@@ -254,5 +252,8 @@ const Home = () => {
 };
 
 export default Home;
+
+
+
 
 

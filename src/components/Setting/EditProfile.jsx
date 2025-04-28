@@ -55,7 +55,7 @@ const EditProfile = () => {
       })
       .catch((error) => {
         console.log(error);
-        toast.error("Failed to fetch user data");
+        // toast.error("Failed to fetch user data");
       });
   };
 
@@ -94,7 +94,7 @@ const EditProfile = () => {
     
     axios({
       method: "PUT",
-      url: "https://48cc-2c0f-2a80-2609-7c10-00-c93.ngrok-free.app/profile/update_image",
+      url: "https://48cc-2c0f-2a80-2609-7c10-00-c93.ngrok-free.app/api/profile/update_image",
       data: formData,
       headers: {
         "Content-Type": "multipart/form-data",
@@ -128,7 +128,7 @@ const EditProfile = () => {
 
     axios({
       method: "PUT",
-      url: `https://48cc-2c0f-2a80-2609-7c10-00-c93.ngrok-free.app/profile/dashboard/update`,
+      url: `https://48cc-2c0f-2a80-2609-7c10-00-c93.ngrok-free.app/api/profile/dashboard/update`,
       data: data,
       headers: {
         "Content-Type": "application/json",

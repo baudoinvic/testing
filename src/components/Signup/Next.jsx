@@ -12,8 +12,6 @@ const Next = () => {
 
   const savedUserData = JSON.parse(localStorage.getItem('userData')) || {};
 
- 
-
   const [form, setForm] = useState({
     phone_number: savedUserData.phone_number || '',
     age_group: savedUserData.age_group || '',
@@ -36,7 +34,7 @@ const Next = () => {
     try {
       
       const res = await fetch('https://48cc-2c0f-2a80-2609-7c10-00-c93.ngrok-free.app/api/profile/dashboard/update', {
-        method: 'POST',
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`  
@@ -44,12 +42,7 @@ const Next = () => {
         body: JSON.stringify({ ...form })
       });
       const data = await res.json();
-      // if (res.ok) {
-      //   toast.success('Profile completed!');
-      //   setTimeout(() => navigate('/login'), 2000);
-      // } else {
-      //   toast.error(data.message || 'Update failed!');
-      // }
+    
       if (res.ok) {
         // Save the entire form data into localStorage
         localStorage.setItem('userData', JSON.stringify(form));

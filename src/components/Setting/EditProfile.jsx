@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { toast } from 'react-toastify'; 
+import { ToastContainer } from 'react-toastify';
 
 const EditProfile = () => {
   const navigate = useNavigate();
@@ -44,6 +45,7 @@ const EditProfile = () => {
           activeSince: data.user.created_at ? new Date(data.user.created_at).toLocaleDateString() : ''
         });
         
+        localStorage.setItem('userData', JSON.stringify(data.user));
         // Check if profile image exists
         if (data.profile_image) {
           setProfileImage(data.profile_image);
@@ -56,6 +58,16 @@ const EditProfile = () => {
         toast.error("Failed to fetch user data");
       });
   };
+
+    useEffect(() => {
+      const storedUserData = JSON.parse(localStorage.getItem('userData'));
+      if (storedUserData) {
+        setUserData(storedUserData);
+      } else {
+        fetchUserData(); 
+      }
+    }, []);
+  
 
   useEffect(() => {
     fetchUserData();
@@ -163,7 +175,7 @@ const EditProfile = () => {
           </div>
 
           {/* Name */}
-          <h2 className="text-lg font-medium">{userData.firstName} {userData.lastName}</h2>
+          <h2 className="text-lg font-medium">{userData.first_name} {userData.last_name}</h2>
 
           {/* Add Photo Button */}
           <label className="flex items-center text-sm text-gray-800 mb-8 mt-4 cursor-pointer">
@@ -240,7 +252,7 @@ const EditProfile = () => {
             <div>
               <input
                 type="text"
-                name="phoneNumber"
+                name="phone_number"
                 placeholder="Phone Number"
                 className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 value={userData.phone_number}
@@ -273,7 +285,7 @@ const EditProfile = () => {
             </div>
             <div>
               <select
-                name="ageGroup"
+                name="age_group"
                 className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 value={userData.age_group}
                 onChange={handleChange}
@@ -318,6 +330,7 @@ const EditProfile = () => {
             </button>
           </div>
         </form>
+         <ToastContainer />
       </div>
     </div>
   );

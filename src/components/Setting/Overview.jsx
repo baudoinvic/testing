@@ -1,10 +1,9 @@
 
-import React from 'react';
-import { User, MessageSquare } from "lucide-react";
-import { FaPen } from "react-icons/fa";
-import { Link } from 'react-router-dom';
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify'; 
+import { Link } from 'react-router-dom';
+import { FaPen } from "react-icons/fa";
+import { User, MessageSquare } from "lucide-react";
 
 const Overview = () => {
   const [userData, setUserData] = useState({
@@ -21,8 +20,13 @@ const Overview = () => {
   const [profileImage, setProfileImage] = useState(null);
 
   const fetchUserData = async () => {
-    let token = localStorage.getItem("token");
-  
+    const token = localStorage.getItem("token");
+    
+    if (!token) {
+      toast.error("User not authenticated!");
+      return;
+    }
+
     try {
       const res = await fetch('https://48cc-2c0f-2a80-2609-7c10-00-c93.ngrok-free.app/api/profile/dashboard', {
         method: 'GET',
@@ -31,9 +35,8 @@ const Overview = () => {
           'Authorization': `Bearer ${token}`
         }
       });
-  
+
       const data = await res.json();
-  
       if (res.ok) {
         setUserData({
           first_name: data.user.first_name || '',
@@ -45,15 +48,15 @@ const Overview = () => {
           address: data.user.address || '',
           activeSince: new Date(data.user.created_at).toLocaleDateString() || ''
         });
-    
+        
+        // Save fetched data to localStorage
+        localStorage.setItem('userData', JSON.stringify(data.user));
+
         if (data.profile_image && data.profile_image.length > 0) {
           setProfileImage(data.profile_image[0]?.image_url);
         }
-        
-        toast.success(data.message);
       } else {
         toast.error(data.error || "Error fetching user data");
-        console.log("Server error:", data.error);
       }
     } catch (error) {
       toast.error("Network error");
@@ -61,10 +64,16 @@ const Overview = () => {
     }
   };
 
+  // Check if user data exists in localStorage before making API call
   useEffect(() => {
-    fetchUserData();
+    const storedUserData = JSON.parse(localStorage.getItem('userData'));
+    if (storedUserData) {
+      setUserData(storedUserData);
+    } else {
+      fetchUserData(); 
+    }
   }, []);
-  
+
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -72,7 +81,7 @@ const Overview = () => {
     const formData = new FormData();
     formData.append('profile_image', file);
     
-    let token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
     
     try {
       const res = await fetch('https://48cc-2c0f-2a80-2609-7c10-00-c93.ngrok-free.app/api/profile/update_image', {
@@ -82,7 +91,7 @@ const Overview = () => {
         },
         body: formData
       });
-      
+
       const data = await res.json();
       
       if (res.ok) {
@@ -105,11 +114,7 @@ const Overview = () => {
           {/* Profile Image */}
           <div className="w-40 h-40 rounded-full bg-blue-100 flex items-center justify-center mb-4 overflow-hidden">
             {profileImage ? (
-              <img 
-                src={profileImage} 
-                alt="Profile" 
-                className="w-full h-full object-cover"
-              />
+              <img src={profileImage} alt="Profile" className="w-full h-full object-cover" />
             ) : (
               <div className="text-blue-800">
                 <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -119,13 +124,13 @@ const Overview = () => {
               </div>
             )}
           </div>
-          <h2 className="text-lg font-medium">{userData.firstName} {userData.lastName}</h2>
+          <h2 className="text-lg font-medium">{userData.first_name} {userData.last_name}</h2>
           <div className="flex items-center space-x-6 mb-8 mt-4">
             <Link to="/profile" className="flex items-center text-sm text-gray-800 cursor-pointer">
               <FaPen />
               <span className="ml-2">Edit Profile</span>
             </Link>
-            
+
             <label className="flex items-center text-sm text-gray-800 cursor-pointer">
               <svg width="16" height="16" className="mr-2" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M8 13.3333V8M8 8V2.66667M8 8H13.3333M8 8H2.66667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -160,7 +165,7 @@ const Overview = () => {
       <div className="flex-1 p-4 md:p-8">
         <div className="max-w-3xl">
           <h1 className="text-2xl font-semibold mb-2">Profile Overview</h1>
-          <p className="text-gray-500 mb-8">This information will be displayed publicly be careful what you share</p>
+          <p className="text-gray-500 mb-8">This information will be displayed publicly, be careful what you share</p>
 
           <h2 className="text-gray-700 mb-4">Personal Information</h2>
 
@@ -171,7 +176,7 @@ const Overview = () => {
                 type="text"
                 placeholder="Firstname"
                 className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                value={userData.firstName}
+                value={userData.first_name}
                 readOnly
               />
             </div>
@@ -189,7 +194,7 @@ const Overview = () => {
                 type="text"
                 placeholder="Lastname"
                 className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                value={userData.lastName}
+                value={userData.last_name}
                 readOnly
               />
             </div>
@@ -232,9 +237,9 @@ const Overview = () => {
             <div>
               <input
                 type="text"
-                placeholder="Location"
+                placeholder="Address"
                 className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                value={userData.location}
+                value={userData.address}
                 readOnly
               />
             </div>

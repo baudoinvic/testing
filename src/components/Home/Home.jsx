@@ -277,7 +277,7 @@ const Home = () => {
   const fetchCategories = () => {
     let token = localStorage.getItem("token");
     axios({
-      url: "https://8d28-2c0f-2a80-2609-7c10-00-c93.ngrok-free.app/api/institutions/",
+      url: "https://48cc-2c0f-2a80-2609-7c10-00-c93.ngrok-free.app/api/institutions/",
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,

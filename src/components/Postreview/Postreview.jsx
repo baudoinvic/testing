@@ -1,23 +1,79 @@
 
-
-
 import React, { useRef, useState } from 'react';
 import { Star } from 'lucide-react';
+import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useParams } from 'react-router-dom';
 
-const Postreview = () => {
+
+const Postreview = ({ institutionId }) => {
+  const { id } = useParams();
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef(null);
 
   const handleFileChange = (e) => {
-    // handle selected image
-    const files = e.target.files;
-    console.log(files[0]);
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      console.log(file);
+    }
+  };
+
+  const handleSubmit = async () => {
+    console.log("ID from params:", id); 
+    if (!rating) {
+      return toast.error('Please select a rating');
+    }
+    
+    if (review.length < 85) {
+      return toast.error('Review must be at least 85 characters long');
+    }
+    
+    if (!selectedFile) {
+      return toast.error('Please upload an image');
+    }
+
+    setIsLoading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('rating', rating);
+      formData.append('review', review);
+      formData.append('profile_image', selectedFile);
+
+      const response = await axios.post(
+        `https://48cc-2c0f-2a80-2609-7c10-c93.ngrok-free.app/api/review/${id}`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          withCredentials: true,
+        }
+      );
+      // Show success message
+      toast.success('Review posted successfully!');
+
+      setRating(0);
+      setReview('');
+      setSelectedFile(null);
+      
+    } catch (error) {
+      console.error('Error posting review:', error);
+      toast.error(error.response?.data?.error || 'Failed to post review');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className="max-w-4xl mx-auto p-6 mt-16 mb-16">
-      <h1 className="text-2xl font-bold mb-6 ">Radisson Blue Hotel</h1>
+      <ToastContainer position="top-right" />
+      <h1 className="text-2xl font-bold mb-6">Radisson Blue Hotel</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Review Section */}
@@ -43,6 +99,7 @@ const Postreview = () => {
 
           <p className="text-sm text-gray-600 mt-2">
             Reviews should be at least 85 characters
+            {review.length > 0 && ` (${review.length}/85)`}
           </p>
         </div>
 
@@ -53,6 +110,7 @@ const Postreview = () => {
         >
           <input
             type="file"
+            accept="image/*"
             ref={fileInputRef}
             onChange={handleFileChange}
             style={{ display: 'none' }}
@@ -79,18 +137,31 @@ const Postreview = () => {
                 />
               </svg>
             </div>
-            <p className="text-sm text-gray-600">Click to upload photo</p>
+            <p className="text-sm text-gray-600">
+              {selectedFile ? `Selected: ${selectedFile.name}` : 'Click to upload photo'}
+            </p>
           </div>
         </div>
       </div>
 
       {/* Buttons */}
       <div className="flex justify-end gap-4 mt-6">
-        <button className="px-6 py-2 border rounded text-gray-700 hover:bg-gray-100">
+        <button 
+          className="px-6 py-2 border rounded text-gray-700 hover:bg-gray-100"
+          onClick={() => {
+            setRating(0);
+            setReview('');
+            setSelectedFile(null);
+          }}
+        >
           Cancel
         </button>
-        <button className="px-6 py-2 bg-[#20497F] text-white rounded hover:bg-blue-900">
-          Post Review
+        <button 
+          className="px-6 py-2 bg-[#20497F] text-white rounded hover:bg-blue-900 disabled:bg-gray-400"
+          onClick={handleSubmit}
+          disabled={isLoading}
+        >
+          {isLoading ? 'Posting...' : 'Post Review'}
         </button>
       </div>
     </div>

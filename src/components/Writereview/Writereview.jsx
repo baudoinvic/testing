@@ -4,9 +4,12 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom'; 
 import group from '../../assets/img/group.png';
 import sticker from '../../assets/img/sticker.png';
+import { useParams } from 'react-router-dom';
 
 const Writereview = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
+
+  const { id } = useParams();
 
   const businesses = [
     { name: "Meza Malonga", link: "/business/meza-malonga" },
@@ -14,7 +17,9 @@ const Writereview = () => {
     { name: "Heaven Restaurant & Boutique Hotel", link: "/business/heaven-restaurant" },
     { name: "Khana Khazana", link: "/business/khana-khazana" },
     { name: "Anda Kigali", link: "/business/anda-kigali" },
-    { name: "Radisson Blu Hotel", link: "/postreview" },
+    // { name: "Radisson Blu Hotel", link: "/postreview" },
+    { name: "Radisson Blu Hotel", link: `/postreview/${id}` },
+
     { name: "Park Inn by Radisson Kigali", link: "/business/park-inn" },
     { name: "Bank of Kigali Plc", link: "/business/bank-of-kigali" },
     { name: "The Retreat by Heaven", link: "/business/the-retreat" },

@@ -49,7 +49,7 @@ const App = () => {
         <Route path="java" element={<Java />} />
         <Route path="overview" element={<Overview />} />
         <Route path="profile" element={<EditProfile />} />
-        <Route path="postreview" element={<Postreview />} />
+        <Route path="postreview/:id" element={<Postreview />} />
         <Route path="view" element={<Review />} />
        
       </Route>

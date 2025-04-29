@@ -31,7 +31,7 @@ const Home = () => {
       },
     })
       .then((response) => {
-        setCategories(response.data.categories); // Use the dynamically fetched categories
+        setCategories(response.data.categories); 
       })
       .catch((error) => {
         console.log(error);

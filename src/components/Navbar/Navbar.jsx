@@ -11,6 +11,13 @@ const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
+
+  const [showInput, setShowInput] = useState(false);
+
+  const toggleInput = () => {
+    setShowInput((prev) => !prev);
+  };
+
   const navItems = [
     {
       title: 'Food Drinks',
@@ -106,11 +113,24 @@ const Navbar = () => {
             </Link>
           </div>
 
-          <div className="hidden sm:ml-6 sm:flex sm:items-center">
+          {/* <div className="hidden sm:ml-6 sm:flex sm:items-center">
             <button className="p-2 bg-[#20497F] text-white rounded">
               <Search className="h-5 w-5" />
             </button>
-          </div>
+          </div> */}
+           <div className="hidden sm:ml-6 sm:flex sm:items-center space-x-2">
+      <button onClick={toggleInput} className="p-2 bg-[#20497F] text-white rounded">
+        <Search className="h-5 w-5" />
+      </button>
+
+      {showInput && (
+        <input
+          type="text"
+          placeholder="Search..."
+          className="border border-gray-300 rounded px-2 py-1 focus:outline-none"
+        />
+      )}
+    </div>
 
           <div className="hidden sm:ml-6 sm:flex sm:items-center space-x-1">
             {navItems.map((item, index) => (

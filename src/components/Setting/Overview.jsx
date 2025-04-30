@@ -28,7 +28,7 @@ const Overview = () => {
     }
 
     try {
-      const res = await fetch('https://48cc-2c0f-2a80-2609-7c10-00-c93.ngrok-free.app/api/profile/dashboard', {
+      const res = await fetch('http://192.168.1.238:3000/api/profile/dashboard', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ const Overview = () => {
     const token = localStorage.getItem("token");
     
     try {
-      const res = await fetch('https://48cc-2c0f-2a80-2609-7c10-00-c93.ngrok-free.app/api/profile/update_image', {
+      const res = await fetch('http://192.168.1.238:3000/api/profile/update_image', {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`

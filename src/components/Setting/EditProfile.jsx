@@ -26,7 +26,7 @@ const EditProfile = () => {
   const fetchUserData = () => {
     let token = localStorage.getItem("token");
     axios({
-      url: "https://48cc-2c0f-2a80-2609-7c10-00-c93.ngrok-free.app/api/profile/dashboard",
+      url: "http://192.168.1.238:3000/api/profile/dashboard",
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -94,7 +94,7 @@ const EditProfile = () => {
     
     axios({
       method: "PUT",
-      url: "https://48cc-2c0f-2a80-2609-7c10-00-c93.ngrok-free.app/api/profile/update_image",
+      url: "http://192.168.1.238:3000/api/profile/update_image",
       data: formData,
       headers: {
         "Content-Type": "multipart/form-data",
@@ -128,7 +128,7 @@ const EditProfile = () => {
 
     axios({
       method: "PUT",
-      url: `https://48cc-2c0f-2a80-2609-7c10-00-c93.ngrok-free.app/api/profile/dashboard/update`,
+      url: `http://192.168.1.238:3000/api/profile/dashboard/update`,
       data: data,
       headers: {
         "Content-Type": "application/json",

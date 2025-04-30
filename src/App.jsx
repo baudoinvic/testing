@@ -22,6 +22,7 @@ import EditProfile from './components/Setting/EditProfile';
 import Overview from './components/Setting/Overview';
 import Postreview from './components/Postreview/Postreview';
 import Review from './components/Review/Review';
+import Reviews from './components/Reviews/Reviews';
 
 
 
@@ -51,6 +52,7 @@ const App = () => {
         <Route path="profile" element={<EditProfile />} />
         <Route path="postreview/:id" element={<Postreview />} />
         <Route path="view" element={<Review />} />
+        <Route path="Reviews" element={<Reviews />} />
        
       </Route>
     </Routes>

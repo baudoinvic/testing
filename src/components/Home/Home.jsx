@@ -1,6 +1,5 @@
 
 
-
 import Detail from "../Imageslider/Detail";
 import slider1 from '../../assets/img/slider1.png';
 import slider2 from '../../assets/img/slider2.png';
@@ -19,22 +18,63 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const Home = () => {
-  // const [categorie, setCategories] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  // Map lucide icons to category names
+  const getCategoryIcon = (categoryName) => {
+    const iconMap = {
+      "Food/Drinks": <Utensils size={48} className="text-blue-800" />,
+      "Financial Services": <Building2 size={48} className="text-blue-800" />,
+      "Hotel/Travels": <Hotel size={48} className="text-blue-800" />,
+      "Health/Medical": <Building size={48} className="text-blue-800" />,
+      "Home/Services": <HomeIcon size={48} className="text-blue-800" />,
+      "More/more": <MoreHorizontal size={48} className="text-blue-800" />,
+    };
+    
+    return iconMap[categoryName] || <MoreHorizontal size={48} className="text-blue-800" />;
+  };
+
+  // Map category names to path routes
+  const getCategoryPath = (categoryName) => {
+    const pathMap = {
+      "Food/Drinks": "/restaurent",
+      "Financial Services": "/bank",
+      "Hotel/Travels": "/hotels",
+      "Health/Medical": "/hospital",
+      "Home/Services": "/home-services",
+      "More/more": "/more",
+    };
+    
+    return pathMap[categoryName] || "/more-categories";
+  };
+
   const fetchCategories = () => {
+    setLoading(true);
     let token = localStorage.getItem("token");
+    
     axios({
-      url: "https://48cc-2c0f-2a80-2609-7c10-00-c93.ngrok-free.app/api/institutions/",
+      url: "http://192.168.1.238:3000/api/institutions",
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
       .then((response) => {
-        setCategories(response.data.categories); 
+        console.log("API Response:", response.data);
+        if (response.data && response.data.categories) {
+          setCategories(response.data.categories);
+        } else {
+          setError("Invalid data format received from API");
+        }
+        setLoading(false);
       })
       .catch((error) => {
-        console.log(error);
+        console.error("API Error:", error);
+        setError("Failed to fetch categories");
+        setLoading(false);
       });
   };
 
@@ -65,50 +105,10 @@ const Home = () => {
     },
   ];
 
-  const categories = [
-    {
-      id: 1,
-      name: "Food/drinks",
-      icon: <Utensils size={48} className="text-blue-800" />,
-      path: "/restaurent"
-    },
-    {
-      id: 2,
-      name: "Financial Services",
-      icon: <Building2 size={48} className="text-blue-800" />,
-      path: "/bank"
-    },
-    {
-      id: 3,
-      name: "Hotels/Travel",
-      icon: <Hotel size={48} className="text-blue-800" />,
-      path: "/hotels"
-    },
-    {
-      id: 4,
-      name: "Health/Medical",
-      icon: <Building size={48} className="text-blue-800" />,
-      path: "/hospital"
-    },
-    {
-      id: 5,
-      name: "Home Services",
-      icon: <HomeIcon size={48} className="text-blue-800" />,
-      path: "/home-services"
-    },
-    {
-      id: 6,
-      name: "More",
-      icon: <MoreHorizontal size={48} className="text-blue-800" />,
-      path: "/more-categories"
-    },
-  ];
-
   // Handle category click to navigate to the correct page with ID
   const handleCategoryClick = (category) => {
-    if (category.path) {
-      navigate(`${category.path}/${category.id}`);
-    }
+    const path = getCategoryPath(category.name);
+    navigate(`${path}/${category.id}`);
   };
 
   return (
@@ -193,18 +193,25 @@ const Home = () => {
         {/* Categories Section */}
         <div className="py-12">
           <h2 className="text-2xl font-bold text-center mb-8">Categories</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            {categories.map((category) => (
-              <div
-                key={category.id}
-                onClick={() => handleCategoryClick(category)}
-                className="bg-blue-50 rounded-lg p-8 flex flex-col items-center justify-center h-60 cursor-pointer transition-transform hover:scale-105"
-              >
-                <div className="mb-4">{category.icon}</div>
-                <h3 className="text-lg font-medium text-center">{category.name}</h3>
-              </div>
-            ))}
-          </div>
+          
+          {loading ? (
+            <div className="text-center py-8">Loading categories...</div>
+          ) : error ? (
+            <div className="text-center py-8 text-red-500">{error}</div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+              {categories.map((category) => (
+                <div
+                  key={category.id}
+                  onClick={() => handleCategoryClick(category)}
+                  className="bg-blue-50 rounded-lg p-8 flex flex-col items-center justify-center h-60 cursor-pointer transition-transform hover:scale-105"
+                >
+                  <div className="mb-4">{getCategoryIcon(category.name)}</div>
+                  <h3 className="text-lg font-medium text-center">{category.name}</h3>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* QR Section */}
@@ -252,8 +259,4 @@ const Home = () => {
 };
 
 export default Home;
-
-
-
-
 

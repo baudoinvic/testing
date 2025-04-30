@@ -7,8 +7,38 @@ import radison from '../../assets/img/radison.png';
 import kurry from '../../assets/img/kurry.png';
 import { IoMdMenu } from "react-icons/io";
 import { Link } from 'react-router-dom';
+import {  useEffect } from "react";
+import axios from "axios";
 
 const Restaurent = () => {
+
+  const [institutions, setInstitutions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchInstitutions = async () => {
+      setLoading(true);
+      try {
+        const token = localStorage.getItem("token");
+        const res = await axios.get("http://192.168.1.238:3000/api/institutions/1", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+      
+        setInstitutions(res.data.categories.institution); 
+
+      } catch (err) {
+        console.error("Error fetching institutions", err);
+        setError("Failed to load institutions");
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchInstitutions();
+  }, []);
+  
+
   // State for filter popup
   const [showFilterPopup, setShowFilterPopup] = useState(false);
  
@@ -238,33 +268,30 @@ const Restaurent = () => {
 
       <div className="space-y-16 cursor-pointer">
       
-        {restaurents.map((restaurent) => (
-  <Link to={restaurent.Link} key={restaurent.id}>
-    <div className="mb-6 overflow-hidden border rounded-lg transition-transform transform hover:scale-102 hover:shadow-lg">
-      <div className="flex flex-col md:flex-row p-0">
-        <div className="md:w-64 h-48 md:h-auto flex-shrink-0">
-          <img
-            src={restaurent.img}
-            alt={`${restaurent.name} Logo`}
-            className="w-full h-full object-cover bg-blue-800"
-          />
-        </div>
-        <div className="p-6 flex-grow">
-          <h2 className="text-xl font-medium text-blue-800 mb-2">{restaurent.name}</h2>
-          <div className="flex items-center mb-2">
-            <div className="flex mr-2">{renderStars(restaurent.rating)}</div>
-            <span className="text-gray-700 mr-2">{restaurent.rating}</span>
-            <span className="text-gray-700">({restaurent.reviews} reviews)</span>
-          </div>
-          <p className="font-medium mb-2">Hours: {restaurent.hours}</p>
-          <p className="text-gray-700 mb-4">
-            {restaurent.description} <span className="text-blue-600">... more</span>
-          </p>
-        </div>
+      {institutions?.map((institution) => (
+  <div key={institution.id} className="mb-6 overflow-hidden border rounded-lg transition-transform transform hover:scale-102 hover:shadow-lg">
+    <div className="flex flex-col md:flex-row p-0">
+      <div className="md:w-64 h-48 md:h-auto flex-shrink-0">
+        <img
+          src={java} 
+          alt={`${institution.name} Logo`}
+          className="w-full h-full object-cover bg-blue-800"
+        />
+      </div>
+      <div className="p-6 flex-grow">
+        <h2 className="text-xl font-medium text-blue-800 mb-2">{institution.name}</h2>
+        <p className="font-medium mb-2">Hours: open until 10:00PM</p>
+        {/* <span className="text-gray-700 mr-2">{institution.rating}</span>
+        <span className="text-gray-700">({institution.reviews} reviews)</span> */}
+        <p className="text-gray-700 mb-4">
+          {institution.description} <span className="text-blue-600">... more</span>
+        </p>
+        <p className="text-gray-600 flex items-center"><MapPin className="w-4 h-4 mr-1" /> {institution.address}</p>
       </div>
     </div>
-  </Link>
+  </div>
 ))}
+
 
       </div>
 

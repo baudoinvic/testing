@@ -182,7 +182,7 @@ const Next = () => {
 
     try {
       
-      const res = await fetch('https://48cc-2c0f-2a80-2609-7c10-00-c93.ngrok-free.app/api/profile/dashboard/update', {
+      const res = await fetch('http://192.168.1.238:3000/api/profile/dashboard/update', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

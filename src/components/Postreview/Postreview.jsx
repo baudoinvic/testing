@@ -4,11 +4,9 @@ import { Star } from 'lucide-react';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useParams } from 'react-router-dom';
 
 
 const Postreview = ({ institutionId }) => {
-  const { id } = useParams();
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
@@ -24,7 +22,9 @@ const Postreview = ({ institutionId }) => {
   };
 
   const handleSubmit = async () => {
-    console.log("ID from params:", id); 
+    const token = localStorage.getItem('token');
+   
+ 
     if (!rating) {
       return toast.error('Please select a rating');
     }
@@ -45,16 +45,15 @@ const Postreview = ({ institutionId }) => {
       formData.append('review', review);
       formData.append('profile_image', selectedFile);
 
-      const response = await axios.post(
-        `http://192.168.1.238:3000/api/review/${id}`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-          withCredentials: true,
+     const res = await fetch('http://192.168.1.238:3000/api/review/3', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`  
         }
-      );
+      })
+
+      const data = await res.json();
       // Show success message
       toast.success('Review posted successfully!');
 

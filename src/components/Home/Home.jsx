@@ -104,7 +104,7 @@ const Home = () => {
       buttonText: "Hotels",
     },
   ];
-
+  
   // Handle category click to navigate to the correct page with ID
   const handleCategoryClick = (category) => {
     const path = getCategoryPath(category.name);

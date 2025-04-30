@@ -23,7 +23,7 @@ const Signup = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch('https://48cc-2c0f-2a80-2609-7c10-00-c93.ngrok-free.app/api/auth/signup', {
+      const res = await fetch('`http://192.168.1.238:3000/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),

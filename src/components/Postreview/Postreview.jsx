@@ -46,7 +46,7 @@ const Postreview = ({ institutionId }) => {
       formData.append('profile_image', selectedFile);
 
       const response = await axios.post(
-        `https://48cc-2c0f-2a80-2609-7c10-c93.ngrok-free.app/api/review/${id}`,
+        `http://192.168.1.238:3000/api/review/${id}`,
         formData,
         {
           headers: {

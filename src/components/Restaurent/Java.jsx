@@ -13,13 +13,11 @@ const Java = () => {
 
   return (
     <div className="w-full mx-auto px-4 sm:px-6 md:px-12 p-4 mb-8">
-      {/* Header */}
+    
       <h1 className="text-xl sm:text-2xl font-bold text-blue-800 pb-2 mb-4">Java House Kigali Heights</h1>
 
-      {/* Image Gallery - Responsive layout */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2 mb-4">
   
-
 <div className="col-span-1 sm:col-span-2 sm:row-span-2">
     <img 
       src={java}

@@ -1,5 +1,4 @@
 
-
 import Detail from "../Imageslider/Detail";
 import slider1 from '../../assets/img/slider1.png';
 import slider2 from '../../assets/img/slider2.png';

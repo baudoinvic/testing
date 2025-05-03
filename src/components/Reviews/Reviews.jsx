@@ -163,7 +163,7 @@ const Reviews = () => {
           // Use fallback reviews
           fallbackReviews.map(review => renderReview(review, false))
         ) : (
-          // Use API reviews
+         
           dynamicReviews.slice(0, 3).map(review => renderReview(review, true))
         )}
       </div>

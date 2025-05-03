@@ -52,10 +52,6 @@ const Home = () => {
     return pathMap[categoryName] || "/more-categories";
   };
 
-  
-
-
-
   const fetchCategories = () => {
     setLoading(true);
     let token = localStorage.getItem("token");

@@ -24,8 +24,11 @@ const Restaurent = () => {
         const res = await axios.get("http://192.168.1.238:3000/api/institutions/1", {
           headers: { Authorization: `Bearer ${token}` },
         });
-      
-        setInstitutions(res.data.categories.institution); 
+       
+        console.log(res.data); 
+        // setInstitutions(res.data.categories.institution); 
+        setInstitutions(res.data?.categories?.institution || []);
+
 
       } catch (err) {
         console.error("Error fetching institutions", err);

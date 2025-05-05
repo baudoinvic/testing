@@ -48,7 +48,7 @@ const Home = () => {
       "More/more": "/more",
     };
     
-    return pathMap[categoryName] || "/more-categories";
+    return pathMap[categoryName] || "/bank";
   };
 
   const fetchCategories = () => {

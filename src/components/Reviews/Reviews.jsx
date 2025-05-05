@@ -15,7 +15,7 @@ const Reviews = () => {
   const [error, setError] = useState(null);
   const [usingFallback, setUsingFallback] = useState(false);
 
-  // Hardcoded reviews from your original code
+  // Hardcoded reviews from the original code
   const fallbackReviews = [
     {
       id: 1,

@@ -296,7 +296,6 @@ const EditProfile = () => {
                 <option value="35-44">35-44</option>
                 <option value="45-54">45-54</option>
                 <option value="55-64">55-64</option>
-                <option value="65+">65+</option>
               </select>
             </div>
             <div>
@@ -337,3 +336,5 @@ const EditProfile = () => {
 };
 
 export default EditProfile;
+
+

@@ -20,47 +20,36 @@ const Postreview = ({ institutionId }) => {
       console.log(file);
     }
   };
-
+  
   const handleSubmit = async () => {
     const token = localStorage.getItem('token');
-   
- 
-    if (!rating) {
-      return toast.error('Please select a rating');
-    }
-    
-    if (review.length < 85) {
-      return toast.error('Review must be at least 85 characters long');
-    }
-    
-    if (!selectedFile) {
-      return toast.error('Please upload an image');
-    }
-
+  
+    if (!rating) return toast.error('Please select a rating');
+    if (review.length < 85) return toast.error('Review must be at least 85 characters long');
+    if (!selectedFile) return toast.error('Please upload an image');
+  
     setIsLoading(true);
-
+  
     try {
       const formData = new FormData();
       formData.append('rating', rating);
       formData.append('review', review);
       formData.append('profile_image', selectedFile);
-
-     const res = await fetch('http://192.168.1.238:3000/api/review/3', {
-        method: 'POST',
+  
+      const res = await axios.post('http://192.168.1.238:3000/api/review/3', formData, {
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`  
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
         }
-      })
-
-      const data = await res.json();
-      // Show success message
+      });
+  
+      const data = res.data; // ✅ Correct
       toast.success('Review posted successfully!');
-
+      console.log(data, "response");
+  
       setRating(0);
       setReview('');
       setSelectedFile(null);
-      
     } catch (error) {
       console.error('Error posting review:', error);
       toast.error(error.response?.data?.error || 'Failed to post review');
@@ -68,6 +57,7 @@ const Postreview = ({ institutionId }) => {
       setIsLoading(false);
     }
   };
+  
 
   return (
     <div className="max-w-4xl mx-auto p-6 mt-16 mb-16">

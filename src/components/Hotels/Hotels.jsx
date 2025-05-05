@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Building2, Star, MapPin } from 'lucide-react';
 import mariot from '../../assets/img/mariot.jpg';
 import serena from '../../assets/img/serena.jpg';
@@ -7,58 +7,56 @@ import radison from '../../assets/img/radison.png';
 import legacy from '../../assets/img/legacy.jpg';
 import { Link } from 'react-router-dom';
 import { IoMdMenu } from "react-icons/io";
+import axios from "axios";
 
 const Hotels = () => {
   // State for filter popup
   const [showFilterPopup, setShowFilterPopup] = useState(false);
-  
-  const hotels = [
-    {
-      id: 1,
-      name: "Mariot Hotel",
-      img: mariot,
-      Link: "/mariot",
-      rating: 4.0,
-      reviews: 320,
-      hours: "open until 23:00pm",
-      location: "KG 790 Av 640 St",
-      description: "I booked a 'luxury suite' at the Mariot Hotel, expecting a pampering getaway. What I got was... well, let's just say 'grand' was the only word that didn't apply. The 'majestic' view from my window? A dumpster overflowing with what I can only assume were the remnants of a week-long fish buffet. The 'luxury",
-    },
-    {
-      id: 2,
-      name: "Serena Hotel kigali",
-      img: serena,
-      Link: "/serena",
-      rating: 4.0,
-      reviews: 245,
-      hours: "open until 18:00pm",
-      location: "KG 320 Av 540 St",
-      description: "I booked a 'luxury suite' at the Mariot Hotel, expecting a pampering getaway. What I got was... well, let's just say 'grand' was the only word that didn't apply. The 'majestic' view from my window? A dumpster overflowing with what I can only assume were the remnants of a week-long fish buffet. The 'luxury",
-    },
-    {
-      id: 3,
-      name: "Radison Hotel Blue kigali",
-      img: radison,
-      Link: "/radison",
-      rating: 4.2,
-      reviews: 280,
-      hours: "open until 17:30pm",
-      location: "KG 674 Av 520 St",
-      description: "I booked a 'luxury suite' at the Mariot Hotel, expecting a pampering getaway. What I got was... well, let's just say 'grand' was the only word that didn't apply. The 'majestic' view from my window? A dumpster overflowing with what I can only assume were the remnants of a week-long fish buffet. The 'luxury",
-    },
-    {
-      id: 4,
-      name: "Grand Legacy Hotel",
-      img: legacy,
-      Link: "/legacy",
-      rating: 3.8,
-      reviews: 195,
-      hours: "open until 16:30pm",
-      location: "KG 250 Av 420 St",
-      description: "I booked a 'luxury suite' at the Mariot Hotel, expecting a pampering getaway. What I got was... well, let's just say 'grand' was the only word that didn't apply. The 'majestic' view from my window? A dumpster overflowing with what I can only assume were the remnants of a week-long fish buffet. The 'luxury",
-    },
-  ];
+   const [institutions, setInstitutions] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+   
 
+  useEffect(() => {
+    const fetchInstitutions = async () => {
+      setLoading(true);
+      try {
+        const token = localStorage.getItem("token");
+        const res = await axios.get("http://192.168.1.238:3000/api/institutions/3", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+       
+        console.log(res.data); 
+        setInstitutions(res.data?.institutions || []);
+      } catch (err) {
+        console.error("Error fetching institutions", err);
+        setError("Failed to load institutions");
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchInstitutions();
+  }, []);
+  
+  function isInstitutionOpen(hours) {
+    const now = new Date();
+    const day = now.toLocaleString('en-US', { weekday: 'long' });
+    const currentTime = now.toTimeString().slice(0, 5);
+  
+    const today = hours.find(h => h.day_of_week === day);
+    if (!today) return false;
+  
+    const open = today.open_time;
+    const close = today.close_time;
+  
+    if (close < open) {
+      return currentTime >= open || currentTime <= close;
+    }
+  
+    return currentTime >= open && currentTime <= close;
+  }
+  
   const renderStars = (rating) => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
@@ -189,6 +187,8 @@ const Hotels = () => {
     );
   };
 
+    // Base URL for image paths
+    const API_BASE_URL = "http://192.168.1.238:3000/";
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Filter options */}
@@ -214,14 +214,14 @@ const Hotels = () => {
         </button>
       </div>
 
-      {/* Show Filter Popup when button is clicked */}
+     
       {showFilterPopup && <FilterPopup />}
 
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <div>
-          <p className="text-sm text-gray-600">Restaurants</p>
-          <h1 className="text-2xl font-bold">Best restaurants in the Kigali City Area</h1>
+          <p className="text-sm text-gray-600">Hotels</p>
+          <h1 className="text-2xl font-bold">Best hotels in the Kigali City Area</h1>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-sm">Sort:</span>
@@ -237,34 +237,61 @@ const Hotels = () => {
      
 
 <div className="space-y-8 cursor-pointer">
-  {hotels.map((hotel) => (
-    <Link to={hotel.Link} key={hotel.id} className="block">
-      <div className="overflow-hidden border rounded-lg transition-transform transform hover:scale-102 hover:shadow-lg p-2">
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="md:w-64 h-48 md:h-auto flex-shrink-0">
-            <img
-              src={hotel.img}
-              alt={`${hotel.name} Logo`}
-              className="w-full h-full object-cover bg-blue-800 rounded-md"
-            />
-          </div>
-          <div className="p-2 flex-grow space-y-2">
-            <h2 className="text-xl font-medium text-blue-800">{hotel.name}</h2>
-            <div className="flex items-center gap-2">
-              <div className="flex">{renderStars(hotel.rating)}</div>
-              <span className="text-gray-700">{hotel.rating}</span>
-              <span className="text-gray-500">({hotel.reviews} reviews)</span>
-            </div>
-            <p className="font-medium text-sm text-gray-600">Hours: {hotel.hours}</p>
-            <p className="text-gray-700 text-sm">
-              {hotel.description} <span className="text-blue-600">... more</span>
-            </p>
-          </div>
-        </div>
-      </div>
-    </Link>
-  ))}
+  {institutions?.map((institution) => {
+           const isOpen = isInstitutionOpen(institution.hours || []);
+           let imageUrl = "/api/placeholder/400/320"; 
+           
+           if (institution.image) {
+             imageUrl = `${API_BASE_URL}${institution.image.image_url}`;
+           }
+           
+           return (
+             <div key={institution.id || institution.name} className="mb-6 overflow-hidden border rounded-lg transition-transform transform hover:scale-102 hover:shadow-lg">
+               <div className="flex flex-col md:flex-row p-0">
+                 <div className="md:w-64 h-48 md:h-auto flex-shrink-0">
+                   <img
+                     src={imageUrl}
+                     alt={`${institution.name}`}
+                     className="w-full h-full object-cover"
+                     onError={(e) => {
+                       e.target.src = "/api/placeholder/400/320"; // Fallback on error
+                       console.log("Image failed to load:", imageUrl);
+                     }}
+                   />
+                 </div>
+                 <div className="p-6 flex-grow">
+                   <h2 className="text-xl text-blue-800 mb-2">{institution.name}</h2>
+                   <p className="font-medium mb-2 text-green-600">
+                     {isOpen ? "Open now" : "Closed now"}
+                   </p>
+                   
+                   <div className="flex items-center mb-2">
+                     {renderStars(institution.avgRating)}
+                     <span className="ml-2 text-gray-700">{institution.avgRating || "No rating"}</span>
+                     <span className="ml-2 text-gray-700">({institution.totalReview || 0} Reviews)</span>
+                   </div>
+                   <p className="text-gray-700 mb-4">
+                     {institution.description?.length > 200 
+                       ? `${institution.description.substring(0, 200)}... ` 
+                       : institution.description}
+                     {institution.description?.length > 200 && (
+                       <span className="text-blue-600">more</span>
+                     )}
+                   </p>
+                   <p className="text-gray-600 flex items-center">
+                     <MapPin className="w-4 h-4 mr-1" /> {institution.location}
+                   </p>
+                 </div>
+               </div>
+             </div>
+           );
+         })}
 </div>
+
+  {/* Empty state */}
+  {!loading && institutions.length === 0 && (
+        <div className="text-center py-10">No restaurants found</div>
+      )}
 
 
       {/* Pagination */}

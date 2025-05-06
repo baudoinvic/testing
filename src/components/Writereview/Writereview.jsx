@@ -1,32 +1,51 @@
 
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'; 
 import group from '../../assets/img/group.png';
 import sticker from '../../assets/img/sticker.png';
-import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 const Writereview = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [institutions, setInstitutions] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  
+  useEffect(() => {
+    const fetchInstitutions = async () => {
+      setLoading(true);
+      try {
+        const token = localStorage.getItem("token");
+        const res = await axios.get("http://192.168.1.238:3000/api/review/institution", { 
+          headers: { Authorization: `Bearer ${token}` },
+        });
+       
+        console.log(res.data); 
+        setInstitutions(res.data?.institutions || []);
+      } catch (err) {
+        console.error("Error fetching institutions", err);
+        setError("Failed to load institutions");
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchInstitutions();
+  }, []);
 
-  const { id } = useParams();
-
-  const businesses = [
-    { name: "Meza Malonga", link: "/business/meza-malonga" },
-    { name: "The Hut Restaurant & Boutique Hotel", link: "/business/the-hut" },
-    { name: "Heaven Restaurant & Boutique Hotel", link: "/business/heaven-restaurant" },
-    { name: "Khana Khazana", link: "/business/khana-khazana" },
-    { name: "Anda Kigali", link: "/business/anda-kigali" },
-    // { name: "Radisson Blu Hotel", link: "/postreview" },
-    { name: "Radisson Blu Hotel", link: `/postreview/${id}` },
-
-    { name: "Park Inn by Radisson Kigali", link: "/business/park-inn" },
-    { name: "Bank of Kigali Plc", link: "/business/bank-of-kigali" },
-    { name: "The Retreat by Heaven", link: "/business/the-retreat" },
-  ];
+  // Filter institutions based on search term
+  const filteredInstitutions = institutions.filter(institution => 
+    institution.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleSearchClick = () => {
-    setShowSuggestions(prev => !prev); // Toggle open/close
+    setShowSuggestions(prev => !prev);
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    setShowSuggestions(true); // Show suggestions when typing
   };
 
   return (
@@ -41,6 +60,9 @@ const Writereview = () => {
               type="text" 
               placeholder="Let's Find a Business!" 
               className="border border-gray-300 rounded-l p-2 w-64 focus:outline-none"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              onClick={() => setShowSuggestions(true)}
             />
             <button 
               className="bg-[#20497F] text-white px-4 rounded-r flex items-center justify-center"
@@ -53,16 +75,24 @@ const Writereview = () => {
 
             {showSuggestions && (
               <div className="absolute top-12 left-0 w-64 bg-white border border-gray-300 rounded shadow-md max-h-60 overflow-y-auto z-10">
-                {businesses.map((business, index) => (
-                  <Link
-                    key={index}
-                    to={business.link}
-                    className="block p-2 hover:bg-gray-100 cursor-pointer text-gray-700"
-                    onClick={() => setShowSuggestions(false)} 
-                  >
-                    {business.name}
-                  </Link>
-                ))}
+                {loading ? (
+                  <div className="p-2 text-gray-500">Loading...</div>
+                ) : error ? (
+                  <div className="p-2 text-red-500">{error}</div>
+                ) : filteredInstitutions.length > 0 ? (
+                  filteredInstitutions.map((institution) => (
+                    <Link
+                      key={institution.id}
+                      to={`/postreview/${institution.id}`}
+                      className="block p-2 hover:bg-gray-100 cursor-pointer text-gray-700"
+                      onClick={() => setShowSuggestions(false)} 
+                    >
+                      {institution.name}
+                    </Link>
+                  ))
+                ) : (
+                  <div className="p-2 text-gray-500">No businesses found</div>
+                )}
               </div>
             )}
           </div>

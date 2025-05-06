@@ -1,4 +1,6 @@
 
+
+
 import React, { useState, useEffect } from 'react';
 import { Star, MapPin } from 'lucide-react';
 import { IoMdMenu } from "react-icons/io";

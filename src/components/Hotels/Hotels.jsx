@@ -13,8 +13,7 @@ const Hotels = () => {
    const [institutions, setInstitutions] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-   
-
+    
   useEffect(() => {
     const fetchInstitutions = async () => {
       setLoading(true);
@@ -25,6 +24,7 @@ const Hotels = () => {
         });
        
         console.log(res.data); 
+    
         setInstitutions(res.data?.institutions || []);
       } catch (err) {
         console.error("Error fetching institutions", err);

@@ -26,6 +26,7 @@ import Reviews from './components/Reviews/Reviews';
 
 
 
+
 const App = () => {
   return (
     <BrowserRouter>
@@ -36,7 +37,7 @@ const App = () => {
         <Route path="navbar" element={<Navbar />} />
         <Route path="footer" element={<Footer />} />
         <Route path="bank/:id" element={<Bank />} />
-        <Route path="hotels/:id" element={<Hotels />} />
+        <Route path="/hotels/:id" element={<Hotels />} />
         <Route path="restaurent/:id" element={<Restaurent />} />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />

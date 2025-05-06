@@ -1,14 +1,44 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaPen } from "react-icons/fa";
 import { User, MessageSquare } from "lucide-react";
-import drink from '../../assets/img/drink.png';
-import side from '../../assets/img/side.png';
-import outside from '../../assets/img/outside.png';
-import restau from '../../assets/img/restau.png';
+import axios from 'axios';
 
 const Review = () => {
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch user reviews
+  useEffect(() => {
+    const fetchReviews = async () => {
+      setLoading(true);
+      try {
+        const token = localStorage.getItem("token");
+        const res = await axios.get("http://192.168.1.238:3000/api/review/recent", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        
+        console.log("User reviews:", res.data);
+        setReviews(res.data?.reviews || []);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching reviews", err);
+        setError("Failed to load reviews");
+        setLoading(false);
+      }
+    };
+  
+    fetchReviews();
+  }, []);
+
+  
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString('en-US', options);
+  };
+
   return (
     <div className="max-w-7xl mx-auto p-6">
       <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-6">
@@ -40,10 +70,7 @@ const Review = () => {
     </svg>
     Add Photo
   </button>
-
-
 </div>
-
         </div>
 
         {/* Menu Items */}
@@ -77,90 +104,83 @@ const Review = () => {
             </div>
           </div>
 
-          {/* Review Cards */}
-          <div className="space-y-6">
-            {/* First Review Card */}
-            <div className="bg-blue-50 p-6 rounded-lg">
-              <div className="flex items-start gap-4">
-                {/* Business Logo */}
-                <div className="w-12 h-12 bg-red-500 rounded-lg flex items-center justify-center text-white">
-                  JH
-                </div>
-                
-                <div className="flex-1">
-                  {/* Business Info */}
-                  <h3 className="font-bold">Java House Kigali Heights</h3>
-                  <p className="text-gray-600 text-sm">Kigali Heights, KG 7 Ave, Kigali, Rwanda</p>
-                  
-                  {/* Rating */}
-                  <div className="flex items-center gap-2 my-2">
-                    <div className="flex">
-                      {'★★★★☆'.split('').map((star, i) => (
-                        <span key={i} className="text-yellow-400">{star}</span>
-                      ))}
-                    </div>
-                    <span className="text-gray-600 text-sm">April 20th, 2025</span>
-                  </div>
-                  
-                  {/* Review Text */}
-                  <p className="text-gray-700 mb-4">
-                    Great spot for brunch or casual meetings. Their cappuccino hits just right and the breakfast platter is a chef's kiss. Service can be a little slow during peak hours, but the view of the Convention Centre makes up for it. Bonus: comfy seats and good Wi-Fi.
-                  </p>
-                  
-                  {/* Review Images */}
-                  <div className="flex ">
-                    <div className="w-64 h-64 rounded-lg">
-                        <img src={drink}></img>
-                    </div>
-                    <div className="w-64 h-64  rounded-lg ">
-                        <img src={side}></img>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          {/* Loading state */}
+          {loading && (
+            <div className="text-center py-8">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto"></div>
+              <p className="mt-4 text-gray-600">Loading reviews...</p>
             </div>
+          )}
 
-            {/* Second Review Card */}
-            <div className="bg-blue-50 p-6 rounded-lg">
-              <div className="flex items-start gap-4">
-                {/* Business Logo */}
-                <div className="w-12 h-12 bg-red-800 rounded-lg flex items-center justify-center text-white">
-                  KM
-                </div>
-                
-                <div className="flex-1">
-                  {/* Business Info */}
-                  <h3 className="font-bold">Kigali Marriott Hotel</h3>
-                  <p className="text-gray-600 text-sm">KN 3 Ave, Kigali, Rwanda</p>
-                  
-                  {/* Rating */}
-                  <div className="flex items-center gap-2 my-2">
-                    <div className="flex">
-                      {'★★★★★'.split('').map((star, i) => (
-                        <span key={i} className="text-yellow-400">{star}</span>
-                      ))}
-                    </div>
-                    <span className="text-gray-600 text-sm">April 12th, 2025</span>
-                  </div>
-                  
-                  {/* Review Text */}
-                  <p className="text-gray-700 mb-4">
-                    Luxury meets Rwandan hospitality. The rooms are spotless, the pool is crystal-clear, and the breakfast buffet? Dangerous. You'll go in for one plate and come out with three. Staff are super attentive—you'll feel like royalty even if you just came for the Wi-Fi and iced tea.
-                  </p>
-                  
-                  {/* Review Images */}
-                  <div className="flex ">
-                    <div className="w-64 h-64 rounded-lg">
-                        <img src={outside}></img>
-                    </div>
-                    <div className="w-64 h-64  rounded-lg ">
-                        <img src={restau}></img>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          {/* Error state */}
+          {error && (
+            <div className="bg-red-50 p-4 rounded-lg text-red-700">
+              <p>{error}</p>
+              <button 
+                className="mt-2 text-blue-700 underline"
+                onClick={() => window.location.reload()}
+              >
+                Try again
+              </button>
             </div>
-          </div>
+          )}
+          
+          {/* Review Cards */}
+          {!loading && !error && reviews.length > 0 && (
+            <div className="space-y-6">
+              {reviews.map((review, index) => (
+                <div key={review.id || index} className="bg-blue-50 p-6 rounded-lg">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-red-500 rounded-lg flex items-center justify-center text-white">
+                      {review.institution_name ? review.institution_name.substring(0, 2).toUpperCase() : 'JH'}
+                    </div>
+                    
+                    <div className="flex-1">
+                      <h3 className="font-bold">{review.institution_name || 'Java House Kigali Heights'}</h3>
+                      <p className="text-gray-600 text-sm">{review.institution_location || 'Kigali Heights, KG 7 Ave, Kigali, Rwanda'}</p>
+                      
+                      {/* Rating */}
+                      <div className="flex items-center gap-2 my-2">
+                        <div className="flex">
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <span key={i} className="text-yellow-400">
+                              {i < (review.rating || 4) ? '★' : '☆'}
+                            </span>
+                          ))}
+                        </div>
+                        <span className="text-gray-600 text-sm">
+                          {review.created_at ? formatDate(review.created_at) : 'April 20th, 2025'}
+                        </span>
+                      </div>
+                      
+                      {/* Review Text */}
+                      <p className="text-gray-700 mb-4">
+                        {review.review || 'Great spot for brunch or casual meetings. Their cappuccino hits just right and the breakfast platter is a chef\'s kiss.'}
+                      </p>
+                      
+                      {/* Review Images */}
+                      <div className="flex gap-2">
+                        {review.images && review.images.length > 0 ? (
+                          review.images.slice(0, 2).map((image, imgIndex) => (
+                            <div key={imgIndex} className="w-48 h-34 rounded-lg overflow-hidden">
+                              <img 
+                                src={`http://192.168.1.238:3000/${image.image_url}`} 
+                                alt={`Review image ${imgIndex + 1}`} 
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          ))
+                        ) : (
+                         
+                          <></>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -12,10 +12,6 @@ import Layout from './components/Layout/Layout'
 import Next from './components/Signup/Next';
 import Writereview from './components/Writereview/Writereview';
 import Detail from './components/Imageslider/Detail';
-import Mariot from './components/Hotels/Mariot';
-import Serena from './components/Hotels/Serena';
-import Radison from './components/Hotels/Radison';
-import GrandLegacy from './components/Hotels/GrandLegacy';
 import ScrollToTop from './components/ScrolllToTop/ScrollToTop';
 import Java from './components/Restaurent/Java';
 import EditProfile from './components/Setting/EditProfile';
@@ -24,9 +20,6 @@ import Postreview from './components/Postreview/Postreview';
 import Review from './components/Review/Review';
 import Reviews from './components/Reviews/Reviews';
 import HotelDetail from './components/Hotels/HotelDetail';
-
-
-
 
 
 const App = () => {
@@ -47,10 +40,6 @@ const App = () => {
         <Route path="next" element={<Next />} />
         <Route path="review" element={<Writereview />} />
         <Route path="next" element={<Detail />} />
-        <Route path="mariot" element={<Mariot />} />
-        <Route path="serena" element={<Serena />} />
-        <Route path="radison" element={<Radison />} />
-        <Route path="legacy" element={<GrandLegacy />} />
         <Route path="java" element={<Java />} />
         <Route path="overview" element={<Overview />} />
         <Route path="profile" element={<EditProfile />} />

@@ -25,11 +25,11 @@ const HotelDetail = () => {
       setLoading(true);
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://192.168.1.238:3000/api/institutions/5/view", {
+        const res = await axios.get(`http://192.168.1.238:3000/api/institutions/${id}/view`, {
           headers: { Authorization: `Bearer ${token}` },
         });
        
-        console.log(res.data); 
+        console.log(res.data);
     
         setInstitution(res.data?.institution);
       } catch (err) {
@@ -71,7 +71,6 @@ const HotelDetail = () => {
   
   const avgRating = calculateAvgRating();
   
-  // Get the first image or use placeholder
   let mainImageUrl = "/api/placeholder/800/400";
   if (institution.images && institution.images.length > 0) {
     mainImageUrl = `${API_BASE_URL}${institution.images[0].image_url}`;
@@ -97,7 +96,7 @@ const HotelDetail = () => {
           <img 
             src={mainImageUrl}
             alt="Hotel Exterior" 
-            className="w-full h-auto object-cover rounded-lg sm:h-full"
+            className="w-full h-64 object-cover rounded-lg sm:h-full"
             onError={(e) => {
               e.target.src = "/api/placeholder/800/400";
             }}
@@ -178,21 +177,19 @@ const HotelDetail = () => {
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8 md:mt-16">
         {/* Left Column - Location */}
-        <div>
-          <h3 className="font-medium mb-2">Location</h3>
-          <div className="w-full h-64 bg-gray-200 rounded-lg border">
-            <div className="w-full h-full flex items-center justify-center text-gray-500">
-              <MapPin size={48} />
-              <p className="ml-2">{institution.address || "Address not available"}</p>
-            </div>
-          </div>
-          {institution.phone_number && (
-            <div className="mt-4 flex items-center">
-              <Phone className="w-5 h-5 mr-2 text-gray-500" />
-              <p className="text-gray-700">{institution.phone_number}</p>
-            </div>
-          )}
-        </div>
+        <div className="w-full flex justify-center p-4">
+  <iframe
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3987.497505084857!2d30.0926796!3d-1.9543503000000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19dca6f4630e5507%3A0x75a0f9adcfddc9e4!2sRadisson%20Blu%20Hotel%20%26%20Convention%20Centre%2C%20Kigali!5e0!3m2!1sen!2srw!4v1746617108452!5m2!1sen!2srw"
+    width="600"
+    height="450"
+    style={{ border: 0 }}
+    allowFullScreen=""
+    loading="lazy"
+    referrerPolicy="no-referrer-when-downgrade"
+  ></iframe>
+</div>
+
+    
 
         {/* Middle Column - Opening Hours */}
         <div>
@@ -283,33 +280,7 @@ const HotelDetail = () => {
         <p className="text-gray-700">{institution.description || "No description available."}</p>
       </div>
       
-      {/* Reviews Section */}
-      <div className="mt-8">
-        <h3 className="font-medium mb-4">Guest Reviews</h3>
-        {institution.reviews && institution.reviews.length > 0 ? (
-          <div className="space-y-4">
-            {institution.reviews.map((review, index) => (
-              <div key={index} className="border-b border-gray-200 pb-4">
-                <div className="flex items-center mb-2">
-                  <div className="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
-                  <div>
-                    <p className="font-medium">User #{review.user_id}</p>
-                    <div className="flex items-center">
-                      {renderStars(review.rating || 0)}
-                      <span className="text-sm text-gray-500 ml-2">
-                        {new Date(review.created_at).toLocaleDateString()}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <p className="text-gray-700">{review.review}</p>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-gray-700">No reviews yet. Be the first to leave a review!</p>
-        )}
-      </div>
+ 
       
       {/* Services Popup */}
       {showServicesPopup && (

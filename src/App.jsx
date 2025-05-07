@@ -23,6 +23,8 @@ import Overview from './components/Setting/Overview';
 import Postreview from './components/Postreview/Postreview';
 import Review from './components/Review/Review';
 import Reviews from './components/Reviews/Reviews';
+import HotelDetail from './components/Hotels/HotelDetail';
+
 
 
 
@@ -37,7 +39,8 @@ const App = () => {
         <Route path="navbar" element={<Navbar />} />
         <Route path="footer" element={<Footer />} />
         <Route path="bank/:id" element={<Bank />} />
-        <Route path="/hotels/:id" element={<Hotels />} />
+        <Route path="/hotels" element={<Hotels />} />
+        <Route path="/hotels/:id" element={<HotelDetail />} />
         <Route path="restaurent/:id" element={<Restaurent />} />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />

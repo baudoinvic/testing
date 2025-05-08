@@ -189,27 +189,27 @@ const Bank = () => {
   const API_BASE_URL = "http://192.168.1.238:3000/";
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className='container mx-auto px-4 py-8'>
       {/* Filter options */}
-      <div className="flex flex-wrap gap-2 mb-6">
-        <button 
-          className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-full text-sm"
+      <div className='flex flex-wrap gap-2 mb-6'>
+        <button
+          className='flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-full text-sm'
           onClick={() => setShowFilterPopup(true)}
         >
           <IoMdMenu />
-          <span className="font-medium">All</span>
+          <span className='font-medium'>All</span>
         </button>
-        <button className="flex items-center gap-2 px-4 py-2 bg-white border rounded-full text-sm">
-          <span className="font-medium">Price</span>
+        <button className='flex items-center gap-2 px-4 py-2 bg-white border rounded-full text-sm'>
+          <span className='font-medium'>Price</span>
         </button>
-        <button className="flex items-center gap-2 px-4 py-2 bg-white border rounded-full text-sm">
-          <span className="font-medium">Accepts credit cards</span>
+        <button className='flex items-center gap-2 px-4 py-2 bg-white border rounded-full text-sm'>
+          <span className='font-medium'>Accepts credit cards</span>
         </button>
-        <button className="flex items-center gap-2 px-4 py-2 bg-white border rounded-full text-sm">
-          <span className="font-medium">Good for kids</span>
+        <button className='flex items-center gap-2 px-4 py-2 bg-white border rounded-full text-sm'>
+          <span className='font-medium'>Good for kids</span>
         </button>
-        <button className="flex items-center gap-2 px-4 py-2 bg-white border rounded-full text-sm">
-          <span className="font-medium">Free Wi-Fi</span>
+        <button className='flex items-center gap-2 px-4 py-2 bg-white border rounded-full text-sm'>
+          <span className='font-medium'>Free Wi-Fi</span>
         </button>
       </div>
 
@@ -217,91 +217,108 @@ const Bank = () => {
       {showFilterPopup && <FilterPopup />}
 
       {/* Header */}
-      <div className="flex justify-between items-center mb-6">
+      <div className='flex justify-between items-center mb-6'>
         <div>
-          <p className="text-sm text-gray-600">Banks</p>
-          <h1 className="text-2xl font-bold">Best Banks in the Kigali City Area</h1>
+          <p className='text-sm text-gray-600'>Banks</p>
+          <h1 className='text-2xl font-bold'>
+            Best Banks in the Kigali City Area
+          </h1>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="text-sm">sort:</span>
-          <button className="flex items-center gap-1 font-medium">
+        <div className='flex items-center gap-2'>
+          <span className='text-sm'>sort:</span>
+          <button className='flex items-center gap-1 font-medium'>
             Recommended
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+            <svg
+              className='w-4 h-4'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+              xmlns='http://www.w3.org/2000/svg'
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth='2'
+                d='M19 9l-7 7-7-7'
+              ></path>
             </svg>
           </button>
         </div>
       </div>
-      {loading && <div className="text-center py-10">Loading banks...</div>}
-      {error && <div className="text-center py-10 text-red-600">{error}</div>}
-      
-      {/* Bank listings */}
-    
-        <div className="space-y-8 cursor-pointer">
-             {institutions?.map((institution) => {
-           const isOpen = isInstitutionOpen(institution.hours || []);
-           let imageUrl = "/api/placeholder/400/320"; 
-           
-           if (institution.image) {
-             imageUrl = `${API_BASE_URL}${institution.image.image_url}`;
-           }
-           
-           return (
-          
-            <Link
-  to={`/banks/${institution.id}`}
-  key={institution.id || institution.name}
-  className="block mb-6 overflow-hidden border rounded-lg transition-transform transform hover:scale-102 hover:shadow-lg"
->
-  <div className="flex flex-col md:flex-row p-0">
-    <div className="md:w-64 h-48 md:h-auto flex-shrink-0">
-      <img
-        src={imageUrl}
-        alt={`${institution.name}`}
-        className="w-full h-full object-cover"
-        onError={(e) => {
-          e.target.src = "/api/placeholder/400/320";
-          console.log("Image failed to load:", imageUrl);
-        }}
-      />
-    </div>
-    <div className="p-6 flex-grow">
-      <h2 className="text-xl text-blue-800 mb-2">{institution.name}</h2>
-      <p className="font-medium mb-2 text-green-600">
-        {isOpen ? "Open now" : "Closed now"}
-      </p>
-      <div className="flex items-center mb-2">
-        {renderStars(institution.avgRating)}
-        <span className="ml-2 text-gray-700">{institution.avgRating || "No rating"}</span>
-        <span className="ml-2 text-gray-700">({institution.totalReview || 0} Reviews)</span>
-      </div>
-      <p className="text-gray-700 mb-4">
-        {institution.description?.length > 200 
-          ? `${institution.description.substring(0, 200)}... ` 
-          : institution.description}
-        {institution.description?.length > 200 && (
-          <span className="text-blue-600">more</span>
-        )}
-      </p>
-      <p className="text-gray-600 flex items-center">
-        <MapPin className="w-4 h-4 mr-1" /> {institution.location}
-      </p>
-    </div>
-  </div>
-  </Link>
+      {loading && <div className='text-center py-10'>Loading banks...</div>}
+      {error && <div className='text-center py-10 text-red-600'>{error}</div>}
 
-  );
-  })}
-</div>
+      {/* Bank listings */}
+
+      <div className='space-y-8 cursor-pointer'>
+        {institutions?.map((institution) => {
+          const isOpen = isInstitutionOpen(institution.hours || []);
+          let imageUrl = "/api/placeholder/400/320";
+
+          if (institution.image) {
+            imageUrl = `${API_BASE_URL}${institution.image.image_url}`;
+          }
+
+          return (
+            <Link
+              to={`/banks/${institution.id}`}
+              key={institution.id || institution.name}
+              className='block mb-6 overflow-hidden border rounded-lg transition-transform transform hover:scale-102 hover:shadow-lg'
+            >
+              <div className='flex flex-col md:flex-row p-0'>
+                <div className='md:w-64 h-48 md:h-auto flex-shrink-0'>
+                  <img
+                    src={imageUrl}
+                    alt={`${institution.name}`}
+                    className='w-full h-full object-cover'
+                    onError={(e) => {
+                      e.target.src = "/api/placeholder/400/320";
+                      console.log("Image failed to load:", imageUrl);
+                    }}
+                  />
+                </div>
+                <div className='p-6 flex-grow'>
+                  <h2 className='text-xl text-blue-800 mb-2'>
+                    {institution.name}
+                  </h2>
+                  <p className='font-medium mb-2 text-green-600'>
+                    {isOpen ? "Open now" : "Closed now"}
+                  </p>
+                  <div className='flex items-center mb-2'>
+                    {renderStars(institution.avgRating)}
+                    <span className='ml-2 text-gray-700'>
+                      {institution.avgRating || "No rating"}
+                    </span>
+                    <span className='ml-2 text-gray-700'>
+                      ({institution.totalReview || 0} Reviews)
+                    </span>
+                  </div>
+                  <p className='text-gray-700 mb-4'>
+                    {institution.description?.length > 200
+                      ? `${institution.description.substring(0, 200)}... `
+                      : institution.description}
+                    {institution.description?.length > 200 && (
+                      <span className='text-blue-600'>more</span>
+                    )}
+                  </p>
+                  <p className='text-gray-600 flex items-center'>
+                    <MapPin className='w-4 h-4 mr-1' /> {institution.location}
+                  </p>
+                </div>
+              </div>
+            </Link>
+          );
+        })}
+      </div>
 
       {/* Empty state */}
       {!loading && institutions.length === 0 && (
-        <div className="text-center py-10">No banks found</div>
+        <div className='text-center py-10'>No banks found</div>
       )}
 
       {/* Pagination */}
       {institutions.length > 0 && (
-        <div className="mt-10 mb-6">
+        <div className='mt-10 mb-6'>
           <Pagination
             currentPage={currentPage}
             totalPages={3}

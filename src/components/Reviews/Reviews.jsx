@@ -1,4 +1,4 @@
-
+   
 
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -13,7 +13,7 @@ const Reviews = () => {
     const fetchReviews = async () => {
       setLoading(true);
       const token = localStorage.getItem("token");
-      
+
       try {
         const response = await axios({
           url: "http://192.168.1.238:3000/api/review/recent",
@@ -22,11 +22,15 @@ const Reviews = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        
+
         console.log("Reviews API response:", response.data);
-        
+
         // Check if we have valid data
-        if (response.data && response.data.reviews && response.data.reviews.length > 0) {
+        if (
+          response.data &&
+          response.data.reviews &&
+          response.data.reviews.length > 0
+        ) {
           setDynamicReviews(response.data.reviews);
           setUsingFallback(false);
         } else {
@@ -46,65 +50,69 @@ const Reviews = () => {
 
   const renderReview = (review) => {
     return (
-      <div key={review.id} className="bg-blue-50 rounded-lg p-6 shadow-sm mb-4">
-        <div className="flex items-center mb-4">
-          <img 
-            src={`https://ui-avatars.com/api/?name=${review.user.first_name}${review.user.last_name}&background=random`} 
-            alt={`${review.user.first_name} ${review.user.last_name}`} 
-            className="w-10 h-10 rounded-full mr-3" 
+      <div key={review.id} className='bg-blue-50 rounded-lg p-6 shadow-sm mb-4'>
+        <div className='flex items-center mb-4'>
+          <img
+            src={`https://ui-avatars.com/api/?name=${review.user.first_name}${review.user.last_name}&background=random`}
+            alt={`${review.user.first_name} ${review.user.last_name}`}
+            className='w-10 h-10 rounded-full mr-3'
           />
-          <span className="font-medium">{review.user.first_name} {review.user.last_name.charAt(0)}</span>
-          <div className="ml-auto flex">
+          <span className='font-medium'>
+            {review.user.first_name} {review.user.last_name.charAt(0)}
+          </span>
+          <div className='ml-auto flex'>
             {[...Array(5)].map((_, i) => (
-              <svg 
-                key={i} 
-                className={`w-5 h-5 ${i < review.rating ? "text-black" : "text-gray-300"}`} 
-                fill="currentColor" 
-                viewBox="0 0 20 20"
+              <svg
+                key={i}
+                className={`w-5 h-5 ${
+                  i < review.rating ? "text-black" : "text-gray-300"
+                }`}
+                fill='currentColor'
+                viewBox='0 0 20 20'
               >
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                <path d='M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z' />
               </svg>
             ))}
           </div>
         </div>
-        
+
         {/* Review Image */}
         {review.images && review.images.length > 0 && (
-          <div className="mb-4">
-            <img 
+          <div className='mb-4'>
+            <img
               src={`http://192.168.1.238:3000/${review.images[0].image_url}`}
-              alt="Review" 
-              className="w-full h-48 object-cover rounded"
+              alt='Review'
+              className='w-full h-48 object-cover rounded'
             />
           </div>
         )}
-        
-        <p className="text-gray-800">{review.review}</p>
+
+        <p className='text-gray-800'>{review.review}</p>
       </div>
     );
   };
 
   if (loading) {
-    return <div className="text-center py-8">Loading reviews...</div>;
+    return <div className='text-center py-8'>Loading reviews...</div>;
   }
 
   return (
-    <div className="mb-16 mt-24">
-      <h2 className="text-2xl font-bold text-center mb-8">Recent Reviews</h2>
-      
+    <div className='mb-16 mt-24'>
+      <h2 className='text-2xl font-bold text-center mb-8'>Recent Reviews</h2>
+
       {/* Display the reviews */}
-      <div className="container mx-auto px-4">
+      <div className='container mx-auto px-4'>
         {dynamicReviews.length > 0 ? (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {dynamicReviews.map(review => renderReview(review))}
+          <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
+            {dynamicReviews.map((review) => renderReview(review))}
           </div>
         ) : (
-          <div className="text-center py-8">No reviews available</div>
+          <div className='text-center py-8'>No reviews available</div>
         )}
       </div>
-      
-      <div className="text-center mt-8">
-        <button className="text-blue-600 font-medium">More Reviews</button>
+
+      <div className='text-center mt-8'>
+        <button className='text-blue-600 font-medium'>More Reviews</button>
       </div>
     </div>
   );

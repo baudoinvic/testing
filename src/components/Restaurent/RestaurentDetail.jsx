@@ -1,11 +1,22 @@
-
-import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { Star, Wifi, Car, Bed, UtensilsCrossed, Waves, X, MapPin, Phone, ArrowLeft } from 'lucide-react';
-import axios from 'axios';
+   
+import React, { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import {
+  Star,
+  Wifi,
+  Car,
+  Bed,
+  UtensilsCrossed,
+  Waves,
+  X,
+  MapPin,
+  Phone,
+  ArrowLeft,
+} from "lucide-react";
+import axios from "axios";
 
 const RestaurentDetail = () => {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const [institution, setInstitution] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -26,12 +37,15 @@ const RestaurentDetail = () => {
       setLoading(true);
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get(`http://192.168.1.238:3000/api/institutions/${id}/view`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-       
+        const res = await axios.get(
+          `http://192.168.1.238:3000/api/institutions/${id}/view`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
         console.log(res.data);
-        
+
         // Parse button data
         if (res.data?.institution?.button_one) {
           try {
@@ -40,7 +54,7 @@ const RestaurentDetail = () => {
             console.error("Error parsing button_one", e);
           }
         }
-        
+
         if (res.data?.institution?.button_two) {
           try {
             setButtonTwo(JSON.parse(res.data.institution.button_two));
@@ -48,7 +62,7 @@ const RestaurentDetail = () => {
             console.error("Error parsing button_two", e);
           }
         }
-    
+
         setInstitution(res.data?.institution);
       } catch (err) {
         console.error("Error fetching institutions", err);
@@ -57,7 +71,7 @@ const RestaurentDetail = () => {
         setLoading(false);
       }
     };
-  
+
     fetchInstitutions();
   }, [id]);
 
@@ -65,52 +79,74 @@ const RestaurentDetail = () => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
       if (i <= Math.floor(rating)) {
-        stars.push(<Star key={i} className="text-blue-800 fill-blue-800" size={20} />);
+        stars.push(
+          <Star key={i} className='text-blue-800 fill-blue-800' size={20} />
+        );
       } else {
-        stars.push(<Star key={i} className="text-gray-300" size={20} />);
+        stars.push(<Star key={i} className='text-gray-300' size={20} />);
       }
     }
     return stars;
   };
-  
+
   // Base URL for image paths
   const API_BASE_URL = "http://192.168.1.238:3000/";
 
-  if (loading) return <div className="w-full mx-auto px-4 sm:px-6 md:px-12 p-4 mb-8 text-center">Loading restaurent details...</div>;
-  if (error) return <div className="w-full mx-auto px-4 sm:px-6 md:px-12 p-4 mb-8 text-center text-red-500">{error}</div>;
-  if (!institution) return <div className="w-full mx-auto px-4 sm:px-6 md:px-12 p-4 mb-8 text-center">Restaurent not found</div>;
+  if (loading)
+    return (
+      <div className='w-full mx-auto px-4 sm:px-6 md:px-12 p-4 mb-8 text-center'>
+        Loading restaurent details...
+      </div>
+    );
+  if (error)
+    return (
+      <div className='w-full mx-auto px-4 sm:px-6 md:px-12 p-4 mb-8 text-center text-red-500'>
+        {error}
+      </div>
+    );
+  if (!institution)
+    return (
+      <div className='w-full mx-auto px-4 sm:px-6 md:px-12 p-4 mb-8 text-center'>
+        Restaurent not found
+      </div>
+    );
 
   // Calculate average rating from reviews
   const calculateAvgRating = () => {
     if (!institution.reviews || institution.reviews.length === 0) return 0;
-    const sum = institution.reviews.reduce((acc, review) => acc + review.rating, 0);
+    const sum = institution.reviews.reduce(
+      (acc, review) => acc + review.rating,
+      0
+    );
     return sum / institution.reviews.length;
   };
-  
+
   const avgRating = calculateAvgRating();
-  
+
   let mainImageUrl = "/api/placeholder/800/400";
   if (institution.images && institution.images.length > 0) {
     mainImageUrl = `${API_BASE_URL}${institution.images[0].image_url}`;
   }
 
   // Get other images for gallery
-  const galleryImages = institution.images && institution.images.length > 1 ? 
-    institution.images.slice(1, 4) : [];
-    
+  const galleryImages =
+    institution.images && institution.images.length > 1
+      ? institution.images.slice(1, 4)
+      : [];
+
   // Parse working hours from the API response
-  const workingHours = institution.working_hours ? 
-    JSON.parse(institution.working_hours || "{}") : 
-    {
-      Monday: "09:00 AM - 12:00 AM",
-      Tuesday: "08:00 AM - 02:00 AM",
-      Wednesday: "09:00 AM - 12:30 AM",
-      Thursday: "10:00 AM - 12:00 AM",
-      Friday: "09:00 AM - 11:30 PM",
-      Saturday: "10:00 AM - 03:00 AM",
-      Sunday: "11:00 AM - 04:00 AM"
-    };
-    
+  const workingHours = institution.working_hours
+    ? JSON.parse(institution.working_hours || "{}")
+    : {
+        Monday: "09:00 AM - 12:00 AM",
+        Tuesday: "08:00 AM - 02:00 AM",
+        Wednesday: "09:00 AM - 12:30 AM",
+        Thursday: "10:00 AM - 12:00 AM",
+        Friday: "09:00 AM - 11:30 PM",
+        Saturday: "10:00 AM - 03:00 AM",
+        Sunday: "11:00 AM - 04:00 AM",
+      };
+
   // Get latitude and longitude
   const latitude = institution.latitude || "-1.95465";
   const longitude = institution.longitude || "30.092757";

@@ -14,7 +14,7 @@ const Overview = () => {
     gender: '',
     age_group: '',
     address: '',
-    activeSince: ''
+    added_at: ''
   });
   
   const [profileImage, setProfileImage] = useState(null);
@@ -47,7 +47,7 @@ const Overview = () => {
           gender: data.user.gender || '',
           age_group: data.user.age_group || '',
           address: data.user.address || '',
-          activeSince: new Date(data.user.created_at).toLocaleDateString() || ''
+          added_at: new Date(data.user.created_at).toLocaleDateString() || ''
         });
         
         // Save fetched data to localStorage
@@ -186,7 +186,7 @@ const Overview = () => {
                 type="text"
                 placeholder="Active since"
                 className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                value={userData.activeSince}
+                value={userData.added_at}
                 readOnly
               />
             </div>

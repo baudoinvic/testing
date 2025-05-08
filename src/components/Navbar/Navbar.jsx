@@ -4,8 +4,10 @@ import { Search, ChevronDown, User, X } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import logo from '../../assets/img/logo.jpeg';
+import { useParams } from 'react-router-dom';
 
 const Navbar = () => {
+  const {id} = useParams ();
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -45,8 +47,7 @@ const Navbar = () => {
   };
 
   const handleInstitutionClick = (institution) => {
-    // Navigate to institution detail page or handle as needed
-    navigate(`/institution/${institution._id}`);
+    navigate(`/hotels/${institution.id}`);
     setShowResults(false);
     setSearchQuery('');
   };

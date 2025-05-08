@@ -1,10 +1,23 @@
+// import React from 'react'
+
+// const RestaurentDetail = () => {
+//   return (
+//     <div>
+      
+//     </div>
+//   )
+// }
+
+// export default RestaurentDetail
+
+
 
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Star, Wifi, Car, Bed, UtensilsCrossed, Waves, X, MapPin, Phone, ArrowLeft } from 'lucide-react';
 import axios from 'axios';
 
-const HotelDetail = () => {
+const RestaurentDetail = () => {
   const { id } = useParams(); 
   const [institution, setInstitution] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -76,9 +89,9 @@ const HotelDetail = () => {
   // Base URL for image paths
   const API_BASE_URL = "http://192.168.1.238:3000/";
 
-  if (loading) return <div className="w-full mx-auto px-4 sm:px-6 md:px-12 p-4 mb-8 text-center">Loading hotel details...</div>;
+  if (loading) return <div className="w-full mx-auto px-4 sm:px-6 md:px-12 p-4 mb-8 text-center">Loading restaurent details...</div>;
   if (error) return <div className="w-full mx-auto px-4 sm:px-6 md:px-12 p-4 mb-8 text-center text-red-500">{error}</div>;
-  if (!institution) return <div className="w-full mx-auto px-4 sm:px-6 md:px-12 p-4 mb-8 text-center">Hotel not found</div>;
+  if (!institution) return <div className="w-full mx-auto px-4 sm:px-6 md:px-12 p-4 mb-8 text-center">Restaurent not found</div>;
 
   // Calculate average rating from reviews
   const calculateAvgRating = () => {
@@ -117,8 +130,8 @@ const HotelDetail = () => {
 
   return (
     <div className="w-full mx-auto px-4 sm:px-6 md:px-12 p-4 mb-8">
-      <Link to="/hotels" className="flex items-center text-blue-600 mb-4 hover:underline">
-        <ArrowLeft className="w-4 h-4 mr-1" /> Back to Hotels
+      <Link to="/restaurents" className="flex items-center text-blue-600 mb-4 hover:underline">
+        <ArrowLeft className="w-4 h-4 mr-1" /> restaurents
       </Link>
 
       <h1 className="text-xl sm:text-2xl font-bold text-blue-800 pb-2 mb-4">{institution.name}</h1>
@@ -338,4 +351,5 @@ const HotelDetail = () => {
   );
 };
 
-export default HotelDetail;
+export default RestaurentDetail;
+

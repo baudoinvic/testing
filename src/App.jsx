@@ -21,6 +21,7 @@ import Review from './components/Review/Review';
 import Reviews from './components/Reviews/Reviews';
 import HotelDetail from './components/Hotels/HotelDetail';
 import BankDetail from './components/Banks/BankDetail';
+import RestaurentDetail from './components/Restaurent/RestaurentDetail';
 
 
 const App = () => {
@@ -36,7 +37,8 @@ const App = () => {
         <Route path="/banks/:id" element={<BankDetail />} />
         <Route path="/hotels" element={<Hotels />} />
         <Route path="/hotels/:id" element={<HotelDetail />} />
-        <Route path="restaurent/:id" element={<Restaurent />} />
+        <Route path="/restaurents" element={<Restaurent />} />
+        <Route path="restaurents/:id" element={<RestaurentDetail />} />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
         <Route path="next" element={<Next />} />

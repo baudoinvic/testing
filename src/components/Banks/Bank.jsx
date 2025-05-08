@@ -288,10 +288,10 @@ const Bank = () => {
       </p>
     </div>
   </div>
-</Link>
+  </Link>
 
-           );
-         })}
+  );
+  })}
 </div>
 
       {/* Empty state */}

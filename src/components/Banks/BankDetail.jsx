@@ -76,9 +76,9 @@ const BankDetail = () => {
   // Base URL for image paths
   const API_BASE_URL = "http://192.168.1.238:3000/";
 
-  if (loading) return <div className="w-full mx-auto px-4 sm:px-6 md:px-12 p-4 mb-8 text-center">Loading hotel details...</div>;
+  if (loading) return <div className="w-full mx-auto px-4 sm:px-6 md:px-12 p-4 mb-8 text-center">Loading bank details...</div>;
   if (error) return <div className="w-full mx-auto px-4 sm:px-6 md:px-12 p-4 mb-8 text-center text-red-500">{error}</div>;
-  if (!institution) return <div className="w-full mx-auto px-4 sm:px-6 md:px-12 p-4 mb-8 text-center">Hotel not found</div>;
+  if (!institution) return <div className="w-full mx-auto px-4 sm:px-6 md:px-12 p-4 mb-8 text-center">Bank not found</div>;
 
   // Calculate average rating from reviews
   const calculateAvgRating = () => {

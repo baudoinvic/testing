@@ -4,12 +4,6 @@ import slider1 from '../../assets/img/slider1.png';
 import slider2 from '../../assets/img/slider2.png';
 import slider3 from '../../assets/img/slider3.png';
 import slider4 from '../../assets/img/slider4.png';
-import ecobank from '../../assets/img/ecobank.png';
-import coffee from '../../assets/img/coffee.png';
-import gym from '../../assets/img/gym.png';
-import avatar1 from '../../assets/img/avatar1.png';
-import avatar2 from '../../assets/img/avatar2.png';
-import avatar3 from '../../assets/img/avatar3.png';
 import { Utensils, Building2, Hotel, Building, Home as HomeIcon, MoreHorizontal } from 'lucide-react';
 import scan from '../../assets/img/scan.png';
 import { Link, useNavigate } from "react-router-dom";
@@ -41,14 +35,14 @@ const Home = () => {
   const getCategoryPath = (categoryName) => {
     const pathMap = {
       "Food/Drinks": "/restaurent",
-      "Financial Services": "/bank",
+      "Financial Services": "/banks",
       "Hotel/Travels": "/hotels",
       "Health/Medical": "/hospital",
       "Home/Services": "/home-services",
       "More/more": "/more",
     };
     
-    return pathMap[categoryName] || "/bank";
+    return pathMap[categoryName] || "/banks";
   };
 
   const fetchCategories = () => {
@@ -108,7 +102,7 @@ const Home = () => {
   // Handle category click to navigate to the correct page with ID
   const handleCategoryClick = (category) => {
     const path = getCategoryPath(category.name);
-    navigate(`${path}/${category.id}`);
+    navigate(path)
   };
 
   return (

@@ -1,10 +1,9 @@
 
-
-
 import React, { useState, useEffect } from 'react';
 import { Star, MapPin } from 'lucide-react';
 import { IoMdMenu } from "react-icons/io";
 import axios from "axios";
+import { Link } from 'react-router-dom';
 
 const Bank = () => {
   const [institutions, setInstitutions] = useState([]);
@@ -237,58 +236,63 @@ const Bank = () => {
       {error && <div className="text-center py-10 text-red-600">{error}</div>}
       
       {/* Bank listings */}
-      <div className="space-y-6">
-        {institutions?.map((institution) => {
-          const isOpen = isInstitutionOpen(institution.hours || []);
-          let imageUrl = "/api/placeholder/400/320"; // Default placeholder
+    
+        <div className="space-y-8 cursor-pointer">
+             {institutions?.map((institution) => {
+           const isOpen = isInstitutionOpen(institution.hours || []);
+           let imageUrl = "/api/placeholder/400/320"; 
+           
+           if (institution.image) {
+             imageUrl = `${API_BASE_URL}${institution.image.image_url}`;
+           }
+           
+           return (
           
-          if (institution.image) {
-            imageUrl = `${API_BASE_URL}${institution.image.image_url}`;
-          }
-          
-          return (
-            <div key={institution.id || institution.name} className="overflow-hidden border rounded-lg transition-transform transform hover:scale-102 hover:shadow-lg p-2">
-              <div className="flex flex-col md:flex-row p-0">
-                <div className="md:w-64 h-48 md:h-auto flex-shrink-0">
-                  <img
-                    src={imageUrl}
-                    alt={`${institution.name}`}
-                    className="w-full h-full object-cover rounded-md"
-                    onError={(e) => {
-                      e.target.src = "/api/placeholder/400/320"; // Fallback on error
-                      console.log("Image failed to load:", imageUrl);
-                    }}
-                  />
-                </div>
-                <div className="p-6 flex-grow">
-                  <h2 className="text-xl  text-blue-800 mb-2">{institution.name}</h2>
-                  <div className="flex items-center mb-2">
-                    <div className="flex mr-2">
-                      {renderStars(institution.avgRating)}
-                    </div>
-                    <span className="text-gray-700 mr-2">{institution.avgRating || "No rating"}</span>
-                    <span className="text-gray-700">({institution.totalReview || 0} reviews)</span>
-                  </div>
-                  <p className="font-medium mb-2 text-green-600">
-                    {isOpen ? "Open now" : "Closed now"}
-                  </p>
-                  <p className="text-gray-700 mb-4">
-                    {institution.description?.length > 200 
-                      ? `${institution.description.substring(0, 200)}... ` 
-                      : institution.description}
-                    {institution.description?.length > 200 && (
-                      <span className="text-blue-600">more</span>
-                    )}
-                  </p>
-                  <p className="text-gray-600 flex items-center">
-                    <MapPin className="w-4 h-4 mr-1" /> {institution.location}
-                  </p>
-                </div>
-              </div>
-            </div>
-          );
-        })}
+            <Link
+  to={`/banks/${institution.id}`}
+  key={institution.id || institution.name}
+  className="block mb-6 overflow-hidden border rounded-lg transition-transform transform hover:scale-102 hover:shadow-lg"
+>
+  <div className="flex flex-col md:flex-row p-0">
+    <div className="md:w-64 h-48 md:h-auto flex-shrink-0">
+      <img
+        src={imageUrl}
+        alt={`${institution.name}`}
+        className="w-full h-full object-cover"
+        onError={(e) => {
+          e.target.src = "/api/placeholder/400/320";
+          console.log("Image failed to load:", imageUrl);
+        }}
+      />
+    </div>
+    <div className="p-6 flex-grow">
+      <h2 className="text-xl text-blue-800 mb-2">{institution.name}</h2>
+      <p className="font-medium mb-2 text-green-600">
+        {isOpen ? "Open now" : "Closed now"}
+      </p>
+      <div className="flex items-center mb-2">
+        {renderStars(institution.avgRating)}
+        <span className="ml-2 text-gray-700">{institution.avgRating || "No rating"}</span>
+        <span className="ml-2 text-gray-700">({institution.totalReview || 0} Reviews)</span>
       </div>
+      <p className="text-gray-700 mb-4">
+        {institution.description?.length > 200 
+          ? `${institution.description.substring(0, 200)}... ` 
+          : institution.description}
+        {institution.description?.length > 200 && (
+          <span className="text-blue-600">more</span>
+        )}
+      </p>
+      <p className="text-gray-600 flex items-center">
+        <MapPin className="w-4 h-4 mr-1" /> {institution.location}
+      </p>
+    </div>
+  </div>
+</Link>
+
+           );
+         })}
+</div>
 
       {/* Empty state */}
       {!loading && institutions.length === 0 && (

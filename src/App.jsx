@@ -20,6 +20,7 @@ import Postreview from './components/Postreview/Postreview';
 import Review from './components/Review/Review';
 import Reviews from './components/Reviews/Reviews';
 import HotelDetail from './components/Hotels/HotelDetail';
+import BankDetail from './components/Banks/BankDetail';
 
 
 const App = () => {
@@ -31,7 +32,8 @@ const App = () => {
         <Route index element={<Home />} />
         <Route path="navbar" element={<Navbar />} />
         <Route path="footer" element={<Footer />} />
-        <Route path="bank/:id" element={<Bank />} />
+        <Route path="/banks" element={<Bank />} />
+        <Route path="/banks/:id" element={<BankDetail />} />
         <Route path="/hotels" element={<Hotels />} />
         <Route path="/hotels/:id" element={<HotelDetail />} />
         <Route path="restaurent/:id" element={<Restaurent />} />

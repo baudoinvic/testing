@@ -47,7 +47,7 @@ const Navbar = () => {
   };
 
   const handleInstitutionClick = (institution) => {
-    navigate(`/hotels/${institution.id}`);
+    navigate(`/institutions/${institution.id}`);
     setShowResults(false);
     setSearchQuery('');
   };
@@ -89,7 +89,7 @@ const Navbar = () => {
       title: 'Financial Services',
       hasDropdown: true,
       dropdownItems: [
-        { label: 'Banks', path: '/bank' },
+        { label: 'Banks', path: 'banks' },
         { label: 'Tax Services', path: '/tax' },
         { label: 'Accountants', path: '/accountant' }
       ]

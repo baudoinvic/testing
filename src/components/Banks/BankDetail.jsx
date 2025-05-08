@@ -1,11 +1,10 @@
 
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Star, Wifi, Car, Bed, UtensilsCrossed, Waves, X, MapPin, Phone, ArrowLeft } from 'lucide-react';
 import axios from 'axios';
 
-const HotelDetail = () => {
+const BankDetail = () => {
   const { id } = useParams(); 
   const [institution, setInstitution] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -118,8 +117,8 @@ const HotelDetail = () => {
 
   return (
     <div className="w-full mx-auto px-4 sm:px-6 md:px-12 p-4 mb-8">
-      <Link to="/hotels" className="flex items-center text-blue-600 mb-4 hover:underline">
-        <ArrowLeft className="w-4 h-4 mr-1" /> Back to Hotels
+      <Link to="/banks" className="flex items-center text-blue-600 mb-4 hover:underline">
+        <ArrowLeft className="w-4 h-4 mr-1" /> Back to Banks
       </Link>
 
       <h1 className="text-xl sm:text-2xl font-bold text-blue-800 pb-2 mb-4">{institution.name}</h1>
@@ -339,4 +338,4 @@ const HotelDetail = () => {
   );
 };
 
-export default HotelDetail;
+export default BankDetail;

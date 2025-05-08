@@ -70,10 +70,6 @@ const EditProfile = () => {
     }
   }, []);
 
-  useEffect(() => {
-    fetchUserData();
-  }, []);
-
   // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;

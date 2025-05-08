@@ -11,6 +11,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Reviews from "../Reviews/Reviews";
 
+
 const Home = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -34,7 +35,7 @@ const Home = () => {
   // Map category names to path routes
   const getCategoryPath = (categoryName) => {
     const pathMap = {
-      "Food/Drinks": "/restaurent",
+      "Food/Drinks": "/restaurents",
       "Financial Services": "/banks",
       "Hotel/Travels": "/hotels",
       "Health/Medical": "/hospital",

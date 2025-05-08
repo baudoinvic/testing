@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Star, MapPin } from 'lucide-react';
 import { IoMdMenu } from "react-icons/io";
 import axios from "axios";
+import { Link } from 'react-router-dom';
 
 const Restaurent = () => {
   const [institutions, setInstitutions] = useState([]);
@@ -293,57 +294,7 @@ const Restaurent = () => {
   );
   })}
 </div>
-      {/* <div className="space-y-16 cursor-pointer">
-        {institutions?.map((institution) => {
-          const isOpen = isInstitutionOpen(institution.hours || []);
-          let imageUrl = "/api/placeholder/400/320"; 
-          
-          if (institution.image) {
-            imageUrl = `${API_BASE_URL}${institution.image.image_url}`;
-          }
-          
-          return (
-            <div key={institution.id || institution.name} className="mb-6 overflow-hidden border rounded-lg transition-transform transform hover:scale-102 hover:shadow-lg">
-              <div className="flex flex-col md:flex-row p-0">
-                <div className="md:w-64 h-48 md:h-auto flex-shrink-0">
-                  <img
-                    src={imageUrl}
-                    alt={`${institution.name}`}
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      e.target.src = "/api/placeholder/400/320"; // Fallback on error
-                      console.log("Image failed to load:", imageUrl);
-                    }}
-                  />
-                </div>
-                <div className="p-6 flex-grow">
-                  <h2 className="text-xl text-blue-800 mb-2">{institution.name}</h2>
-                  <p className="font-medium mb-2 text-green-600">
-                    {isOpen ? "Open now" : "Closed now"}
-                  </p>
-                  
-                  <div className="flex items-center mb-2">
-                    {renderStars(institution.avgRating)}
-                    <span className="ml-2 text-gray-700">{institution.avgRating || "No rating"}</span>
-                    <span className="ml-2 text-gray-700">({institution.totalReview || 0} Reviews)</span>
-                  </div>
-                  <p className="text-gray-700 mb-4">
-                    {institution.description?.length > 200 
-                      ? `${institution.description.substring(0, 200)}... ` 
-                      : institution.description}
-                    {institution.description?.length > 200 && (
-                      <span className="text-blue-600">more</span>
-                    )}
-                  </p>
-                  <p className="text-gray-600 flex items-center">
-                    <MapPin className="w-4 h-4 mr-1" /> {institution.location}
-                  </p>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div> */}
+      
 
       {/* Empty state */}
       {!loading && institutions.length === 0 && (

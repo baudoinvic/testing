@@ -272,7 +272,7 @@ const EditProfile = () => {
                 type='text'
                 placeholder='Active since'
                 className='w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 bg-gray-100'
-                value={userData.activeSince}
+                value={userData.added_at}
                 readOnly
               />
             </div>

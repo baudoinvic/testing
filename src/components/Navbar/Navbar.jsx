@@ -77,46 +77,46 @@ const Navbar = () => {
 
   const navItems = [
     {
-      title: 'Food Drinks',
+      title: "Food Drinks",
       hasDropdown: true,
       dropdownItems: [
-        { label: 'Restaurants', path: '/restaurent' },
-        { label: 'Bakeries', path: '/bakeries' },
-        { label: 'Fast Food', path: '/food' }
-      ]
+        { label: "Restaurants", path: "/restaurent" },
+        { label: "Bakeries", path: "/bakeries" },
+        { label: "Fast Food", path: "/food" },
+      ],
     },
     {
-      title: 'Financial Services',
+      title: "Financial Services",
       hasDropdown: true,
       dropdownItems: [
-        { label: 'Banks', path: 'banks' },
-        { label: 'Tax Services', path: '/tax' },
-        { label: 'Accountants', path: '/accountant' }
-      ]
+        { label: "Banks", path: "banks" },
+        { label: "Tax Services", path: "/tax" },
+        { label: "Accountants", path: "/accountant" },
+      ],
     },
     {
-      title: 'Hotels/Travel',
+      title: "Hotels/Travel",
       hasDropdown: true,
       dropdownItems: [
-        { label: 'Hotels', path: '/hotels' },
-        { label: 'Tours', path: '/tours' },
-        { label: 'Hostels', path: '/hostels' }
-      ]
+        { label: "Hotels", path: "/hotels" },
+        { label: "Tours", path: "/tours" },
+        { label: "Hostels", path: "/hostels" },
+      ],
     },
     {
-      title: 'Health/Medical',
+      title: "Health/Medical",
       hasDropdown: true,
       dropdownItems: [
-        { label: 'Hospitals', path: '/hospitals' },
-        { label: 'Clinics', path: '/clinics' },
-        { label: 'Pharmacies', path: '/pharmacies' }
-      ]
+        { label: "Hospitals", path: "/hospitals" },
+        { label: "Clinics", path: "/clinics" },
+        { label: "Pharmacies", path: "/pharmacies" },
+      ],
     },
     {
-      title: 'More',
+      title: "More",
       hasDropdown: true,
-      dropdownItems: []
-    }
+      dropdownItems: [],
+    },
   ];
 
   useEffect(() => {

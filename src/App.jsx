@@ -22,39 +22,41 @@ import Reviews from './components/Reviews/Reviews';
 import HotelDetail from './components/Hotels/HotelDetail';
 import BankDetail from './components/Banks/BankDetail';
 import RestaurentDetail from './components/Restaurent/RestaurentDetail';
+import Hospital from './components/Hospitals/Hospital';
 
 
 const App = () => {
   return (
     <BrowserRouter>
-     <ScrollToTop />
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<Home />} />
-        <Route path="navbar" element={<Navbar />} />
-        <Route path="footer" element={<Footer />} />
-        <Route path="/banks" element={<Bank />} />
-        <Route path="/banks/:id" element={<BankDetail />} />
-        <Route path="/hotels" element={<Hotels />} />
-        <Route path="/hotels/:id" element={<HotelDetail />} />
-        <Route path="/restaurents" element={<Restaurent />} />
-        <Route path="restaurents/:id" element={<RestaurentDetail />} />
-        <Route path="login" element={<Login />} />
-        <Route path="signup" element={<Signup />} />
-        <Route path="next" element={<Next />} />
-        <Route path="review" element={<Writereview />} />
-        <Route path="next" element={<Detail />} />
-        <Route path="java" element={<Java />} />
-        <Route path="overview" element={<Overview />} />
-        <Route path="profile" element={<EditProfile />} />
-        <Route path="postreview/:id" element={<Postreview />} />
-        <Route path="view" element={<Review />} />
-        <Route path="Reviews" element={<Reviews />} />
-       
-      </Route>
-    </Routes>
-  </BrowserRouter>
-  )
+      <ScrollToTop />
+      <Routes>
+        <Route path='/' element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path='navbar' element={<Navbar />} />
+          <Route path='footer' element={<Footer />} />
+          <Route path='/banks' element={<Bank />} />
+          <Route path='/banks/:id' element={<BankDetail />} />
+          <Route path='/hotels' element={<Hotels />} />
+          <Route path='/hotels/:id' element={<HotelDetail />} />
+          <Route path='/restaurents' element={<Restaurent />} />
+          <Route path='restaurents/:id' element={<RestaurentDetail />} />
+          <Route path='/hospitals' element={<Hospital />} />
+          <Route path='/hospitals/:id' element={<Hospital />} />
+          <Route path='login' element={<Login />} />
+          <Route path='signup' element={<Signup />} />
+          <Route path='next' element={<Next />} />
+          <Route path='review' element={<Writereview />} />
+          <Route path='next' element={<Detail />} />
+          <Route path='java' element={<Java />} />
+          <Route path='overview' element={<Overview />} />
+          <Route path='profile' element={<EditProfile />} />
+          <Route path='postreview/:id' element={<Postreview />} />
+          <Route path='view' element={<Review />} />
+          <Route path='Reviews' element={<Reviews />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App

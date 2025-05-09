@@ -39,7 +39,7 @@ const Home = () => {
       "Financial Services": "/banks",
       "Hotel/Travels": "/hotels",
       "Health/Medical": "/hospitals",
-      "Home/Services": "/home-services",
+      "Home/Services": "/homeservices",
       "More/more": "/more",
     };
     

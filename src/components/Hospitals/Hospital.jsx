@@ -1,15 +1,3 @@
-// import React from 'react'
-
-// const Hospital = () => {
-//   return (
-//     <div>
-      
-//     </div>
-//   )
-// }
-
-// export default Hospital
-
 
 import React, { useState, useEffect } from "react";
 import { Star, MapPin } from "lucide-react";

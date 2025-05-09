@@ -23,6 +23,7 @@ import HotelDetail from './components/Hotels/HotelDetail';
 import BankDetail from './components/Banks/BankDetail';
 import RestaurentDetail from './components/Restaurent/RestaurentDetail';
 import Hospital from './components/Hospitals/Hospital';
+import HospitalDetail from './components/Hospitals/HospitalDetail';
 
 
 const App = () => {
@@ -41,7 +42,7 @@ const App = () => {
           <Route path='/restaurents' element={<Restaurent />} />
           <Route path='restaurents/:id' element={<RestaurentDetail />} />
           <Route path='/hospitals' element={<Hospital />} />
-          <Route path='/hospitals/:id' element={<Hospital />} />
+          <Route path='/hospitals/:id' element={<HospitalDetail />} />
           <Route path='login' element={<Login />} />
           <Route path='signup' element={<Signup />} />
           <Route path='next' element={<Next />} />

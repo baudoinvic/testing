@@ -25,6 +25,7 @@ import RestaurentDetail from './components/Restaurent/RestaurentDetail';
 import Hospital from './components/Hospitals/Hospital';
 import HospitalDetail from './components/Hospitals/HospitalDetail';
 import Homeservices from './components/Homeservices/Homeservices';
+import HomeserviceDetail from './components/Homeservices/HomeserviceDetail';
 
 
 const App = () => {
@@ -45,6 +46,7 @@ const App = () => {
           <Route path='/hospitals' element={<Hospital />} />
           <Route path='/hospitals/:id' element={<HospitalDetail />} />
           <Route path='/homeservices' element={<Homeservices />} />
+          <Route path='/homeservices/:id' element={<HomeserviceDetail />} />
           <Route path='login' element={<Login />} />
           <Route path='signup' element={<Signup />} />
           <Route path='next' element={<Next />} />

@@ -26,10 +26,10 @@ const Home = () => {
       "Hotel/Travels": <Hotel size={48} className="text-blue-800" />,
       "Health/Medical": <Building size={48} className="text-blue-800" />,
       "Home/Services": <HomeIcon size={48} className="text-blue-800" />,
-      "More/more": <MoreHorizontal size={48} className="text-blue-800" />,
+      // "More/more": <MoreHorizontal size={48} className="text-blue-800" />,
     };
     
-    return iconMap[categoryName] || <MoreHorizontal size={48} className="text-blue-800" />;
+    return iconMap[categoryName] || <HomeIcon size={48} className="text-blue-800" />;
   };
 
   // Map category names to path routes
@@ -40,7 +40,6 @@ const Home = () => {
       "Hotel/Travels": "/hotels",
       "Health/Medical": "/hospitals",
       "Home/Services": "/homeservices",
-      "More/more": "/more",
     };
     
     return pathMap[categoryName] || "/homeservices";

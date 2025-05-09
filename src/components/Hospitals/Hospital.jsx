@@ -275,7 +275,7 @@ const Hospital = () => {
       {loading && <div className='text-center py-10'>Loading hospitals...</div>}
       {error && <div className='text-center py-10 text-red-600'>{error}</div>}
 
-      {/* Bank listings */}
+      {/* Hospitals listings */}
 
       <div className='space-y-8 cursor-pointer'>
         {institutions?.map((institution) => {

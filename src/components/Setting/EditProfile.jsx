@@ -42,9 +42,7 @@ const EditProfile = () => {
           gender: data.user.gender || "",
           age_group: data.user.age_group || "",
           address: data.user.address || "",
-          added_at: data.user.created_at
-            ? new Date(data.user.created_at).toLocaleDateString()
-            : "",
+          added_at: new Date(data.user.added_at).toLocaleDateString() || "",
         });
 
         localStorage.setItem("userData", JSON.stringify(data.user));
@@ -57,7 +55,6 @@ const EditProfile = () => {
       })
       .catch((error) => {
         console.log(error);
-        // toast.error("Failed to fetch user data");
       });
   };
 
@@ -70,7 +67,6 @@ const EditProfile = () => {
     }
   }, []);
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserData((prev) => ({

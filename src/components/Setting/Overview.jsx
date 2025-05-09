@@ -47,7 +47,7 @@ const Overview = () => {
           gender: data.user.gender || '',
           age_group: data.user.age_group || '',
           address: data.user.address || '',
-          added_at: new Date(data.user.created_at).toLocaleDateString() || ''
+          added_at: new Date(data.user.added_at).toLocaleDateString() || ''
         });
         
         // Save fetched data to localStorage
@@ -74,6 +74,9 @@ const Overview = () => {
       fetchUserData(); 
     }
   }, []);
+
+
+  
 
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];

@@ -43,7 +43,7 @@ const Home = () => {
       "More/more": "/more",
     };
     
-    return pathMap[categoryName] || "/banks";
+    return pathMap[categoryName] || "/homeservices";
   };
 
   const fetchCategories = () => {

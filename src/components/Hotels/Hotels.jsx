@@ -9,7 +9,7 @@ import { IoMdArrowDropdown } from "react-icons/io";
 
 const Hotels = () => {
   const { id } = useParams();
-  // State for filter popup
+   const [open, setOpen] = useState(false);
   const [showFilterPopup, setShowFilterPopup] = useState(false);
   const [institutions, setInstitutions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -244,12 +244,28 @@ const Hotels = () => {
             Best hotels in the Kigali City Area
           </h1>
         </div>
-        <div className='flex items-center gap-2'>
-          <span className='text-sm'>sort:</span>
-          <button className='flex items-center gap-1 font-medium'>
+        <div className='relative'>
+          <button
+            className='flex items-center gap-1 font-medium'
+            onClick={() => setOpen(!open)}
+          >
             Recommended
             <IoMdArrowDropdown />
           </button>
+
+          {open && (
+            <div className='absolute bg-white shadow p-2 mt-1 text-sm'>
+              <div className='hover:bg-gray-100 cursor-pointer'>
+                Recommended
+              </div>
+              <div className='hover:bg-gray-100 cursor-pointer'>
+                Highest Rated
+              </div>
+              <div className='hover:bg-gray-100 cursor-pointer'>
+                Most Reviewed
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

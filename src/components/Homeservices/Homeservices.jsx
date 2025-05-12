@@ -1,12 +1,10 @@
 
-
-
-
 import React, { useState, useEffect } from 'react';
 import { Star, MapPin } from 'lucide-react';
 import { IoMdMenu } from "react-icons/io";
 import axios from "axios";
 import { Link } from 'react-router-dom';
+import { IoMdArrowDropdown } from "react-icons/io";
 
 const Homeservices = () => {
   const [institutions, setInstitutions] = useState([]);
@@ -177,15 +175,7 @@ const Homeservices = () => {
                   />
                   <label htmlFor='retail'>Retail Banks</label>
                 </div>
-                <div className='flex items-center'>
-                  <input
-                    type='radio'
-                    id='credit'
-                    name='category'
-                    className='mr-2'
-                  />
-                  <label htmlFor='credit'>Credit Unions</label>
-                </div>
+          
               </div>
             </div>
           </div>
@@ -254,26 +244,29 @@ const Homeservices = () => {
             We deliver Home services
           </h1>
         </div>
-        <div className='flex items-center gap-2'>
-          <span className='text-sm'>sort:</span>
-          <button className='flex items-center gap-1 font-medium'>
-            Recommended
-            <svg
-              className='w-4 h-4'
-              fill='none'
-              stroke='currentColor'
-              viewBox='0 0 24 24'
-              xmlns='http://www.w3.org/2000/svg'
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth='2'
-                d='M19 9l-7 7-7-7'
-              ></path>
-            </svg>
-          </button>
-        </div>
+            <div className='relative'>
+              <button
+                className='flex items-center gap-1 font-medium'
+                onClick={() => setOpen(!open)}
+              >
+                Recommended
+                <IoMdArrowDropdown />
+              </button>
+    
+              {open && (
+                <div className='absolute bg-white shadow p-2 mt-1 text-sm'>
+                  <div className='hover:bg-gray-100 cursor-pointer'>
+                    Recommended
+                  </div>
+                  <div className='hover:bg-gray-100 cursor-pointer'>
+                    Highest Rated
+                  </div>
+                  <div className='hover:bg-gray-100 cursor-pointer'>
+                    Most Reviewed
+                  </div>
+                </div>
+              )}
+            </div>
       </div>
       {loading && <div className='text-center py-10'>Loading Home services...</div>}
       {error && <div className='text-center py-10 text-red-600'>{error}</div>}

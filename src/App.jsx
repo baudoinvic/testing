@@ -13,7 +13,6 @@ import Next from './components/Signup/Next';
 import Writereview from './components/Writereview/Writereview';
 import Detail from './components/Imageslider/Detail';
 import ScrollToTop from './components/ScrolllToTop/ScrollToTop';
-import Java from './components/Restaurent/Java';
 import EditProfile from './components/Setting/EditProfile';
 import Overview from './components/Setting/Overview';
 import Postreview from './components/Postreview/Postreview';
@@ -51,8 +50,7 @@ const App = () => {
           <Route path='signup' element={<Signup />} />
           <Route path='next' element={<Next />} />
           <Route path='review' element={<Writereview />} />
-          <Route path='next' element={<Detail />} />
-          <Route path='java' element={<Java />} />
+          <Route path='detail' element={<Detail />} />
           <Route path='overview' element={<Overview />} />
           <Route path='profile' element={<EditProfile />} />
           <Route path='postreview/:id' element={<Postreview />} />

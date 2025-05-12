@@ -44,8 +44,9 @@ const Bank = () => {
   useEffect(() => {
     fetchInstitutions(); 
   }, []);
-  
 
+
+  
   function isInstitutionOpen(hours) {
     const now = new Date();
     const day = now.toLocaleString("en-US", { weekday: "long" });
@@ -294,29 +295,7 @@ const Bank = () => {
           )}
         </div>
 
-        {/* <div className='relative'>
-          <button
-            className='flex items-center gap-1 font-medium'
-            onClick={() => setOpen(!open)}
-          >
-            Recommended
-            <IoMdArrowDropdown />
-          </button>
-
-          {open && (
-            <div className='absolute bg-white shadow p-2 mt-1 text-sm'>
-              <div className='hover:bg-gray-100 cursor-pointer'>
-                Recommended
-              </div>
-              <div className='hover:bg-gray-100 cursor-pointer'>
-                Highest Rated
-              </div>
-              <div className='hover:bg-gray-100 cursor-pointer'>
-                Most Reviewed
-              </div>
-            </div>
-          )}
-        </div> */}
+     
       </div>
       {loading && <div className='text-center py-10'>Loading banks...</div>}
       {error && <div className='text-center py-10 text-red-600'>{error}</div>}

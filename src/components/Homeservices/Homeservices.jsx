@@ -8,6 +8,7 @@ import { IoMdArrowDropdown } from "react-icons/io";
 
 const Homeservices = () => {
   const id = 5;
+  const [open, setOpen] = useState(false);
   const [institutions, setInstitutions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -241,35 +242,35 @@ const Homeservices = () => {
       <div className='flex justify-between items-center mb-6'>
         <div>
           <p className='text-sm text-gray-600'>Home Services</p>
-          <h1 className='text-2xl font-bold'>
-            We deliver Home services
-          </h1>
+          <h1 className='text-2xl font-bold'>We deliver Home services</h1>
         </div>
-            <div className='relative'>
-              <button
-                className='flex items-center gap-1 font-medium'
-                onClick={() => setOpen(!open)}
-              >
+        <div className='relative'>
+          <button
+            className='flex items-center gap-1 font-medium'
+            onClick={() => setOpen(!open)}
+          >
+            Recommended
+            <IoMdArrowDropdown />
+          </button>
+
+          {open && (
+            <div className='absolute bg-white shadow p-2 mt-1 text-sm'>
+              <div className='hover:bg-gray-100 cursor-pointer'>
                 Recommended
-                <IoMdArrowDropdown />
-              </button>
-    
-              {open && (
-                <div className='absolute bg-white shadow p-2 mt-1 text-sm'>
-                  <div className='hover:bg-gray-100 cursor-pointer'>
-                    Recommended
-                  </div>
-                  <div className='hover:bg-gray-100 cursor-pointer'>
-                    Highest Rated
-                  </div>
-                  <div className='hover:bg-gray-100 cursor-pointer'>
-                    Most Reviewed
-                  </div>
-                </div>
-              )}
+              </div>
+              <div className='hover:bg-gray-100 cursor-pointer'>
+                Highest Rated
+              </div>
+              <div className='hover:bg-gray-100 cursor-pointer'>
+                Most Reviewed
+              </div>
             </div>
+          )}
+        </div>
       </div>
-      {loading && <div className='text-center py-10'>Loading Home services...</div>}
+      {loading && (
+        <div className='text-center py-10'>Loading Home services...</div>
+      )}
       {error && <div className='text-center py-10 text-red-600'>{error}</div>}
 
       {/* home services listings */}

@@ -28,8 +28,8 @@ const Homeservices = () => {
         console.log(res.data);
         setInstitutions(res.data?.institutions || []);
       } catch (err) {
-        console.error("Error fetching banks", err);
-        setError("Failed to load banks");
+        console.error("Error fetching homeservices", err);
+        setError("Failed to load homeservices");
       } finally {
         setLoading(false);
       }

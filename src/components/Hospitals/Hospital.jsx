@@ -29,8 +29,8 @@ const Hospital = () => {
         console.log(res.data);
         setInstitutions(res.data?.institutions || []);
       } catch (err) {
-        console.error("Error fetching banks", err);
-        setError("Failed to load banks");
+        console.error("Error fetching hospitals", err);
+        setError("Failed to load hospitals");
       } finally {
         setLoading(false);
       }

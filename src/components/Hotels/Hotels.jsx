@@ -332,7 +332,7 @@ const Hotels = () => {
 
       {/* Empty state */}
       {!loading && institutions.length === 0 && (
-        <div className='text-center py-10'>No restaurants found</div>
+        <div className='text-center py-10'>No hotel found</div>
       )}
 
       {/* Pagination */}

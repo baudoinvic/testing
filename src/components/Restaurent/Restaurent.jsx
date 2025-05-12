@@ -3,6 +3,7 @@ import { Star, MapPin } from "lucide-react";
 import { IoMdMenu } from "react-icons/io";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { IoMdArrowDropdown } from "react-icons/io";
 
 const Restaurent = () => {
   const [institutions, setInstitutions] = useState([]);
@@ -131,14 +132,6 @@ const Restaurent = () => {
                   <input type='checkbox' id='price' className='mr-2' />
                   <label htmlFor='price'>Price</label>
                 </div>
-                <div className='flex items-center'>
-                  <input type='checkbox' id='dogsAllowed' className='mr-2' />
-                  <label htmlFor='dogsAllowed'>Dogs Allowed</label>
-                </div>
-                <div className='flex items-center'>
-                  <input type='checkbox' id='openLate' className='mr-2' />
-                  <label htmlFor='openLate'>Open Now</label>
-                </div>
               </div>
             </div>
 
@@ -173,15 +166,7 @@ const Restaurent = () => {
                   />
                   <label htmlFor='retail'>Retail Banks</label>
                 </div>
-                <div className='flex items-center'>
-                  <input
-                    type='radio'
-                    id='credit'
-                    name='category'
-                    className='mr-2'
-                  />
-                  <label htmlFor='credit'>Credit Unions</label>
-                </div>
+             
               </div>
             </div>
           </div>
@@ -254,20 +239,7 @@ const Restaurent = () => {
           <span className='text-sm'>sort:</span>
           <button className='flex items-center gap-1 font-medium'>
             Recommended
-            <svg
-              className='w-4 h-4'
-              fill='none'
-              stroke='currentColor'
-              viewBox='0 0 24 24'
-              xmlns='http://www.w3.org/2000/svg'
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth='2'
-                d='M19 9l-7 7-7-7'
-              ></path>
-            </svg>
+            <IoMdArrowDropdown />
           </button>
         </div>
       </div>

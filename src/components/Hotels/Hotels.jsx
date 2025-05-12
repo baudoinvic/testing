@@ -5,6 +5,7 @@ import { IoMdMenu } from "react-icons/io";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { IoMdArrowDropdown } from "react-icons/io";
 
 const Hotels = () => {
   const { id } = useParams();
@@ -130,14 +131,7 @@ const Hotels = () => {
                   <input type='checkbox' id='price' className='mr-2' />
                   <label htmlFor='price'>Price</label>
                 </div>
-                <div className='flex items-center'>
-                  <input type='checkbox' id='dogsAllowed' className='mr-2' />
-                  <label htmlFor='dogsAllowed'>Dogs Allowed</label>
-                </div>
-                <div className='flex items-center'>
-                  <input type='checkbox' id='openLate' className='mr-2' />
-                  <label htmlFor='openLate'>Open Now</label>
-                </div>
+          
               </div>
             </div>
 
@@ -251,22 +245,10 @@ const Hotels = () => {
           </h1>
         </div>
         <div className='flex items-center gap-2'>
-          <span className='text-sm'>Sort:</span>
+          <span className='text-sm'>sort:</span>
           <button className='flex items-center gap-1 font-medium'>
             Recommended
-            <svg
-              className='w-4 h-4'
-              fill='none'
-              stroke='currentColor'
-              viewBox='0 0 24 24'
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth='2'
-                d='M19 9l-7 7-7-7'
-              ></path>
-            </svg>
+            <IoMdArrowDropdown />
           </button>
         </div>
       </div>

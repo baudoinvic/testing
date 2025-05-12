@@ -4,6 +4,7 @@ import { Star, MapPin } from "lucide-react";
 import { IoMdMenu } from "react-icons/io";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { IoMdArrowDropdown } from "react-icons/io";
 
 const Hospital = () => {
   const [institutions, setInstitutions] = useState([]);
@@ -174,15 +175,7 @@ const Hospital = () => {
                   />
                   <label htmlFor='retail'>Retail Banks</label>
                 </div>
-                <div className='flex items-center'>
-                  <input
-                    type='radio'
-                    id='credit'
-                    name='category'
-                    className='mr-2'
-                  />
-                  <label htmlFor='credit'>Credit Unions</label>
-                </div>
+             
               </div>
             </div>
           </div>
@@ -248,27 +241,14 @@ const Hospital = () => {
         <div>
           <p className='text-sm text-gray-600'>Hospitals</p>
           <h1 className='text-2xl font-bold'>
-            Best  Hospitals Kigali City Area
+            Best Hospitals Kigali City Area
           </h1>
         </div>
         <div className='flex items-center gap-2'>
           <span className='text-sm'>sort:</span>
           <button className='flex items-center gap-1 font-medium'>
             Recommended
-            <svg
-              className='w-4 h-4'
-              fill='none'
-              stroke='currentColor'
-              viewBox='0 0 24 24'
-              xmlns='http://www.w3.org/2000/svg'
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth='2'
-                d='M19 9l-7 7-7-7'
-              ></path>
-            </svg>
+            <IoMdArrowDropdown />
           </button>
         </div>
       </div>

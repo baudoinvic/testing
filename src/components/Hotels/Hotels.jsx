@@ -1,4 +1,6 @@
-  
+
+
+
 import React, { useState, useEffect } from "react";
 import { Building2, Star, MapPin } from "lucide-react";
 import { IoMdMenu } from "react-icons/io";
@@ -7,34 +9,49 @@ import { Link } from "react-router-dom";
 import { IoMdArrowDropdown } from "react-icons/io";
 
 const Hotels = () => {
-
- const id = 3;
+  const id = 3;
   const [open, setOpen] = useState(false);
   const [showFilterPopup, setShowFilterPopup] = useState(false);
   const [institutions, setInstitutions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [activeFilter, setActiveFilter] = useState("recommended");
+  const [filterLabel, setFilterLabel] = useState("Recommended");
+
+  const fetchInstitutions = async (filter = null) => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      let endpoint = `http://192.168.1.238:3000/api/institutions/${id}`;
+
+      if (filter === "rating") {
+        endpoint = `http://192.168.1.238:3000/api/search/rating/${id}`;
+        setActiveFilter("rating");
+        setFilterLabel("Highest Rated");
+      } else if (filter === "review") {
+        endpoint = `http://192.168.1.238:3000/api/search/review/${id}`;
+        setActiveFilter("review");
+        setFilterLabel("Most Reviewed");
+      } else {
+        setActiveFilter("recommended");
+        setFilterLabel("Recommended");
+      }
+
+      const res = await axios.get(endpoint, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      setInstitutions(res.data?.institutions || []);
+    } catch (err) {
+      console.error("Error fetching institutions", err);
+      setError("Failed to load institutions");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchInstitutions = async () => {
-      setLoading(true);
-      try {
-        const token = localStorage.getItem("token");
-        const res = await axios.get(
-          `http://192.168.1.238:3000/api/institutions/${id}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        setInstitutions(res.data?.institutions || []);
-      } catch (err) {
-        console.error("Error fetching institutions", err);
-        setError("Failed to load institutions");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchInstitutions();
   }, []);
 
@@ -43,7 +60,7 @@ const Hotels = () => {
     const day = now.toLocaleString("en-US", { weekday: "long" });
     const currentTime = now.toTimeString().slice(0, 5);
 
-    const today = hours.find((h) => h.day_of_week === day);
+    const today = hours?.find((h) => h.day_of_week === day);
     if (!today) return false;
 
     const open = today.open_time;
@@ -57,6 +74,11 @@ const Hotels = () => {
   }
 
   const renderStars = (rating) => {
+    if (!rating)
+      return Array(5)
+        .fill()
+        .map((_, i) => <Star key={i} className='text-gray-300 w-5 h-5' />);
+
     const stars = [];
     for (let i = 1; i <= 5; i++) {
       if (i <= Math.floor(rating)) {
@@ -95,24 +117,18 @@ const Hotels = () => {
     );
   };
 
-  const [currentPage, setCurrentPage] = useState(1);
-
-  // Left-aligned Filter Popup Component
   const FilterPopup = () => {
     return (
       <div className='fixed inset-0 z-50 flex ml-10 mt-16'>
         <div className='bg-white shadow-lg w-64 h-[90vh] flex flex-col'>
-          {/* Scrollable content */}
           <div className='p-4 space-y-6 overflow-y-auto flex-1'>
             <h2 className='text-lg font-semibold'>Filters</h2>
 
-            {/* Price Range */}
             <div className='space-y-2'>
               <h3 className='font-medium'>Price</h3>
               <input type='range' className='w-full' />
             </div>
 
-            {/* Suggested Filters */}
             <div className='space-y-2'>
               <h3 className='font-medium'>Suggested</h3>
               <div className='space-y-2'>
@@ -128,55 +144,43 @@ const Hotels = () => {
                   <input type='checkbox' id='price' className='mr-2' />
                   <label htmlFor='price'>Price</label>
                 </div>
-          
               </div>
             </div>
 
-            {/* Category */}
             <div className='space-y-2'>
               <h3 className='font-medium'>Category</h3>
               <div className='space-y-2'>
                 <div className='flex items-center'>
                   <input
                     type='radio'
-                    id='commercial'
+                    id='hotels'
                     name='category'
                     className='mr-2'
                   />
-                  <label htmlFor='commercial'>Commercial Banks</label>
+                  <label htmlFor='hotels'>Hotels</label>
                 </div>
                 <div className='flex items-center'>
                   <input
                     type='radio'
-                    id='investment'
+                    id='resorts'
                     name='category'
                     className='mr-2'
                   />
-                  <label htmlFor='investment'>Investment Banks</label>
+                  <label htmlFor='resorts'>Resorts</label>
                 </div>
                 <div className='flex items-center'>
                   <input
                     type='radio'
-                    id='retail'
+                    id='guesthouses'
                     name='category'
                     className='mr-2'
                   />
-                  <label htmlFor='retail'>Retail Banks</label>
-                </div>
-                <div className='flex items-center'>
-                  <input
-                    type='radio'
-                    id='credit'
-                    name='category'
-                    className='mr-2'
-                  />
-                  <label htmlFor='credit'>Credit Unions</label>
+                  <label htmlFor='guesthouses'>Guest Houses</label>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Buttons - NOT fixed, always inside the box */}
           <div className='border-t border-gray-200'>
             <div className='flex'>
               <button
@@ -195,20 +199,14 @@ const Hotels = () => {
           </div>
         </div>
 
-        {/* Overlay */}
-        <div
-          className='flex-1 '
-          onClick={() => setShowFilterPopup(false)}
-        ></div>
+        <div className='flex-1' onClick={() => setShowFilterPopup(false)}></div>
       </div>
     );
   };
 
-  // Base URL for image paths
   const API_BASE_URL = "http://192.168.1.238:3000/";
   return (
     <div className='container mx-auto px-4 py-8'>
-      {/* Filter options */}
       <div className='flex flex-wrap gap-2 mb-6'>
         <button
           className='flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-full text-sm'
@@ -233,12 +231,15 @@ const Hotels = () => {
 
       {showFilterPopup && <FilterPopup />}
 
-      {/* Header */}
       <div className='flex justify-between items-center mb-6'>
         <div>
           <p className='text-sm text-gray-600'>Hotels</p>
           <h1 className='text-2xl font-bold'>
-            Best hotels in the Kigali City Area
+            {activeFilter === "rating"
+              ? "Highest Rated Hotels in Kigali"
+              : activeFilter === "review"
+              ? "Most Reviewed Hotels in Kigali"
+              : "Best Hotels in the Kigali City Area"}
           </h1>
         </div>
         <div className='relative'>
@@ -246,25 +247,66 @@ const Hotels = () => {
             className='flex items-center gap-1 font-medium'
             onClick={() => setOpen(!open)}
           >
-            Recommended
+            {filterLabel}
             <IoMdArrowDropdown />
           </button>
 
           {open && (
-            <div className='absolute bg-white shadow p-2 mt-1 text-sm'>
-              <div className='hover:bg-gray-100 cursor-pointer'>
+            <div className='absolute right-0 bg-white shadow p-2 mt-1 text-sm z-10 w-40'>
+              <div
+                className={`hover:bg-gray-100 cursor-pointer p-2 ${
+                  activeFilter === "recommended" ? "bg-blue-50" : ""
+                }`}
+                onClick={() => {
+                  setOpen(false);
+                  fetchInstitutions();
+                }}
+              >
                 Recommended
               </div>
-              <div className='hover:bg-gray-100 cursor-pointer'>
+              <div
+                className={`hover:bg-gray-100 cursor-pointer p-2 ${
+                  activeFilter === "rating" ? "bg-blue-50" : ""
+                }`}
+                onClick={() => {
+                  setOpen(false);
+                  fetchInstitutions("rating");
+                }}
+              >
                 Highest Rated
               </div>
-              <div className='hover:bg-gray-100 cursor-pointer'>
+              <div
+                className={`hover:bg-gray-100 cursor-pointer p-2 ${
+                  activeFilter === "review" ? "bg-blue-50" : ""
+                }`}
+                onClick={() => {
+                  setOpen(false);
+                  fetchInstitutions("review");
+                }}
+              >
                 Most Reviewed
               </div>
             </div>
           )}
         </div>
       </div>
+
+      {(activeFilter === "rating" || activeFilter === "review") && (
+        <div className='mb-4 flex'>
+          <div className='bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm flex items-center'>
+            {activeFilter === "rating" ? "Highest Rated" : "Most Reviewed"}
+            <button
+              className='ml-2 text-blue-600 hover:text-blue-800'
+              onClick={() => fetchInstitutions()}
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
+
+      {loading && <div className='text-center py-10'>Loading hotels...</div>}
+      {error && <div className='text-center py-10 text-red-600'>{error}</div>}
 
       <div className='space-y-8 cursor-pointer'>
         {institutions?.map((institution) => {
@@ -309,6 +351,23 @@ const Hotels = () => {
                       ({institution.totalReview || 0} Reviews)
                     </span>
                   </div>
+
+                  {activeFilter === "rating" && (
+                    <div className='mb-2'>
+                      <span className='bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs font-medium'>
+                        Top Rated
+                      </span>
+                    </div>
+                  )}
+
+                  {activeFilter === "review" && (
+                    <div className='mb-2'>
+                      <span className='bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs font-medium'>
+                        Most Reviewed
+                      </span>
+                    </div>
+                  )}
+
                   <p className='text-gray-700 mb-4'>
                     {institution.description?.length > 200
                       ? `${institution.description.substring(0, 200)}... `
@@ -327,12 +386,10 @@ const Hotels = () => {
         })}
       </div>
 
-      {/* Empty state */}
       {!loading && institutions.length === 0 && (
-        <div className='text-center py-10'>No hotel found</div>
+        <div className='text-center py-10'>No hotels found</div>
       )}
 
-      {/* Pagination */}
       <div className='mt-10 mb-6'>
         <Pagination
           currentPage={currentPage}

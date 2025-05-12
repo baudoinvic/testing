@@ -14,7 +14,8 @@ const Bank = () => {
   const [error, setError] = useState(null);
   const [showFilterPopup, setShowFilterPopup] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [filter, setFilter] = useState(null); 
+  const [activeFilter, setActiveFilter] = useState("recommended"); 
+  const [filterLabel, setFilterLabel] = useState("Recommended"); 
 
   const fetchInstitutions = async (filter = null) => {
     setLoading(true);
@@ -23,9 +24,19 @@ const Bank = () => {
       let endpoint = `http://192.168.1.238:3000/api/institutions/${id}`;
 
       if (filter === "rating") {
-        endpoint = "http://192.168.1.238:3000/api/search/rating/5";
+        endpoint = `http://192.168.1.238:3000/api/search/rating/${id}`;
+        setActiveFilter("rating");
+        setFilterLabel("Highest Rated");
+
       } else if (filter === "review") {
-        endpoint = "http://192.168.1.238:3000/api/search/review/5";
+
+        endpoint = `http://192.168.1.238:3000/api/search/review/${id}`;
+        setActiveFilter("review");
+        setFilterLabel("Most Reviewed");
+        
+      } else {
+        setActiveFilter("recommended");
+        setFilterLabel("Recommended");
       }
 
       const res = await axios.get(endpoint, {
@@ -42,11 +53,9 @@ const Bank = () => {
   };
 
   useEffect(() => {
-    fetchInstitutions(); 
+    fetchInstitutions();
   }, []);
 
-
-  
   function isInstitutionOpen(hours) {
     const now = new Date();
     const day = now.toLocaleString("en-US", { weekday: "long" });
@@ -249,7 +258,11 @@ const Bank = () => {
         <div>
           <p className='text-sm text-gray-600'>Banks</p>
           <h1 className='text-2xl font-bold'>
-            Best Banks in the Kigali City Area
+            {activeFilter === "rating"
+              ? "Highest Rated Banks in Kigali"
+              : activeFilter === "review"
+              ? "Most Reviewed Banks in Kigali"
+              : "Best Banks in the Kigali City Area"}
           </h1>
         </div>
 
@@ -258,23 +271,27 @@ const Bank = () => {
             className='flex items-center gap-1 font-medium'
             onClick={() => setOpen(!open)}
           >
-            Recommended
+            {filterLabel}
             <IoMdArrowDropdown />
           </button>
 
           {open && (
-            <div className='absolute bg-white shadow p-2 mt-1 text-sm'>
+            <div className='absolute right-0 bg-white shadow p-2 mt-1 text-sm z-10 w-40'>
               <div
-                className='hover:bg-gray-100 cursor-pointer p-2'
+                className={`hover:bg-gray-100 cursor-pointer p-2 ${
+                  activeFilter === "recommended" ? "bg-blue-50" : ""
+                }`}
                 onClick={() => {
                   setOpen(false);
-                  fetchInstitutions(); // Use default endpoint
+                  fetchInstitutions();
                 }}
               >
                 Recommended
               </div>
               <div
-                className='hover:bg-gray-100 cursor-pointer p-2'
+                className={`hover:bg-gray-100 cursor-pointer p-2 ${
+                  activeFilter === "rating" ? "bg-blue-50" : ""
+                }`}
                 onClick={() => {
                   setOpen(false);
                   fetchInstitutions("rating");
@@ -283,7 +300,9 @@ const Bank = () => {
                 Highest Rated
               </div>
               <div
-                className='hover:bg-gray-100 cursor-pointer p-2'
+                className={`hover:bg-gray-100 cursor-pointer p-2 ${
+                  activeFilter === "review" ? "bg-blue-50" : ""
+                }`}
                 onClick={() => {
                   setOpen(false);
                   fetchInstitutions("review");
@@ -294,14 +313,27 @@ const Bank = () => {
             </div>
           )}
         </div>
-
-     
       </div>
+
+      {/* Filter indicator */}
+      {(activeFilter === "rating" || activeFilter === "review") && (
+        <div className='mb-4 flex'>
+          <div className='bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm flex items-center'>
+            {activeFilter === "rating" ? "Highest Rated" : "Most Reviewed"}
+            <button
+              className='ml-2 text-blue-600 hover:text-blue-800'
+              onClick={() => fetchInstitutions()}
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
+
       {loading && <div className='text-center py-10'>Loading banks...</div>}
       {error && <div className='text-center py-10 text-red-600'>{error}</div>}
 
       {/* Bank listings */}
-
       <div className='space-y-8 cursor-pointer'>
         {institutions?.map((institution) => {
           const isOpen = isInstitutionOpen(institution.hours || []);
@@ -345,6 +377,24 @@ const Bank = () => {
                       ({institution.totalReview || 0} Reviews)
                     </span>
                   </div>
+
+                  {/* Highlight if this is a top-rated or most-reviewed bank */}
+                  {activeFilter === "rating" && (
+                    <div className='mb-2'>
+                      <span className='bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs font-medium'>
+                        Top Rated
+                      </span>
+                    </div>
+                  )}
+
+                  {activeFilter === "review" && (
+                    <div className='mb-2'>
+                      <span className='bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs font-medium'>
+                        Most Reviewed
+                      </span>
+                    </div>
+                  )}
+
                   <p className='text-gray-700 mb-4'>
                     {institution.description?.length > 200
                       ? `${institution.description.substring(0, 200)}... `

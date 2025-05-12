@@ -14,29 +14,43 @@ const Hospital = () => {
   const [error, setError] = useState(null);
   const [showFilterPopup, setShowFilterPopup] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [activeFilter, setActiveFilter] = useState("recommended");
+  const [filterLabel, setFilterLabel] = useState("Recommended");
+
+  const fetchInstitutions = async (filter = null) => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      let endpoint = `http://192.168.1.238:3000/api/institutions/${id}`;
+
+      if (filter === "rating") {
+        endpoint = `http://192.168.1.238:3000/api/search/rating/${id}`;
+        setActiveFilter("rating");
+        setFilterLabel("Highest Rated");
+      } else if (filter === "review") {
+        endpoint = `http://192.168.1.238:3000/api/search/review/${id}`;
+        setActiveFilter("review");
+        setFilterLabel("Most Reviewed");
+      } else {
+        setActiveFilter("recommended");
+        setFilterLabel("Recommended");
+      }
+
+      const res = await axios.get(endpoint, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      console.log(res.data);
+      setInstitutions(res.data?.institutions || []);
+    } catch (err) {
+      console.error("Error fetching hospital", err);
+      setError("Failed to load hospitals");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchInstitutions = async () => {
-      setLoading(true);
-      try {
-        const token = localStorage.getItem("token");
-        const res = await axios.get(
-          `http://192.168.1.238:3000/api/institutions/${id}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-
-        console.log(res.data);
-        setInstitutions(res.data?.institutions || []);
-      } catch (err) {
-        console.error("Error fetching hospital", err);
-        setError("Failed to load hospitals");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchInstitutions();
   }, []);
 
@@ -58,7 +72,6 @@ const Hospital = () => {
     return currentTime >= open && currentTime <= close;
   }
 
-  // Render star ratings
   const renderStars = (rating) => {
     if (!rating)
       return Array(5)
@@ -78,7 +91,6 @@ const Hospital = () => {
     return stars;
   };
 
-  // Pagination component
   const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     const pages = [];
     for (let i = 1; i <= totalPages; i++) {
@@ -104,22 +116,18 @@ const Hospital = () => {
     );
   };
 
-  // Left-aligned Filter Popup Component
   const FilterPopup = () => {
     return (
       <div className='fixed inset-0 z-50 flex ml-10 mt-16'>
         <div className='bg-white shadow-lg w-64 h-[90vh] flex flex-col'>
-          {/* Scrollable content */}
           <div className='p-4 space-y-6 overflow-y-auto flex-1'>
             <h2 className='text-lg font-semibold'>Filters</h2>
 
-            {/* Price Range */}
             <div className='space-y-2'>
               <h3 className='font-medium'>Price</h3>
               <input type='range' className='w-full' />
             </div>
 
-            {/* Suggested Filters */}
             <div className='space-y-2'>
               <h3 className='font-medium'>Suggested</h3>
               <div className='space-y-2'>
@@ -132,57 +140,46 @@ const Hospital = () => {
                   <label htmlFor='acceptsCards'>Accepts Credit Cards</label>
                 </div>
                 <div className='flex items-center'>
-                  <input type='checkbox' id='price' className='mr-2' />
-                  <label htmlFor='price'>Price</label>
-                </div>
-                <div className='flex items-center'>
-                  <input type='checkbox' id='atm' className='mr-2' />
-                  <label htmlFor='atm'>24/7 ATM</label>
-                </div>
-                <div className='flex items-center'>
-                  <input type='checkbox' id='onlineBanking' className='mr-2' />
-                  <label htmlFor='onlineBanking'>Online Banking</label>
+                  <input type='checkbox' id='emergency' className='mr-2' />
+                  <label htmlFor='emergency'>Emergency Services</label>
                 </div>
               </div>
             </div>
 
-            {/* Category */}
             <div className='space-y-2'>
               <h3 className='font-medium'>Category</h3>
               <div className='space-y-2'>
                 <div className='flex items-center'>
                   <input
                     type='radio'
-                    id='commercial'
+                    id='general'
                     name='category'
                     className='mr-2'
                   />
-                  <label htmlFor='commercial'>Commercial Banks</label>
+                  <label htmlFor='general'>General Hospitals</label>
                 </div>
                 <div className='flex items-center'>
                   <input
                     type='radio'
-                    id='investment'
+                    id='specialty'
                     name='category'
                     className='mr-2'
                   />
-                  <label htmlFor='investment'>Investment Banks</label>
+                  <label htmlFor='specialty'>Specialty Hospitals</label>
                 </div>
                 <div className='flex items-center'>
                   <input
                     type='radio'
-                    id='retail'
+                    id='teaching'
                     name='category'
                     className='mr-2'
                   />
-                  <label htmlFor='retail'>Retail Banks</label>
+                  <label htmlFor='teaching'>Teaching Hospitals</label>
                 </div>
-             
               </div>
             </div>
           </div>
 
-          {/* Buttons */}
           <div className='border-t border-gray-200'>
             <div className='flex'>
               <button
@@ -201,18 +198,15 @@ const Hospital = () => {
           </div>
         </div>
 
-        {/* Overlay */}
         <div className='flex-1' onClick={() => setShowFilterPopup(false)}></div>
       </div>
     );
   };
 
-  // Base URL for image paths
   const API_BASE_URL = "http://192.168.1.238:3000/";
 
   return (
     <div className='container mx-auto px-4 py-8'>
-      {/* Filter options */}
       <div className='flex flex-wrap gap-2 mb-6'>
         <button
           className='flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-full text-sm'
@@ -225,25 +219,24 @@ const Hospital = () => {
           <span className='font-medium'>Price</span>
         </button>
         <button className='flex items-center gap-2 px-4 py-2 bg-white border rounded-full text-sm'>
+          <span className='font-medium'>Emergency Services</span>
+        </button>
+        <button className='flex items-center gap-2 px-4 py-2 bg-white border rounded-full text-sm'>
           <span className='font-medium'>Accepts credit cards</span>
-        </button>
-        <button className='flex items-center gap-2 px-4 py-2 bg-white border rounded-full text-sm'>
-          <span className='font-medium'>Good for kids</span>
-        </button>
-        <button className='flex items-center gap-2 px-4 py-2 bg-white border rounded-full text-sm'>
-          <span className='font-medium'>Free Wi-Fi</span>
         </button>
       </div>
 
-      {/* Show Filter Popup when button is clicked */}
       {showFilterPopup && <FilterPopup />}
 
-      {/* Header */}
       <div className='flex justify-between items-center mb-6'>
         <div>
           <p className='text-sm text-gray-600'>Hospitals</p>
           <h1 className='text-2xl font-bold'>
-            Best Hospitals Kigali City Area
+            {activeFilter === "rating"
+              ? "Highest Rated Hospitals in Kigali"
+              : activeFilter === "review"
+              ? "Most Reviewed Hospitals in Kigali"
+              : "Best Hospitals in the Kigali City Area"}
           </h1>
         </div>
         <div className='relative'>
@@ -251,29 +244,66 @@ const Hospital = () => {
             className='flex items-center gap-1 font-medium'
             onClick={() => setOpen(!open)}
           >
-            Recommended
+            {filterLabel}
             <IoMdArrowDropdown />
           </button>
 
           {open && (
-            <div className='absolute bg-white shadow p-2 mt-1 text-sm'>
-              <div className='hover:bg-gray-100 cursor-pointer'>
+            <div className='absolute right-0 bg-white shadow p-2 mt-1 text-sm z-10 w-40'>
+              <div
+                className={`hover:bg-gray-100 cursor-pointer p-2 ${
+                  activeFilter === "recommended" ? "bg-blue-50" : ""
+                }`}
+                onClick={() => {
+                  setOpen(false);
+                  fetchInstitutions();
+                }}
+              >
                 Recommended
               </div>
-              <div className='hover:bg-gray-100 cursor-pointer'>
+              <div
+                className={`hover:bg-gray-100 cursor-pointer p-2 ${
+                  activeFilter === "rating" ? "bg-blue-50" : ""
+                }`}
+                onClick={() => {
+                  setOpen(false);
+                  fetchInstitutions("rating");
+                }}
+              >
                 Highest Rated
               </div>
-              <div className='hover:bg-gray-100 cursor-pointer'>
+              <div
+                className={`hover:bg-gray-100 cursor-pointer p-2 ${
+                  activeFilter === "review" ? "bg-blue-50" : ""
+                }`}
+                onClick={() => {
+                  setOpen(false);
+                  fetchInstitutions("review");
+                }}
+              >
                 Most Reviewed
               </div>
             </div>
           )}
         </div>
       </div>
+
+      {(activeFilter === "rating" || activeFilter === "review") && (
+        <div className='mb-4 flex'>
+          <div className='bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm flex items-center'>
+            {activeFilter === "rating" ? "Highest Rated" : "Most Reviewed"}
+            <button
+              className='ml-2 text-blue-600 hover:text-blue-800'
+              onClick={() => fetchInstitutions()}
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
+
       {loading && <div className='text-center py-10'>Loading hospitals...</div>}
       {error && <div className='text-center py-10 text-red-600'>{error}</div>}
-
-      {/* Hospitals listings */}
 
       <div className='space-y-8 cursor-pointer'>
         {institutions?.map((institution) => {
@@ -318,6 +348,23 @@ const Hospital = () => {
                       ({institution.totalReview || 0} Reviews)
                     </span>
                   </div>
+
+                  {activeFilter === "rating" && (
+                    <div className='mb-2'>
+                      <span className='bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs font-medium'>
+                        Top Rated
+                      </span>
+                    </div>
+                  )}
+
+                  {activeFilter === "review" && (
+                    <div className='mb-2'>
+                      <span className='bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs font-medium'>
+                        Most Reviewed
+                      </span>
+                    </div>
+                  )}
+
                   <p className='text-gray-700 mb-4'>
                     {institution.description?.length > 200
                       ? `${institution.description.substring(0, 200)}... `
@@ -336,12 +383,10 @@ const Hospital = () => {
         })}
       </div>
 
-      {/* Empty state */}
       {!loading && institutions.length === 0 && (
-        <div className='text-center py-10'>No Hospital found</div>
+        <div className='text-center py-10'>No hospitals found</div>
       )}
 
-      {/* Pagination */}
       {institutions.length > 0 && (
         <div className='mt-10 mb-6'>
           <Pagination

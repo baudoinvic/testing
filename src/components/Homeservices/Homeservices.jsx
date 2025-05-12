@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { IoMdArrowDropdown } from "react-icons/io";
 
 const Homeservices = () => {
+  const id = 5;
   const [institutions, setInstitutions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -19,7 +20,7 @@ const Homeservices = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await axios.get(
-          "http://192.168.1.238:3000/api/institutions/5",
+          `http://192.168.1.238:3000/api/institutions/${id}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }

@@ -7,65 +7,78 @@ import { Link } from 'react-router-dom';
 import { IoMdArrowDropdown } from "react-icons/io";
 
 const Bank = () => {
+  const id = 2;
   const [open, setOpen] = useState(false);
   const [institutions, setInstitutions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showFilterPopup, setShowFilterPopup] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [filter, setFilter] = useState(null); 
+
+  const fetchInstitutions = async (filter = null) => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      let endpoint = `http://192.168.1.238:3000/api/institutions/${id}`;
+
+      if (filter === "rating") {
+        endpoint = "http://192.168.1.238:3000/api/search/rating/5";
+      } else if (filter === "review") {
+        endpoint = "http://192.168.1.238:3000/api/search/review/5";
+      }
+
+      const res = await axios.get(endpoint, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      setInstitutions(res.data?.institutions || []);
+    } catch (err) {
+      console.error("Error fetching institutions", err);
+      setError("Failed to load institutions");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchInstitutions = async () => {
-      setLoading(true);
-      try {
-        const token = localStorage.getItem("token");
-        const res = await axios.get("http://192.168.1.238:3000/api/institutions/2", { 
-          headers: { Authorization: `Bearer ${token}` },
-        });
-       
-        console.log(res.data); 
-        setInstitutions(res.data?.institutions || []);
-      } catch (err) {
-        console.error("Error fetching banks", err);
-        setError("Failed to load banks");
-      } finally {
-        setLoading(false);
-      }
-    };
-  
-    fetchInstitutions();
+    fetchInstitutions(); 
   }, []);
   
+
   function isInstitutionOpen(hours) {
     const now = new Date();
-    const day = now.toLocaleString('en-US', { weekday: 'long' });
+    const day = now.toLocaleString("en-US", { weekday: "long" });
     const currentTime = now.toTimeString().slice(0, 5);
-  
-    const today = hours?.find(h => h.day_of_week === day);
+
+    const today = hours?.find((h) => h.day_of_week === day);
     if (!today) return false;
-  
+
     const open = today.open_time;
     const close = today.close_time;
-  
+
     if (close < open) {
       return currentTime >= open || currentTime <= close;
     }
-  
+
     return currentTime >= open && currentTime <= close;
   }
-  
+
   // Render star ratings
   const renderStars = (rating) => {
-    if (!rating) return Array(5).fill().map((_, i) => (
-      <Star key={i} className="text-gray-300 w-5 h-5" />
-    ));
-    
+    if (!rating)
+      return Array(5)
+        .fill()
+        .map((_, i) => <Star key={i} className='text-gray-300 w-5 h-5' />);
+
     const stars = [];
     for (let i = 1; i <= 5; i++) {
       if (i <= Math.floor(rating)) {
-        stars.push(<Star key={i} fill="currentColor" className="text-gray-900 w-5 h-5" />);
+        stars.push(
+          <Star key={i} fill='currentColor' className='text-gray-900 w-5 h-5' />
+        );
       } else {
-        stars.push(<Star key={i} className="text-gray-300 w-5 h-5" />);
+        stars.push(<Star key={i} className='text-gray-300 w-5 h-5' />);
       }
     }
     return stars;
@@ -79,12 +92,16 @@ const Bank = () => {
     }
 
     return (
-      <div className="flex items-center justify-center gap-2">
+      <div className='flex items-center justify-center gap-2'>
         {pages.map((page) => (
           <button
             key={page}
             onClick={() => onPageChange(page)}
-            className={`px-4 py-2 border rounded-lg ${currentPage === page ? 'bg-blue-600 text-white' : 'bg-white text-blue-600'}`}
+            className={`px-4 py-2 border rounded-lg ${
+              currentPage === page
+                ? "bg-blue-600 text-white"
+                : "bg-white text-blue-600"
+            }`}
           >
             {page}
           </button>
@@ -96,77 +113,91 @@ const Bank = () => {
   // Left-aligned Filter Popup Component
   const FilterPopup = () => {
     return (
-      <div className="fixed inset-0 z-50 flex ml-10 mt-16">
-        <div className="bg-white shadow-lg w-64 h-[90vh] flex flex-col">
+      <div className='fixed inset-0 z-50 flex ml-10 mt-16'>
+        <div className='bg-white shadow-lg w-64 h-[90vh] flex flex-col'>
           {/* Scrollable content */}
-          <div className="p-4 space-y-6 overflow-y-auto flex-1">
-            <h2 className="text-lg font-semibold">Filters</h2>
-      
+          <div className='p-4 space-y-6 overflow-y-auto flex-1'>
+            <h2 className='text-lg font-semibold'>Filters</h2>
+
             {/* Price Range */}
-            <div className="space-y-2">
-              <h3 className="font-medium">Price</h3>
-              <input type="range" className="w-full" />
+            <div className='space-y-2'>
+              <h3 className='font-medium'>Price</h3>
+              <input type='range' className='w-full' />
             </div>
-      
+
             {/* Suggested Filters */}
-            <div className="space-y-2">
-              <h3 className="font-medium">Suggested</h3>
-              <div className="space-y-2">
-                <div className="flex items-center">
-                  <input type="checkbox" id="openNow" className="mr-2" />
-                  <label htmlFor="openNow">Open Now</label>
+            <div className='space-y-2'>
+              <h3 className='font-medium'>Suggested</h3>
+              <div className='space-y-2'>
+                <div className='flex items-center'>
+                  <input type='checkbox' id='openNow' className='mr-2' />
+                  <label htmlFor='openNow'>Open Now</label>
                 </div>
-                <div className="flex items-center">
-                  <input type="checkbox" id="acceptsCards" className="mr-2" />
-                  <label htmlFor="acceptsCards">Accepts Credit Cards</label>
+                <div className='flex items-center'>
+                  <input type='checkbox' id='acceptsCards' className='mr-2' />
+                  <label htmlFor='acceptsCards'>Accepts Credit Cards</label>
                 </div>
-                <div className="flex items-center">
-                  <input type="checkbox" id="price" className="mr-2" />
-                  <label htmlFor="price">Price</label>
+                <div className='flex items-center'>
+                  <input type='checkbox' id='price' className='mr-2' />
+                  <label htmlFor='price'>Price</label>
                 </div>
-                <div className="flex items-center">
-                  <input type="checkbox" id="atm" className="mr-2" />
-                  <label htmlFor="atm">24/7 ATM</label>
+                <div className='flex items-center'>
+                  <input type='checkbox' id='atm' className='mr-2' />
+                  <label htmlFor='atm'>24/7 ATM</label>
                 </div>
-                <div className="flex items-center">
-                  <input type="checkbox" id="onlineBanking" className="mr-2" />
-                  <label htmlFor="onlineBanking">Online Banking</label>
+                <div className='flex items-center'>
+                  <input type='checkbox' id='onlineBanking' className='mr-2' />
+                  <label htmlFor='onlineBanking'>Online Banking</label>
                 </div>
               </div>
             </div>
-      
+
             {/* Category */}
-            <div className="space-y-2">
-              <h3 className="font-medium">Category</h3>
-              <div className="space-y-2">
-                <div className="flex items-center">
-                  <input type="radio" id="commercial" name="category" className="mr-2" />
-                  <label htmlFor="commercial">Commercial Banks</label>
+            <div className='space-y-2'>
+              <h3 className='font-medium'>Category</h3>
+              <div className='space-y-2'>
+                <div className='flex items-center'>
+                  <input
+                    type='radio'
+                    id='commercial'
+                    name='category'
+                    className='mr-2'
+                  />
+                  <label htmlFor='commercial'>Commercial Banks</label>
                 </div>
-                <div className="flex items-center">
-                  <input type="radio" id="investment" name="category" className="mr-2" />
-                  <label htmlFor="investment">Investment Banks</label>
+                <div className='flex items-center'>
+                  <input
+                    type='radio'
+                    id='investment'
+                    name='category'
+                    className='mr-2'
+                  />
+                  <label htmlFor='investment'>Investment Banks</label>
                 </div>
-                <div className="flex items-center">
-                  <input type="radio" id="retail" name="category" className="mr-2" />
-                  <label htmlFor="retail">Retail Banks</label>
+                <div className='flex items-center'>
+                  <input
+                    type='radio'
+                    id='retail'
+                    name='category'
+                    className='mr-2'
+                  />
+                  <label htmlFor='retail'>Retail Banks</label>
                 </div>
-            
               </div>
             </div>
           </div>
-      
+
           {/* Buttons */}
-          <div className="border-t border-gray-200">
-            <div className="flex">
-              <button 
-                className="flex-1 p-4 text-blue-600 font-medium" 
+          <div className='border-t border-gray-200'>
+            <div className='flex'>
+              <button
+                className='flex-1 p-4 text-blue-600 font-medium'
                 onClick={() => setShowFilterPopup(false)}
               >
                 Cancel
               </button>
-              <button 
-                className="flex-1 p-4 bg-blue-600 text-white font-medium"
+              <button
+                className='flex-1 p-4 bg-blue-600 text-white font-medium'
                 onClick={() => setShowFilterPopup(false)}
               >
                 Apply Filters
@@ -174,12 +205,9 @@ const Bank = () => {
             </div>
           </div>
         </div>
-      
+
         {/* Overlay */}
-        <div 
-          className="flex-1" 
-          onClick={() => setShowFilterPopup(false)}
-        ></div>
+        <div className='flex-1' onClick={() => setShowFilterPopup(false)}></div>
       </div>
     );
   };
@@ -223,8 +251,50 @@ const Bank = () => {
             Best Banks in the Kigali City Area
           </h1>
         </div>
-      
+
         <div className='relative'>
+          <button
+            className='flex items-center gap-1 font-medium'
+            onClick={() => setOpen(!open)}
+          >
+            Recommended
+            <IoMdArrowDropdown />
+          </button>
+
+          {open && (
+            <div className='absolute bg-white shadow p-2 mt-1 text-sm'>
+              <div
+                className='hover:bg-gray-100 cursor-pointer p-2'
+                onClick={() => {
+                  setOpen(false);
+                  fetchInstitutions(); // Use default endpoint
+                }}
+              >
+                Recommended
+              </div>
+              <div
+                className='hover:bg-gray-100 cursor-pointer p-2'
+                onClick={() => {
+                  setOpen(false);
+                  fetchInstitutions("rating");
+                }}
+              >
+                Highest Rated
+              </div>
+              <div
+                className='hover:bg-gray-100 cursor-pointer p-2'
+                onClick={() => {
+                  setOpen(false);
+                  fetchInstitutions("review");
+                }}
+              >
+                Most Reviewed
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* <div className='relative'>
           <button
             className='flex items-center gap-1 font-medium'
             onClick={() => setOpen(!open)}
@@ -246,7 +316,7 @@ const Bank = () => {
               </div>
             </div>
           )}
-        </div>
+        </div> */}
       </div>
       {loading && <div className='text-center py-10'>Loading banks...</div>}
       {error && <div className='text-center py-10 text-red-600'>{error}</div>}

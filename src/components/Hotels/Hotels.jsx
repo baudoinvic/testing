@@ -4,12 +4,13 @@ import { Building2, Star, MapPin } from "lucide-react";
 import { IoMdMenu } from "react-icons/io";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import { IoMdArrowDropdown } from "react-icons/io";
 
 const Hotels = () => {
-  const { id } = useParams();
-   const [open, setOpen] = useState(false);
+  // const { id } = useParams();
+ const id = 3;
+  const [open, setOpen] = useState(false);
   const [showFilterPopup, setShowFilterPopup] = useState(false);
   const [institutions, setInstitutions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -20,15 +21,18 @@ const Hotels = () => {
       setLoading(true);
       try {
         const token = localStorage.getItem("token");
+        // const res = await axios.get(
+        //   "http://192.168.1.238:3000/api/institutions/3",
+        //   {
+        //     headers: { Authorization: `Bearer ${token}` },
+        //   }
+        // );
         const res = await axios.get(
-          "http://192.168.1.238:3000/api/institutions/3",
+          `http://192.168.1.238:3000/api/institutions/${id}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-
-        console.log(res.data);
-
         setInstitutions(res.data?.institutions || []);
       } catch (err) {
         console.error("Error fetching institutions", err);

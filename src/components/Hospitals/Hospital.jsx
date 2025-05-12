@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { IoMdArrowDropdown } from "react-icons/io";
 
 const Hospital = () => {
+  const id = 4;
   const [open, setOpen] = useState(false);
   const [institutions, setInstitutions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -20,7 +21,7 @@ const Hospital = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await axios.get(
-          "http://192.168.1.238:3000/api/institutions/4",
+          `http://192.168.1.238:3000/api/institutions/${id}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -29,7 +30,7 @@ const Hospital = () => {
         console.log(res.data);
         setInstitutions(res.data?.institutions || []);
       } catch (err) {
-        console.error("Error fetching hospitals", err);
+        console.error("Error fetching hospital", err);
         setError("Failed to load hospitals");
       } finally {
         setLoading(false);

@@ -7,7 +7,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Next = () => {
-  Process.env.IP;
+  process.env.IP;
   const navigate = useNavigate();
 
   const savedUserData = JSON.parse(localStorage.getItem('userData')) || {};

@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { IoMdArrowDropdown } from "react-icons/io";
 
 const Homeservices = () => {
-  Process.env.IP;
+  process.env.IP;
   const id = 5;
   const [open, setOpen] = useState(false);
   const [institutions, setInstitutions] = useState([]);

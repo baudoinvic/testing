@@ -6,7 +6,7 @@ import sticker from '../../assets/img/sticker.png';
 import axios from 'axios';
 
 const Writereview = () => {
-  Process.env.IP;
+  process.env.IP;
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [institutions, setInstitutions] = useState([]);
   const [loading, setLoading] = useState(false);

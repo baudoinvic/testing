@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 
 const EditProfile = () => {
-  Process.env.IP;
+  process.env.IP;
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState({

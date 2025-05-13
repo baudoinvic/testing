@@ -7,7 +7,7 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  Process.env.IP;
+  process.env.IP;
   const [formData, setFormData] = useState({
     email: '',
     password: ''

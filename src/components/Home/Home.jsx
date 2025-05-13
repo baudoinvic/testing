@@ -13,7 +13,7 @@ import Reviews from "../Reviews/Reviews";
 
 
 const Home = () => {
-  Process.env.IP;
+  process.env.IP;
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

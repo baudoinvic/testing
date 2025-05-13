@@ -361,7 +361,7 @@ import { Link } from "react-router-dom";
 import { IoMdArrowDropdown } from "react-icons/io";
 
 const Restaurent = () => {
-  Process.env.IP;
+  process.env.IP;
   const id = 1;
   const [open, setOpen] = useState(false);
   const [showFilterPopup, setShowFilterPopup] = useState(false);

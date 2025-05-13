@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { IoMdArrowDropdown } from "react-icons/io";
 
 const Bank = () => {
-  Process.env.IP;
+  process.env.IP;
   const id = 2;
   const [open, setOpen] = useState(false);
   const [institutions, setInstitutions] = useState([]);

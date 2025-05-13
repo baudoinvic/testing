@@ -204,7 +204,9 @@ const HotelDetail = () => {
             <span>Free Wifi</span>
           </div>
         </div>
-    
+
+     
+        
       </div>
 
       {/* Dynamic Buttons */}

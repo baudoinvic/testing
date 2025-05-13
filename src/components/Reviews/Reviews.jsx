@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const Reviews = () => {
+  Process.env.IP;
   const [dynamicReviews, setDynamicReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

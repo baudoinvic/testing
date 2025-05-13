@@ -7,6 +7,7 @@ import logo from '../../assets/img/logo.jpeg';
 import { useParams } from 'react-router-dom';
 
 const Navbar = () => {
+  Process.env.IP;
   const {id} = useParams ();
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

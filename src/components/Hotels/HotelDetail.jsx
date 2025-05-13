@@ -5,6 +5,7 @@ import { Star, Wifi, Car, Bed, UtensilsCrossed, Waves, X, MapPin, Phone, ArrowLe
 import axios from 'axios';
 
 const HotelDetail = () => {
+  Process.env.IP;
   const { id } = useParams(); 
   const [institution, setInstitution] = useState(null);
   const [loading, setLoading] = useState(true);

@@ -6,6 +6,7 @@ import { User, MessageSquare } from "lucide-react";
 import axios from 'axios';
 
 const Review = () => {
+  Process.env.IP;
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

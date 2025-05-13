@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 const Postreview = ({ institutionId }) => {
+  Process.env.IP;
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);

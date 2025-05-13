@@ -16,6 +16,7 @@ import {
 import axios from "axios";
 
 const RestaurentDetail = () => {
+  Process.env.IP;
   const { id } = useParams();
   const [institution, setInstitution] = useState(null);
   const [loading, setLoading] = useState(true);

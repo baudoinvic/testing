@@ -77,19 +77,19 @@ const EditProfile = () => {
     }));
   };
 
-  // Handle profile image upload
+ 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
     const formData = new FormData();
     formData.append("profile_image", file);
-
+    
     let token = localStorage.getItem("token");
 
     axios({
       method: "PUT",
-      url: "http://192.168.2.128:3000/api/profile/update_image",
+      url: `http://${ip}:3000/api/profile/update_image`,
       data: formData,
       headers: {
         "Content-Type": "multipart/form-data",
@@ -97,7 +97,8 @@ const EditProfile = () => {
       },
     })
       .then((response) => {
-        setProfileImage(response.data.profile_image);
+        const imageUrl = `http://${ip}:3000/${response.data.profile_image}`;
+        setProfileImage(imageUrl);
         toast.success("Profile image updated");
       })
       .catch((error) => {
@@ -123,7 +124,7 @@ const EditProfile = () => {
 
     axios({
       method: "PUT",
-      url: `http://192.168.1.238:3000/api/profile/dashboard/update`,
+      url: `http://${ip}:3000/api/profile/dashboard/update`,
       data: data,
       headers: {
         "Content-Type": "application/json",

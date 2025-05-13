@@ -99,13 +99,16 @@ const Overview = () => {
     const token = localStorage.getItem("token");
     
     try {
-      const res = await fetch('http://192.168.1.238:3000/api/profile/update_image', {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
-        body: formData
-      });
+      const res = await fetch(
+        "http://192.168.2.128:3000/api/profile/update_image",
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      );
 
       const data = await res.json();
       

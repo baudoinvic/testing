@@ -203,7 +203,7 @@ const Hotels = () => {
     );
   };
 
-  const API_BASE_URL = "http://192.168.1.238:3000/";
+  const API_BASE_URL = "http://192.168.2.128:3000/";
   return (
     <div className='container mx-auto px-4 py-8'>
       <div className='flex flex-wrap gap-2 mb-6'>

@@ -89,7 +89,7 @@ const EditProfile = () => {
 
     axios({
       method: "PUT",
-      url: "http://192.168.1.238:3000/api/profile/update_image",
+      url: "http://192.168.2.128:3000/api/profile/update_image",
       data: formData,
       headers: {
         "Content-Type": "multipart/form-data",

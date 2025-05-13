@@ -18,9 +18,10 @@ const Review = () => {
       setLoading(true);
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://${ip}:3000/api/review/recent", {
+        const res = await axios.get(`http://${ip}:3000/api/review/recent`, {
           headers: { Authorization: `Bearer ${token}` },
         });
+
         
         console.log("User reviews:", res.data);
         setReviews(res.data?.reviews || []);

@@ -7,7 +7,7 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  process.env.IP;
+  const ip = import.meta.env.VITE_IP;
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -30,7 +30,10 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('`http://192.168.1.238:3000/api/auth/login', formData);
+      const response = await axios.post(
+        `http://${ip}:3000/api/auth/login`,
+        formData
+      );
 
       const accessToken = response.data.accessToken; 
       localStorage.setItem('token', accessToken);

@@ -35,7 +35,7 @@ const Next = () => {
     try {
       
       const res = await fetch(
-        "http://${ip}:3000/api/profile/dashboard/update",
+        `http://${ip}:3000/api/profile/dashboard/update`,
         {
           method: "PUT",
           headers: {
@@ -45,6 +45,7 @@ const Next = () => {
           body: JSON.stringify({ ...form }),
         }
       );
+      
       const data = await res.json();
     
       if (res.ok) {

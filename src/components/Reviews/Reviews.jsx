@@ -17,13 +17,21 @@ const Reviews = () => {
       const token = localStorage.getItem("token");
 
       try {
+        // const response = await axios({
+        //   url: "http://${ip}:3000/api/review/recent",
+        //   method: "GET",
+        //   headers: {
+        //     Authorization: `Bearer ${token}`,
+        //   },
+        // });
         const response = await axios({
-          url: "http://${ip}:3000/api/review/recent",
+          url: `http://${ip}:3000/api/review/recent`,
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
+        
 
         console.log("Reviews API response:", response.data);
 

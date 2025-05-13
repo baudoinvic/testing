@@ -39,12 +39,13 @@ const Postreview = ({ institutionId }) => {
       formData.append('review', review);
       formData.append('profile_image', selectedFile);
   
-      const res = await axios.post("http://${ip}:3000/api/review/3", formData, {
+      const res = await axios.post(`http://${ip}:3000/api/review/3`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       });
+      
   
       const data = res.data; // ✅ Correct
       toast.success('Review posted successfully!');

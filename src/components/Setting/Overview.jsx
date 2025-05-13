@@ -30,13 +30,22 @@ const Overview = () => {
     }
 
     try {
-      const res = await fetch("http://${ip}:3000/api/profile/dashboard", {
+      // const res = await fetch("http://${ip}:3000/api/profile/dashboard", {
+      //   method: "GET",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Authorization: `Bearer ${token}`,
+      //   },
+      // });
+
+      const res = await fetch(`http://${ip}:3000/api/profile/dashboard`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       });
+      
 
       const data = await res.json();
       console.log(data)

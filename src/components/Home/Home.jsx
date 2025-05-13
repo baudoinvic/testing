@@ -51,7 +51,7 @@ const Home = () => {
     let token = localStorage.getItem("token");
     
     axios({
-      url: "http://${ip}:3000/api/institutions",
+      url: `http://${ip}:3000/api/institutions`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,

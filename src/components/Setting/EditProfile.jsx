@@ -28,7 +28,7 @@ const EditProfile = () => {
   const fetchUserData = () => {
     let token = localStorage.getItem("token");
     axios({
-      url: "http://${ip}:3000/api/profile/dashboard",
+      url: `http://${ip}:3000/api/profile/dashboard`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,

@@ -34,7 +34,6 @@ const Login = () => {
         `http://${ip}:3000/api/auth/login`,
         formData
       );
-
       const accessToken = response.data.accessToken; 
       localStorage.setItem('token', accessToken);
       window.dispatchEvent(new Event('storage'));

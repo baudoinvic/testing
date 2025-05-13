@@ -22,7 +22,7 @@ const Homeservices = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await axios.get(
-          `http://192.168.1.238:3000/api/institutions/${id}`,
+          `http://${ip}:3000/api/institutions/${id}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }

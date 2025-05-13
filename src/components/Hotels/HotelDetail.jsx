@@ -5,7 +5,8 @@ import { Star, Wifi, Car, Bed, UtensilsCrossed, Waves, X, MapPin, Phone, ArrowLe
 import axios from 'axios';
 
 const HotelDetail = () => {
-  process.env.IP;
+  const ip = import.meta.env.VITE_IP;
+
   const { id } = useParams(); 
   const [institution, setInstitution] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -27,9 +28,12 @@ const HotelDetail = () => {
       setLoading(true);
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get(`http://192.168.1.238:3000/api/institutions/${id}/view`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await axios.get(
+          `http://${ip}:3000/api/institutions/${id}/view`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
        
         console.log(res.data);
         

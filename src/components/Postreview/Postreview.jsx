@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 const Postreview = ({ institutionId }) => {
-  process.env.IP;
+  const ip = import.meta.env.VITE_IP;
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
@@ -39,11 +39,11 @@ const Postreview = ({ institutionId }) => {
       formData.append('review', review);
       formData.append('profile_image', selectedFile);
   
-      const res = await axios.post('http://192.168.1.238:3000/api/review/3', formData, {
+      const res = await axios.post("http://${ip}:3000/api/review/3", formData, {
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data',
-        }
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
       });
   
       const data = res.data; // ✅ Correct

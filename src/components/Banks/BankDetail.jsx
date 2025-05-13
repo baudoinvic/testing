@@ -27,9 +27,12 @@ const BankDetail = () => {
       setLoading(true);
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get(`http://192.168.1.238:3000/api/institutions/${id}/view`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await axios.get(
+          `http://${ip}:3000/api/institutions/${id}/view`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
        
         console.log(res.data);
         

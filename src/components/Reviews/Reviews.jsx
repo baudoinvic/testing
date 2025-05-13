@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const Reviews = () => {
-  process.env.IP;
+  const ip = import.meta.env.VITE_IP;
+
   const [dynamicReviews, setDynamicReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,7 +18,7 @@ const Reviews = () => {
 
       try {
         const response = await axios({
-          url: "http://192.168.1.238:3000/api/review/recent",
+          url: "http://${ip}:3000/api/review/recent",
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,

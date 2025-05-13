@@ -6,7 +6,8 @@ import sticker from '../../assets/img/sticker.png';
 import axios from 'axios';
 
 const Writereview = () => {
-  process.env.IP;
+  const ip = import.meta.env.VITE_IP;
+
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [institutions, setInstitutions] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -18,9 +19,13 @@ const Writereview = () => {
       setLoading(true);
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://192.168.1.238:3000/api/review/institution", { 
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await axios.get(
+          `http://${ip}:3000/api/review/institution`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        
        
         console.log(res.data); 
         setInstitutions(res.data?.institutions || []);

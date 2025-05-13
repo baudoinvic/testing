@@ -6,7 +6,8 @@ import { User, MessageSquare } from "lucide-react";
 import axios from 'axios';
 
 const Review = () => {
-  process.env.IP;
+  const ip = import.meta.env.VITE_IP;
+
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,7 +18,7 @@ const Review = () => {
       setLoading(true);
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://192.168.1.238:3000/api/review/recent", {
+        const res = await axios.get("http://${ip}:3000/api/review/recent", {
           headers: { Authorization: `Bearer ${token}` },
         });
         

@@ -8,7 +8,8 @@ import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 
 const EditProfile = () => {
-  process.env.IP;
+  const ip = import.meta.env.VITE_IP;
+
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState({
@@ -27,7 +28,7 @@ const EditProfile = () => {
   const fetchUserData = () => {
     let token = localStorage.getItem("token");
     axios({
-      url: "http://192.168.1.238:3000/api/profile/dashboard",
+      url: "http://${ip}:3000/api/profile/dashboard",
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,

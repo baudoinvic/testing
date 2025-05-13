@@ -6,7 +6,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Signup = () => {
-  process.env.IP;
+  const ip = import.meta.env.VITE_IP;
+
   const [form, setForm] = useState({
     first_name: '',
     last_name: '',
@@ -24,12 +25,12 @@ const Signup = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch('http://192.168.1.238:3000/api/auth/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch(`http://${ip}:3000/api/auth/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
-        
       });
+      
 
       const data = await res.json();
 

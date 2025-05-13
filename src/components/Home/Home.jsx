@@ -13,7 +13,7 @@ import Reviews from "../Reviews/Reviews";
 
 
 const Home = () => {
-  process.env.IP;
+  const ip = import.meta.env.VITE_IP;
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -51,7 +51,7 @@ const Home = () => {
     let token = localStorage.getItem("token");
     
     axios({
-      url: "http://192.168.1.238:3000/api/institutions",
+      url: "http://${ip}:3000/api/institutions",
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,

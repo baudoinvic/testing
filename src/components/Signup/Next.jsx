@@ -7,7 +7,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Next = () => {
-  process.env.IP;
+  const ip = import.meta.env.VITE_IP;
+
   const navigate = useNavigate();
 
   const savedUserData = JSON.parse(localStorage.getItem('userData')) || {};
@@ -33,14 +34,17 @@ const Next = () => {
 
     try {
       
-      const res = await fetch('http://192.168.1.238:3000/api/profile/dashboard/update', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`  
-        },
-        body: JSON.stringify({ ...form })
-      });
+      const res = await fetch(
+        "http://${ip}:3000/api/profile/dashboard/update",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ ...form }),
+        }
+      );
       const data = await res.json();
     
       if (res.ok) {

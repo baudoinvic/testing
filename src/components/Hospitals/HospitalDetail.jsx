@@ -18,7 +18,7 @@ import {
 import axios from "axios";
 
 const HospitalDetail = () => {
-  process.env.IP;
+  const ip = import.meta.env.VITE_IP;
   const { id } = useParams();
   const [institution, setInstitution] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -41,7 +41,7 @@ const HospitalDetail = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await axios.get(
-          `http://192.168.1.238:3000/api/institutions/${id}/view`,
+          `http://${ip}:3000/api/institutions/${id}/view`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -390,7 +390,7 @@ const HospitalDetail = () => {
 
 export default HospitalDetail;
 
-import React from 'react'
+
 
 
 

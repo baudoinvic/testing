@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { IoMdArrowDropdown } from "react-icons/io";
 
 const Bank = () => {
-  process.env.IP;
+  const ip = import.meta.env.VITE_IP;
   const id = 2;
   const [open, setOpen] = useState(false);
   const [institutions, setInstitutions] = useState([]);
@@ -22,16 +22,16 @@ const Bank = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      let endpoint = `http://192.168.1.238:3000/api/institutions/${id}`;
+      let endpoint = `http://${ip}:3000/api/institutions/${id}`;
 
       if (filter === "rating") {
-        endpoint = `http://192.168.1.238:3000/api/search/rating/${id}`;
+        endpoint = `http://${ip}:3000/api/search/rating/${id}`;
         setActiveFilter("rating");
         setFilterLabel("Highest Rated");
 
       } else if (filter === "review") {
 
-        endpoint = `http://192.168.1.238:3000/api/search/review/${id}`;
+        endpoint = `http://${ip}:3000/api/search/review/${id}`;
         setActiveFilter("review");
         setFilterLabel("Most Reviewed");
         

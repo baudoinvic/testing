@@ -6,7 +6,8 @@ import { FaPen } from "react-icons/fa";
 import { User, MessageSquare } from "lucide-react";
 
 const Overview = () => {
-  process.env.IP;
+  const ip = import.meta.env.VITE_IP;
+
   const [userData, setUserData] = useState({
     first_name: '',
     last_name: '',
@@ -29,12 +30,12 @@ const Overview = () => {
     }
 
     try {
-      const res = await fetch('http://192.168.1.238:3000/api/profile/dashboard', {
-        method: 'GET',
+      const res = await fetch("http://${ip}:3000/api/profile/dashboard", {
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        }
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const data = await res.json();

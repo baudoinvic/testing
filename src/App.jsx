@@ -25,6 +25,7 @@ import Hospital from './components/Hospitals/Hospital';
 import HospitalDetail from './components/Hospitals/HospitalDetail';
 import Homeservices from './components/Homeservices/Homeservices';
 import HomeserviceDetail from './components/Homeservices/HomeserviceDetail';
+import Institutions from './components/Institutions/Institutions';
 
 
 const App = () => {
@@ -36,6 +37,7 @@ const App = () => {
           <Route index element={<Home />} />
           <Route path='navbar' element={<Navbar />} />
           <Route path='footer' element={<Footer />} />
+          <Route path='/institutions/:id' element={<Institutions />} />
           <Route path='/banks' element={<Bank />} />
           <Route path='/banks/:id' element={<BankDetail />} />
           <Route path='/hotels' element={<Hotels />} />

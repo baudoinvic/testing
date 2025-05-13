@@ -7,8 +7,7 @@ import logo from '../../assets/img/logo.jpeg';
 import { useParams } from 'react-router-dom';
 
 const Navbar = () => {
-  const ip = import.meta.env.VITE_IP;
-  const {id} = useParams ();
+  const ip = import.meta.env.VITE_IP; 
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -59,7 +58,6 @@ const Navbar = () => {
       setLoading(true);
       try {
         const token = localStorage.getItem("token");
-        // const res = await axios.get("http://192.168.1.238:3000/api/review/institution", { 
           const res = await axios.get(
             `http://${ip}:3000/api/review/institution`,
             {

@@ -6,6 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Signup = () => {
+  process.env.IP;
   const [form, setForm] = useState({
     first_name: '',
     last_name: '',

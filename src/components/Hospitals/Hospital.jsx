@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { IoMdArrowDropdown } from "react-icons/io";
 
 const Hospital = () => {
+  Process.env.IP;
   const id = 4;
   const [open, setOpen] = useState(false);
   const [institutions, setInstitutions] = useState([]);

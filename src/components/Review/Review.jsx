@@ -213,7 +213,7 @@ const Review = () => {
                               className='w-48 h-34 rounded-lg overflow-hidden'
                             >
                               <img
-                                src={`http://192.168.2.128:3000/${image.image_url}`}
+                                src={`http://192.168.1.238:3000/${image.image_url}`}
                                 alt={`Review image ${imgIndex + 1}`}
                                 className='w-full h-full object-cover'
                               />

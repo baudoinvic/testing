@@ -7,7 +7,7 @@ import axios from 'axios';
 
 const Review = () => {
   const ip = import.meta.env.VITE_IP;
-
+  const [userData, setUserData] = useState({});
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -21,8 +21,6 @@ const Review = () => {
         const res = await axios.get(`http://${ip}:3000/api/review/recent`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-
-        
         console.log("User reviews:", res.data);
         setReviews(res.data?.reviews || []);
         setLoading(false);
@@ -32,14 +30,37 @@ const Review = () => {
         setLoading(false);
       }
     };
-  
+
     fetchReviews();
   }, []);
 
-  
+  // Fetch user data to make sure the first name and last name are displaying correctly
+
+  const fetchUserData = () => {
+    let token = localStorage.getItem("token");
+    axios({
+      url: `http://${ip}:3000/api/profile/dashboard`,
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        const { first_name, last_name } = response.data.user;
+        setUserData({ first_name, last_name });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
   const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString('en-US', options);
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return new Date(dateString).toLocaleDateString("en-US", options);
   };
 
   return (
@@ -75,7 +96,9 @@ const Review = () => {
                 </svg>
               </div>
             </div>
-            <h2 className='text-lg font-medium'>John Doe</h2>
+            <h2 className='text-lg font-medium'>
+              {userData.first_name} {userData.last_name}
+            </h2>
             <div className='flex items-center space-x-6 mb-8 mt-4'>
               <Link to='/profile'>
                 <div className='flex items-center text-sm text-gray-800 cursor-pointer'>
@@ -83,26 +106,6 @@ const Review = () => {
                   <span className='ml-2'>Edit Profile</span>
                 </div>
               </Link>
-
-              <button className='flex items-center text-sm text-gray-800'>
-                <svg
-                  width='16'
-                  height='16'
-                  className='mr-2'
-                  viewBox='0 0 16 16'
-                  fill='none'
-                  xmlns='http://www.w3.org/2000/svg'
-                >
-                  <path
-                    d='M8 13.3333V8M8 8V2.66667M8 8H13.3333M8 8H2.66667'
-                    stroke='currentColor'
-                    strokeWidth='1.5'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                  />
-                </svg>
-                Add Photo
-              </button>
             </div>
           </div>
 
@@ -170,16 +173,18 @@ const Review = () => {
                     <div className='w-12 h-12 bg-red-500 rounded-lg flex items-center justify-center text-white'>
                       {review.institution_name
                         ? review.institution_name.substring(0, 2).toUpperCase()
-                        : "JH"}
+                        : ""}
                     </div>
 
                     <div className='flex-1'>
                       <h3 className='font-bold'>
-                        {review.institution_name || "Java House Kigali Heights"}
+                        {/* {review.institution_name || "Java House Kigali Heights"} */}
+                        {review.institution_name}
                       </h3>
                       <p className='text-gray-600 text-sm'>
-                        {review.institution_location ||
-                          "Kigali Heights, KG 7 Ave, Kigali, Rwanda"}
+                        {/* {review.institution_location ||
+                          "Kigali Heights, KG 7 Ave, Kigali, Rwanda"} */}
+                        {review.institution_location}
                       </p>
 
                       {/* Rating */}

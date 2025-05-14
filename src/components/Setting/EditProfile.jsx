@@ -6,6 +6,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
+import { IoIosAddCircleOutline } from "react-icons/io";
 
 const EditProfile = () => {
   const ip = import.meta.env.VITE_IP;
@@ -195,22 +196,7 @@ const EditProfile = () => {
 
           {/* Add Photo Button */}
           <label className='flex items-center text-sm text-gray-800 mb-8 mt-4 cursor-pointer'>
-            <svg
-              width='16'
-              height='16'
-              className='mr-2'
-              viewBox='0 0 16 16'
-              fill='none'
-              xmlns='http://www.w3.org/2000/svg'
-            >
-              <path
-                d='M8 13.3333V8M8 8V2.66667M8 8H13.3333M8 8H2.66667'
-                stroke='currentColor'
-                strokeWidth='1.5'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-              />
-            </svg>
+            <IoIosAddCircleOutline />
             Add Photo
             <input
               type='file'

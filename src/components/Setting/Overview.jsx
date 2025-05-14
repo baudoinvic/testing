@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { FaPen } from "react-icons/fa";
 import { User, MessageSquare } from "lucide-react";
 import axios from 'axios';
+import { IoIosAddCircleOutline } from "react-icons/io";
 
 const Overview = () => {
   const ip = import.meta.env.VITE_IP;
@@ -39,9 +40,8 @@ const Overview = () => {
         },
       });
       
-
       const data = await res.json();
-      console.log(data)
+    
       if (res.ok) {
         setUserData({
           first_name: data.user.first_name || '',
@@ -162,22 +162,8 @@ const Overview = () => {
             </Link>
 
             <label className='flex items-center text-sm text-gray-800 cursor-pointer'>
-              <svg
-                width='16'
-                height='16'
-                className='mr-2'
-                viewBox='0 0 16 16'
-                fill='none'
-                xmlns='http://www.w3.org/2000/svg'
-              >
-                <path
-                  d='M8 13.3333V8M8 8V2.66667M8 8H13.3333M8 8H2.66667'
-                  stroke='currentColor'
-                  strokeWidth='1.5'
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                />
-              </svg>
+            
+              <IoIosAddCircleOutline />
               Add Photo
               <input
                 type='file'

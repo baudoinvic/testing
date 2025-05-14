@@ -70,32 +70,7 @@ const Review = () => {
         <div className='mt-8'>
           <div className='flex flex-col items-center p-2 '>
             {/* Profile Image */}
-            <div className='w-40 h-40 rounded-full bg-blue-100 flex items-center justify-center mb-4'>
-              <div className='text-blue-800'>
-                <svg
-                  width='80'
-                  height='80'
-                  viewBox='0 0 80 80'
-                  fill='none'
-                  xmlns='http://www.w3.org/2000/svg'
-                >
-                  <path
-                    d='M40 20C33.3726 20 28 25.3726 28 32C28 38.6274 33.3726 44 40 44C46.6274 44 52 38.6274 52 32C52 25.3726 46.6274 20 40 20ZM40 20C33.3726 20 28 25.3726 28 32C28 38.6274 33.3726 44 40 44C46.6274 44 52 38.6274 52 32C52 25.3726 46.6274 20 40 20Z'
-                    stroke='#1E4784'
-                    strokeWidth='4'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                  />
-                  <path
-                    d='M18.6667 66.6667C18.6667 54.6667 28.0001 44.9999 40 44.9999C52.0001 44.9999 61.3334 54.6667 61.3334 66.6667'
-                    stroke='#1E4784'
-                    strokeWidth='4'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                  />
-                </svg>
-              </div>
-            </div>
+           
             <h2 className='text-lg font-medium'>
               {userData.first_name} {userData.last_name}
             </h2>

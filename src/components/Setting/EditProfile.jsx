@@ -61,14 +61,16 @@ const EditProfile = () => {
       });
   };
 
-  useEffect(() => {
-    const storedUserData = JSON.parse(localStorage.getItem("userData"));
-    if (storedUserData) {
-      setUserData(storedUserData);
-    } else {
-      fetchUserData();
-    }
-  }, []);
+  const storedUserData = JSON.parse(localStorage.getItem("userData"));
+  if (storedUserData) {
+    setUserData({
+      ...storedUserData,
+      added_at: new Date(storedUserData.added_at).toLocaleDateString() || "",
+    });
+  } else {
+    fetchUserData();
+  }
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;

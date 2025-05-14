@@ -69,16 +69,16 @@ const Overview = () => {
     }
   };
 
-
-  useEffect(() => {
-    const storedUserData = JSON.parse(localStorage.getItem('userData'));
-    if (storedUserData) {
-      setUserData(storedUserData);
-    } else {
-      fetchUserData(); 
-    }
-  }, []);
-
+  
+  const storedUserData = JSON.parse(localStorage.getItem("userData"));
+  if (storedUserData) {
+    setUserData({
+      ...storedUserData,
+      added_at: new Date(storedUserData.added_at).toLocaleDateString() || "",
+    });
+  } else {
+    fetchUserData();
+  }
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];

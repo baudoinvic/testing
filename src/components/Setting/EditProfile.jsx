@@ -71,6 +71,7 @@ const EditProfile = () => {
            ...storedUserData,
            added_at: new Date(storedUserData.added_at).toLocaleDateString() || "",
          });
+        
        } else {
          fetchUserData();
        }
@@ -143,6 +144,13 @@ const EditProfile = () => {
       .then((response) => {
         console.log(response);
         toast.success("Profile successfully updated");
+        
+        localStorage.setItem(
+          "userData",
+          JSON.stringify({ ...userData })
+        );
+        
+
         setTimeout(() => {
           navigate("/profile");
         }, 1500);

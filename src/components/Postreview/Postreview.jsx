@@ -47,11 +47,11 @@ const Postreview = ({ institutionId }) => {
       });
       
       toast.success('Review posted successfully!');
-      console.log(data, "response");
-  
+      
       setRating(0);
       setReview('');
       setSelectedFile(null);
+      setImagePreview(null);
     } catch (error) {
       console.error('Error posting review:', error);
       toast.error(error.response?.data?.error || 'Failed to post review');
@@ -129,9 +129,7 @@ const Postreview = ({ institutionId }) => {
                 />
               </svg>
             </div>
-            {/* <p className="text-sm text-gray-600">
-              {selectedFile ? `Selected: ${selectedFile.name}` : 'Click to upload photo'}
-            </p> */}
+       
             {imagePreview ? (
               <img
                 src={imagePreview}

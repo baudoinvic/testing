@@ -169,24 +169,14 @@ const BankDetail = () => {
           ))}
         {/* Desktop Features/Amenities Layout */}
         <div className='grid grid-cols-2 gap-4 mb-8'>
-          <div className='flex items-center gap-2'>
-            <div className='bg-[#20497F] text-white p-2 rounded-full'>
-              <Waves size={20} />
-            </div>
-            <span>Swimming pool</span>
-          </div>
+      
           <div className='flex items-center gap-2'>
             <div className='bg-[#20497F] text-white p-2 rounded-full'>
               <Car size={20} />
             </div>
             <span>Free parking</span>
           </div>
-          <div className='flex items-center gap-2'>
-            <div className='bg-[#20497F] text-white p-2 rounded-full'>
-              <Bed size={20} />
-            </div>
-            <span>King Size Beds</span>
-          </div>
+        
           <div className='flex items-center gap-2'>
             <div className='bg-[#20497F] text-white p-2 rounded-full'>
               <UtensilsCrossed size={20} />
@@ -230,7 +220,7 @@ const BankDetail = () => {
         )}
       </div>
 
-      <div className='flex justify-end -mt-64'>
+      <div className='flex justify-end -mt-48'>
         <div className='w-[550px] lg:pl-4'>
           <h3 className='font-medium mb-2'>About {institution.name}</h3>
           <p className='text-gray-700'>

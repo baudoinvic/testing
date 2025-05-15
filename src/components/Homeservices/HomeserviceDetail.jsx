@@ -201,37 +201,31 @@ const HomeserviceDetail = () => {
             </div>
           ))}
         {/* Desktop Features/Amenities Layout */}
+       
         <div className='grid grid-cols-2 gap-4 mb-8'>
-          <div className='flex items-center gap-2'>
-            <div className='bg-[#20497F] text-white p-2 rounded-full'>
-              <Waves size={20} />
-            </div>
-            <span>Swimming pool</span>
-          </div>
-          <div className='flex items-center gap-2'>
-            <div className='bg-[#20497F] text-white p-2 rounded-full'>
-              <Car size={20} />
-            </div>
-            <span>Free parking</span>
-          </div>
-          <div className='flex items-center gap-2'>
-            <div className='bg-[#20497F] text-white p-2 rounded-full'>
-              <Bed size={20} />
-            </div>
-            <span>King Size Beds</span>
-          </div>
-          <div className='flex items-center gap-2'>
-            <div className='bg-[#20497F] text-white p-2 rounded-full'>
-              <UtensilsCrossed size={20} />
-            </div>
-            <span>Restaurant</span>
-          </div>
-          <div className='flex items-center gap-2'>
-            <div className='bg-[#20497F] text-white p-2 rounded-full'>
-              <Wifi size={20} />
-            </div>
-            <span>Free Wifi</span>
-          </div>
+          {institution.business_amenities &&
+            institution.business_amenities
+              .filter(
+                (item) =>
+                  ![
+                    "Free Wifi",
+                    "Free Parking",
+                    "Coffee",
+                    "Restaurant",
+                  ].includes(item.amenities.name)
+              )
+              .map((item, index) => (
+                <div key={index} className='flex items-center gap-2'>
+                  <div className='bg-[#20497F] p-2 rounded-full color-white'>
+                    <img
+                      src={`${API_BASE_URL}${item.amenities.icon}`}
+                      alt={item.amenities.name}
+                      className='w-5 h-5 object-contain filter invert brightness-0'
+                    />
+                  </div>
+                  <span>{item.amenities.name}</span>
+                </div>
+              ))}
         </div>
       </div>
 
@@ -263,7 +257,7 @@ const HomeserviceDetail = () => {
         )}
       </div>
 
-      <div className='flex justify-end -mt-64'>
+      <div className='flex justify-end -mt-52'>
         <div className='w-[550px] lg:pl-4'>
           <h3 className='font-medium mb-2'>About {institution.name}</h3>
           <p className='text-gray-700'>

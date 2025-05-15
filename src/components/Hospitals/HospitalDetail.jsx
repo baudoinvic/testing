@@ -204,36 +204,29 @@ const HospitalDetail = () => {
           ))}
         {/* Desktop Features/Amenities Layout */}
         <div className='grid grid-cols-2 gap-4 mb-8'>
-          <div className='flex items-center gap-2'>
-            <div className='bg-[#20497F] text-white p-2 rounded-full'>
-              <Waves size={20} />
-            </div>
-            <span>Swimming pool</span>
-          </div>
-          <div className='flex items-center gap-2'>
-            <div className='bg-[#20497F] text-white p-2 rounded-full'>
-              <Car size={20} />
-            </div>
-            <span>Free parking</span>
-          </div>
-          <div className='flex items-center gap-2'>
-            <div className='bg-[#20497F] text-white p-2 rounded-full'>
-              <Bed size={20} />
-            </div>
-            <span>King Size Beds</span>
-          </div>
-          <div className='flex items-center gap-2'>
-            <div className='bg-[#20497F] text-white p-2 rounded-full'>
-              <UtensilsCrossed size={20} />
-            </div>
-            <span>Restaurant</span>
-          </div>
-          <div className='flex items-center gap-2'>
-            <div className='bg-[#20497F] text-white p-2 rounded-full'>
-              <Wifi size={20} />
-            </div>
-            <span>Free Wifi</span>
-          </div>
+          {institution.business_amenities &&
+            institution.business_amenities
+              .filter(
+                (item) =>
+                  ![
+                    "Free Wifi",
+                    "Free Parking",
+                    "Coffee",
+                    "Restaurant",
+                  ].includes(item.amenities.name)
+              )
+              .map((item, index) => (
+                <div key={index} className='flex items-center gap-2'>
+                  <div className='bg-[#20497F] p-2 rounded-full color-white'>
+                    <img
+                      src={`${API_BASE_URL}${item.amenities.icon}`}
+                      alt={item.amenities.name}
+                      className='w-5 h-5 object-contain filter invert brightness-0'
+                    />
+                  </div>
+                  <span>{item.amenities.name}</span>
+                </div>
+              ))}
         </div>
       </div>
 
@@ -265,7 +258,15 @@ const HospitalDetail = () => {
         )}
       </div>
 
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8 md:mt-16'>
+      <div className='flex justify-end -mt-64'>
+        <div className='w-[550px] lg:pl-4'>
+          <h3 className='font-medium mb-2'>About {institution.name}</h3>
+          <p className='text-gray-700'>
+            {institution.description || "No description available."}
+          </p>
+        </div>
+      </div>
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8 md:mt-32'>
         {/* Left Column - Location with dynamic coordinates */}
 
         <iframe
@@ -337,14 +338,6 @@ const HospitalDetail = () => {
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Description Section */}
-      <div className='mt-8'>
-        <h3 className='font-medium mb-2'>About {institution.name}</h3>
-        <p className='text-gray-700'>
-          {institution.description || "No description available."}
-        </p>
       </div>
 
       {/* Dynamic Services Popup */}

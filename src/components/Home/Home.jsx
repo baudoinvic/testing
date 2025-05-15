@@ -30,20 +30,21 @@ const Home = () => {
       // "More/more": <MoreHorizontal size={48} className="text-blue-800" />,
     };
     
-    return iconMap[categoryName] || <HomeIcon size={48} className="text-blue-800" />;
+    return iconMap[categoryName]  || <HomeIcon size={48} className="text-blue-800" />;
   };
 
   // Map category names to path routes
   const getCategoryPath = (categoryName) => {
     const pathMap = {
       "Food/Drinks": "/restaurents",
-      "Financial Services": "/banks",
+      "Finincial Services": "/banks",
       "Hotel/Travels": "/hotels",
       "Health/Medical": "/hospitals",
-      "Home/Services": "/homeservices",
+      "Home Services": "/homeservices",
     };
-    
+
     return pathMap[categoryName] || "/homeservices";
+   
   };
 
   const fetchCategories = () => {

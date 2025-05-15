@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { FaPen } from "react-icons/fa";
 import { User, MessageSquare } from "lucide-react";
 import axios from 'axios';
+import { LuUserRound } from "react-icons/lu";
 
 const Review = () => {
   const ip = import.meta.env.VITE_IP;
@@ -11,6 +12,8 @@ const Review = () => {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+   const [profileImage, setProfileImage] = useState(null);
 
   // Fetch user reviews
   useEffect(() => {
@@ -70,7 +73,20 @@ const Review = () => {
         <div className='mt-8'>
           <div className='flex flex-col items-center p-2 '>
             {/* Profile Image */}
-           
+            <div className='w-40 h-40 rounded-full bg-blue-100 flex items-center justify-center mb-4 overflow-hidden'>
+              {profileImage ? (
+                <img
+                  src={profileImage}
+                  alt='Profile'
+                  className='w-full h-full object-cover'
+                />
+              ) : (
+                <div className='text-blue-800'>
+                  <LuUserRound className='text-5xl' />
+                </div>
+              )}
+            </div>
+
             <h2 className='text-lg font-medium'>
               {userData.first_name} {userData.last_name}
             </h2>
@@ -153,13 +169,12 @@ const Review = () => {
 
                     <div className='flex-1'>
                       <h3 className='font-bold'>
-                        {/* {review.institution_name || "Java House Kigali Heights"} */}
-                        {review.institution_name}
+                        {review.institution_name || "Java House Kigali Heights"}
+                        
                       </h3>
                       <p className='text-gray-600 text-sm'>
-                        {/* {review.institution_location ||
-                          "Kigali Heights, KG 7 Ave, Kigali, Rwanda"} */}
-                        {review.institution_location}
+                        {review.institution_location ||
+                          "Kigali Heights, KG 7 Ave, Kigali, Rwanda"}
                       </p>
 
                       {/* Rating */}

@@ -7,6 +7,8 @@ import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 import { IoIosAddCircleOutline } from "react-icons/io";
+import { LuUserRound } from "react-icons/lu";
+import { FaPen } from "react-icons/fa";
 
 const EditProfile = () => {
   const ip = import.meta.env.VITE_IP;
@@ -61,15 +63,19 @@ const EditProfile = () => {
       });
   };
 
-  const storedUserData = JSON.parse(localStorage.getItem("userData"));
-  if (storedUserData) {
-    setUserData({
-      ...storedUserData,
-      added_at: new Date(storedUserData.added_at).toLocaleDateString() || "",
-    });
-  } else {
-    fetchUserData();
-  }
+     useEffect(() => {
+       const storedUserData = JSON.parse(localStorage.getItem("userData"));
+   
+       if (storedUserData) {
+         setUserData({
+           ...storedUserData,
+           added_at: new Date(storedUserData.added_at).toLocaleDateString() || "",
+         });
+       } else {
+         fetchUserData();
+       }
+     }, []);
+     
 
 
   const handleChange = (e) => {
@@ -165,28 +171,7 @@ const EditProfile = () => {
               />
             ) : (
               <div className='text-blue-800'>
-                <svg
-                  width='80'
-                  height='80'
-                  viewBox='0 0 80 80'
-                  fill='none'
-                  xmlns='http://www.w3.org/2000/svg'
-                >
-                  <path
-                    d='M40 20C33.3726 20 28 25.3726 28 32C28 38.6274 33.3726 44 40 44C46.6274 44 52 38.6274 52 32C52 25.3726 46.6274 20 40 20ZM40 20C33.3726 20 28 25.3726 28 32C28 38.6274 33.3726 44 40 44C46.6274 44 52 38.6274 52 32C52 25.3726 46.6274 20 40 20Z'
-                    stroke='#1E4784'
-                    strokeWidth='4'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                  />
-                  <path
-                    d='M18.6667 66.6667C18.6667 54.6667 28.0001 44.9999 40 44.9999C52.0001 44.9999 61.3334 54.6667 61.3334 66.6667'
-                    stroke='#1E4784'
-                    strokeWidth='4'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                  />
-                </svg>
+                <LuUserRound className='text-5xl' />
               </div>
             )}
           </div>
@@ -196,21 +181,30 @@ const EditProfile = () => {
             {userData.first_name} {userData.last_name}
           </h2>
 
-          {/* Add Photo Button */}
-          <label className='flex items-center text-sm text-gray-800 mb-8 mt-4 cursor-pointer'>
-            <IoIosAddCircleOutline />
-            Add Photo
-            <input
-              type='file'
-              className='hidden'
-              accept='image/*'
-              onChange={handleImageUpload}
-            />
-          </label>
+              <div className='flex items-center space-x-6 mb-8 mt-4'>
+                       <Link
+                         to='/profile'
+                         className='flex items-center text-sm text-gray-800 cursor-pointer'
+                       >
+                         <FaPen />
+                         <span className='ml-2'>Edit Profile</span>
+                       </Link>
+           
+                       <label className='flex items-center text-sm text-gray-800 cursor-pointer'>
+                         <IoIosAddCircleOutline />
+                         Add Photo
+                         <input
+                           type='file'
+                           className='hidden'
+                           accept='image/*'
+                           onChange={handleImageUpload}
+                         />
+                       </label>
+                     </div>
         </div>
 
         {/* Menu Items */}
-        <div className='px-4 pb-6'>
+        <div className='px-4 pb-6 ml-8 '>
           <Link to='/overview'>
             <div className='flex items-center py-3 px-4 text-gray-700'>
               <User size={18} className='mr-3' />

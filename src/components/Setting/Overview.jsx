@@ -6,6 +6,7 @@ import { FaPen } from "react-icons/fa";
 import { User, MessageSquare } from "lucide-react";
 import axios from 'axios';
 import { IoIosAddCircleOutline } from "react-icons/io";
+import { LuUserRound } from "react-icons/lu";
 
 const Overview = () => {
   const ip = import.meta.env.VITE_IP;
@@ -70,15 +71,19 @@ const Overview = () => {
   };
 
   
-  const storedUserData = JSON.parse(localStorage.getItem("userData"));
-  if (storedUserData) {
-    setUserData({
-      ...storedUserData,
-      added_at: new Date(storedUserData.added_at).toLocaleDateString() || "",
-    });
-  } else {
-    fetchUserData();
-  }
+  useEffect(() => {
+    const storedUserData = JSON.parse(localStorage.getItem("userData"));
+
+    if (storedUserData) {
+      setUserData({
+        ...storedUserData,
+        added_at: new Date(storedUserData.added_at).toLocaleDateString() || "",
+      });
+    } else {
+      fetchUserData();
+    }
+  }, []);
+  
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -124,28 +129,7 @@ const Overview = () => {
               />
             ) : (
               <div className='text-blue-800'>
-                <svg
-                  width='80'
-                  height='80'
-                  viewBox='0 0 80 80'
-                  fill='none'
-                  xmlns='http://www.w3.org/2000/svg'
-                >
-                  <path
-                    d='M40 20C33.3726 20 28 25.3726 28 32C28 38.6274 33.3726 44 40 44C46.6274 44 52 38.6274 52 32C52 25.3726 46.6274 20 40 20ZM40 20C33.3726 20 28 25.3726 28 32C28 38.6274 33.3726 44 40 44C46.6274 44 52 38.6274 52 32C52 25.3726 46.6274 20 40 20Z'
-                    stroke='#1E4784'
-                    strokeWidth='4'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                  />
-                  <path
-                    d='M18.6667 66.6667C18.6667 54.6667 28.0001 44.9999 40 44.9999C52.0001 44.9999 61.3334 54.6667 61.3334 66.6667'
-                    stroke='#1E4784'
-                    strokeWidth='4'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                  />
-                </svg>
+                <LuUserRound className='text-5xl' />
               </div>
             )}
           </div>
@@ -162,7 +146,6 @@ const Overview = () => {
             </Link>
 
             <label className='flex items-center text-sm text-gray-800 cursor-pointer'>
-            
               <IoIosAddCircleOutline />
               Add Photo
               <input

@@ -3,20 +3,13 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import {
   Star,
-  Wifi,
-  Car,
-  Bed,
-  UtensilsCrossed,
-  Waves,
   X,
-  MapPin,
-  Phone,
   ArrowLeft,
 } from "lucide-react";
 import axios from "axios";
 
 const RestaurentDetail = () => {
-  const ip = import.meta.env.VITE_IP;
+const ip = import.meta.env.VITE_IP;
 
   const { id } = useParams();
   const [institution, setInstitution] = useState(null);

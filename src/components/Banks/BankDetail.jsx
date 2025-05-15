@@ -230,7 +230,16 @@ const BankDetail = () => {
         )}
       </div>
 
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8 md:mt-16'>
+      <div className='flex justify-end -mt-64'>
+        <div className='w-[550px] lg:pl-4'>
+          <h3 className='font-medium mb-2'>About {institution.name}</h3>
+          <p className='text-gray-700'>
+            {institution.description || "No description available."}
+          </p>
+        </div>
+      </div>
+
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8 md:mt-24'>
         {/* Left Column - Location with dynamic coordinates */}
 
         <iframe
@@ -304,14 +313,7 @@ const BankDetail = () => {
         </div>
       </div>
 
-      {/* Description Section */}
-      <div className='mt-8'>
-        <h3 className='font-medium mb-2'>About {institution.name}</h3>
-        <p className='text-gray-700'>
-          {institution.description || "No description available."}
-        </p>
-      </div>
-
+    
       {/* Dynamic Services Popup */}
       {showServicesPopup && buttonTwo && buttonTwo.sections && (
         <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 p-4'>

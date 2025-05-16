@@ -1,9 +1,9 @@
-    
-import React from "react";
+
+
+import React, { useState, useEffect } from "react";
 import { User, MessageSquare } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { data, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 import { IoIosAddCircleOutline } from "react-icons/io";
@@ -12,7 +12,6 @@ import { FaPen } from "react-icons/fa";
 
 const EditProfile = () => {
   const ip = import.meta.env.VITE_IP;
-
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState({
@@ -28,56 +27,51 @@ const EditProfile = () => {
 
   const [profileImage, setProfileImage] = useState(null);
 
-  const fetchUserData = () => {
-    let token = localStorage.getItem("token");
-    axios({
-      url: `http://${ip}:3000/api/profile/dashboard`,
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => {
-        const data = response.data;
-        setUserData({
-          first_name: data.user.first_name || "",
-          last_name: data.user.last_name || "",
-          email: data.user.email || "",
-          phone_number: data.user.phone_number || "",
-          gender: data.user.gender || "",
-          age_group: data.user.age_group || "",
-          address: data.user.address || "",
-          added_at: new Date(data.user.added_at).toLocaleDateString() || "",
-        });
+  const fetchUserData = async () => {
+    const token = localStorage.getItem("token");
 
-        localStorage.setItem("userData", JSON.stringify(data.user));
-        // Check if profile image exists
-        if (data.profile_image) {
-          setProfileImage(data.profile_image);
-        }
+    if (!token) {
+      toast.error("User not authenticated!");
+      navigate("/login");
+      return;
+    }
 
-        toast.success(data.message);
-      })
-      .catch((error) => {
-        console.log(error);
+    try {
+      const response = await axios({
+        url: `http://${ip}:3000/api/profile/dashboard`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
+
+      const data = response.data;
+      setUserData({
+        first_name: data.user.first_name || "",
+        last_name: data.user.last_name || "",
+        email: data.user.email || "",
+        phone_number: data.user.phone_number || "",
+        gender: data.user.gender || "",
+        age_group: data.user.age_group || "",
+        address: data.user.address || "",
+        added_at: new Date(data.user.added_at).toLocaleDateString() || "",
+      });
+
+      if (data.profile_image && data.profile_image.length > 0) {
+        setProfileImage(data.profile_image[0]?.image_url);
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      
+      if (error.response?.status === 401) {
+        navigate("/login");
+      }
+    }
   };
 
-     useEffect(() => {
-       const storedUserData = JSON.parse(localStorage.getItem("userData"));
-   
-       if (storedUserData) {
-         setUserData({
-           ...storedUserData,
-           added_at: new Date(storedUserData.added_at).toLocaleDateString() || "",
-         });
-        
-       } else {
-         fetchUserData();
-       }
-     }, []);
-     
-
+  useEffect(() => {
+    fetchUserData();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -87,41 +81,41 @@ const EditProfile = () => {
     }));
   };
 
- 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
     const formData = new FormData();
     formData.append("profile_image", file);
-    
-    let token = localStorage.getItem("token");
 
-    axios({
-      method: "PUT",
-      url: `http://${ip}:3000/api/profile/update_image`,
-      data: formData,
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => {
-        const imageUrl = `http://${ip}:3000/${response.data.profile_image}`;
-        setProfileImage(imageUrl);
-        toast.success("Profile image updated");
-      })
-      .catch((error) => {
-        console.log(error);
-        toast.error("Failed to update profile image");
+    const token = localStorage.getItem("token");
+   
+
+    try {
+      const response = await axios({
+        method: "PUT",
+        url: `http://${ip}:3000/api/profile/update_image`,
+        data: formData,
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
       });
+
+      const imageUrl = `http://${ip}:3000/${response.data.profile_image}`;
+      setProfileImage(imageUrl);
+      toast.success("Profile image updated");
+    } catch (error) {
+      console.error("Error updating profile image:", error);
+      toast.error("Failed to update profile image");
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    let token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
     const data = {
       first_name: userData.first_name,
       last_name: userData.last_name,
@@ -132,36 +126,27 @@ const EditProfile = () => {
       address: userData.address,
     };
 
-    axios({
-      method: "PUT",
-      url: `http://${ip}:3000/api/profile/dashboard/update`,
-      data: data,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => {
-        console.log(response);
-        toast.success("Profile successfully updated");
-        
-        localStorage.setItem(
-          "userData",
-          JSON.stringify({ ...userData })
-        );
-        
-
-        setTimeout(() => {
-          navigate("/profile");
-        }, 1500);
-      })
-      .catch((error) => {
-        console.log(error);
-        toast.error(error.response?.data?.error || "Failed to update profile");
-      })
-      .finally(() => {
-        setLoading(false);
+    try {
+      await axios({
+        method: "PUT",
+        url: `http://${ip}:3000/api/profile/dashboard/update`,
+        data: data,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       });
+
+      toast.success("Profile successfully updated");
+      setTimeout(() => {
+        navigate("/profile");
+      }, 1500);
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      toast.error(error.response?.data?.error || "Failed to update profile");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -189,26 +174,26 @@ const EditProfile = () => {
             {userData.first_name} {userData.last_name}
           </h2>
 
-              <div className='flex items-center space-x-6 mb-8 mt-4'>
-                       <Link
-                         to='/profile'
-                         className='flex items-center text-sm text-gray-800 cursor-pointer'
-                       >
-                         <FaPen />
-                         <span className='ml-2'>Edit Profile</span>
-                       </Link>
-           
-                       <label className='flex items-center text-sm text-gray-800 cursor-pointer'>
-                         <IoIosAddCircleOutline />
-                         Add Photo
-                         <input
-                           type='file'
-                           className='hidden'
-                           accept='image/*'
-                           onChange={handleImageUpload}
-                         />
-                       </label>
-                     </div>
+          <div className='flex items-center space-x-6 mb-8 mt-4'>
+            <Link
+              to='/profile'
+              className='flex items-center text-sm text-gray-800 cursor-pointer'
+            >
+              <FaPen />
+              <span className='ml-2'>Edit Profile</span>
+            </Link>
+
+            <label className='flex items-center text-sm text-gray-800 cursor-pointer'>
+              <IoIosAddCircleOutline />
+              Add Photo
+              <input
+                type='file'
+                className='hidden'
+                accept='image/*'
+                onChange={handleImageUpload}
+              />
+            </label>
+          </div>
         </div>
 
         {/* Menu Items */}
@@ -250,6 +235,7 @@ const EditProfile = () => {
                 className='w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500'
                 value={userData.first_name}
                 onChange={handleChange}
+                required
               />
             </div>
             <div>
@@ -269,6 +255,7 @@ const EditProfile = () => {
                 className='w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500'
                 value={userData.last_name}
                 onChange={handleChange}
+                required
               />
             </div>
             <div>
@@ -287,6 +274,7 @@ const EditProfile = () => {
                 className='w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500'
                 value={userData.gender}
                 onChange={handleChange}
+                required
               >
                 <option value=''>Select Gender</option>
                 <option value='Male'>Male</option>
@@ -303,6 +291,7 @@ const EditProfile = () => {
                 className='w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500'
                 value={userData.email}
                 onChange={handleChange}
+                required
               />
             </div>
             <div>
@@ -317,7 +306,7 @@ const EditProfile = () => {
                 <option value='25-34'>25-34</option>
                 <option value='35-44'>35-44</option>
                 <option value='45-54'>45-54</option>
-                <option value='55-64'>55-64</option>
+               
               </select>
             </div>
             <div>

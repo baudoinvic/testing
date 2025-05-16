@@ -169,11 +169,11 @@ const Review = () => {
 
                     <div className='flex-1'>
                       <h3 className='font-bold'>
-                        {review.institution_name || "Java House Kigali Heights"}
+                        {review.institution_name}
                       </h3>
                       <p className='text-gray-600 text-sm'>
-                        {review.institution_location ||
-                          "Kigali Heights, KG 7 Ave, Kigali, Rwanda"}
+                        {review.institution_address}
+                         
                       </p>
 
                       {/* Rating */}

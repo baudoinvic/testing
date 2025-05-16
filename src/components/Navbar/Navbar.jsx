@@ -65,7 +65,6 @@ const Navbar = () => {
             }
           );
        
-        console.log(res.data); 
         setInstitutions(res.data?.institutions || []);
       } catch (err) {
         console.error("Error fetching institutions", err);

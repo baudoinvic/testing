@@ -1,10 +1,10 @@
 
-import React, { useState, useEffect } from 'react';
-import { toast } from 'react-toastify'; 
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 import { FaPen } from "react-icons/fa";
 import { User, MessageSquare } from "lucide-react";
-import axios from 'axios';
+import axios from "axios";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { LuUserRound } from "react-icons/lu";
 
@@ -12,21 +12,21 @@ const Overview = () => {
   const ip = import.meta.env.VITE_IP;
 
   const [userData, setUserData] = useState({
-    first_name: '',
-    last_name: '',
-    email: '',
-    phone_number: '',
-    gender: '',
-    age_group: '',
-    address: '',
-    added_at: ''
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone_number: "",
+    gender: "",
+    age_group: "",
+    address: "",
+    added_at: "",
   });
-  
+
   const [profileImage, setProfileImage] = useState(null);
 
   const fetchUserData = async () => {
     const token = localStorage.getItem("token");
-    
+
     if (!token) {
       toast.error("User not authenticated!");
       return;
@@ -40,23 +40,21 @@ const Overview = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      
+
       const data = await res.json();
-    
+      console.log(res.data)
+
       if (res.ok) {
         setUserData({
-          first_name: data.user.first_name || '',
-          last_name: data.user.last_name || '',
-          email: data.user.email || '',
-          phone_number: data.user.phone_number || '',
-          gender: data.user.gender || '',
-          age_group: data.user.age_group || '',
-          address: data.user.address || '',
-          added_at: new Date(data.user.added_at).toLocaleDateString() || ''
+          first_name: data.user.first_name || "",
+          last_name: data.user.last_name || "",
+          email: data.user.email || "",
+          phone_number: data.user.phone_number || "",
+          gender: data.user.gender || "",
+          age_group: data.user.age_group || "",
+          address: data.user.address || "",
+          added_at: new Date(data.user.added_at).toLocaleDateString() || "",
         });
-        
-        // Save fetched data to localStorage
-        localStorage.setItem('userData', JSON.stringify(data.user));
 
         if (data.profile_image && data.profile_image.length > 0) {
           setProfileImage(data.profile_image[0]?.image_url);
@@ -70,20 +68,9 @@ const Overview = () => {
     }
   };
 
-  
   useEffect(() => {
-    const storedUserData = JSON.parse(localStorage.getItem("userData"));
-
-    if (storedUserData) {
-      setUserData({
-        ...storedUserData,
-        added_at: new Date(storedUserData.added_at).toLocaleDateString() || "",
-      });
-    } else {
-      fetchUserData();
-    }
+    fetchUserData();
   }, []);
-  
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];

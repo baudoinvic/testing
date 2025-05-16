@@ -24,9 +24,6 @@ const Reviews = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        
-
-        console.log("Reviews API response:", response.data);
 
         // Check if we have valid data
         if (

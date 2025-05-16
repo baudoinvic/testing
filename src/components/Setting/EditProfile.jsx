@@ -105,6 +105,7 @@ const EditProfile = () => {
       const imageUrl = `http://${ip}:3000/${response.data.profile_image}`;
       setProfileImage(imageUrl);
       toast.success("Profile image updated");
+     
     } catch (error) {
       console.error("Error updating profile image:", error);
       toast.error("Failed to update profile image");

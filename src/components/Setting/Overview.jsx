@@ -42,7 +42,7 @@ const Overview = () => {
       });
 
       const data = await res.json();
-      console.log(res.data)
+      // console.log("Fetched user data:", data);
 
       if (res.ok) {
         setUserData({

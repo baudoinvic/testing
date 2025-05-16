@@ -57,11 +57,14 @@ const EditProfile = () => {
         added_at: new Date(data.user.added_at).toLocaleDateString() || "",
       });
 
+      console.log("Fetched user data:", data);
+    
       if (data.profile_image && data.profile_image.length > 0) {
         setProfileImage(data.profile_image[0]?.image_url);
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
+
       
       if (error.response?.status === 401) {
         navigate("/login");

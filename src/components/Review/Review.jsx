@@ -1,9 +1,9 @@
 
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { FaPen } from "react-icons/fa";
 import { User, MessageSquare } from "lucide-react";
-import axios from 'axios';
+import axios from "axios";
 import { LuUserRound } from "react-icons/lu";
 
 const Review = () => {
@@ -13,7 +13,7 @@ const Review = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-   const [profileImage, setProfileImage] = useState(null);
+  const [profileImage, setProfileImage] = useState(null);
 
   // Fetch user reviews
   useEffect(() => {
@@ -21,12 +21,12 @@ const Review = () => {
       setLoading(true);
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get(`http://${ip}:3000/api/review/recent`, {
+        const res = await axios.get(`http://${ip}:3000/api/profile/reviews`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        console.log("User reviews:", res.data);
         setReviews(res.data?.reviews || []);
         setLoading(false);
+      
       } catch (err) {
         console.error("Error fetching reviews", err);
         setError("Failed to load reviews");
@@ -38,7 +38,6 @@ const Review = () => {
   }, []);
 
   // Fetch user data to make sure the first name and last name are displaying correctly
-
   const fetchUserData = () => {
     let token = localStorage.getItem("token");
     axios({
@@ -118,18 +117,17 @@ const Review = () => {
 
         {/* Reviews Section */}
         <div>
-          {/* Header */}
           <h1 className='text-2xl font-bold mb-4'>Reviews</h1>
 
           {/* Filter Bar */}
-          <div className='flex gap-4 mb-6'>
+          {/* <div className='flex gap-4 mb-6'>
             <div className='bg-blue-50 px-4 py-2 rounded-lg'>
               <span>Newest First ▼</span>
             </div>
             <div className='bg-blue-50 px-4 py-2 rounded-lg'>
               <span>Categories ▼</span>
             </div>
-          </div>
+          </div> */}
 
           {/* Loading state */}
           {loading && (
@@ -140,17 +138,6 @@ const Review = () => {
           )}
 
           {/* Error state */}
-          {error && (
-            <div className='bg-red-50 p-4 rounded-lg text-red-700'>
-              <p>{error}</p>
-              <button
-                className='mt-2 text-blue-700 underline'
-                onClick={() => window.location.reload()}
-              >
-                Try again
-              </button>
-            </div>
-          )}
 
           {/* Review Cards */}
           {!loading && !error && reviews.length > 0 && (
@@ -162,18 +149,21 @@ const Review = () => {
                 >
                   <div className='flex items-start gap-4'>
                     <div className='w-12 h-12 bg-red-500 rounded-lg flex items-center justify-center text-white'>
-                      {review.institution_name
-                        ? review.institution_name.substring(0, 2).toUpperCase()
+                      {review.institution && review.institution.name
+                        ? review.institution.name.substring(0, 2).toUpperCase()
                         : ""}
                     </div>
 
                     <div className='flex-1'>
                       <h3 className='font-bold'>
-                        {review.institution_name}
+                        {review.institution && review.institution.name
+                          ? review.institution.name
+                          : "Unknown Institution"}
                       </h3>
                       <p className='text-gray-600 text-sm'>
-                        {review.institution_address}
-                         
+                        {review.institution && review.institution.address
+                          ? review.institution.address
+                          : "KG 646 Street. No.1 Rugando Kimihurura"}
                       </p>
 
                       {/* Rating */}
@@ -188,14 +178,13 @@ const Review = () => {
                         <span className='text-gray-600 text-sm'>
                           {review.created_at
                             ? formatDate(review.created_at)
-                            : "April 20th, 2025"}
+                            : ""}
                         </span>
                       </div>
 
                       {/* Review Text */}
                       <p className='text-gray-700 mb-4'>
-                        {review.review ||
-                          "Great spot for brunch or casual meetings. Their cappuccino hits just right and the breakfast platter is a chef's kiss."}
+                        {review.review || ""}
                       </p>
 
                       {/* Review Images */}
@@ -207,7 +196,7 @@ const Review = () => {
                               className='w-48 h-34 rounded-lg overflow-hidden'
                             >
                               <img
-                                src={`http://192.168.50.81:3000/${image.image_url}`}
+                                src={`http://${ip}:3000/${image.image_url}`}
                                 alt={`Review image ${imgIndex + 1}`}
                                 className='w-full h-full object-cover'
                               />

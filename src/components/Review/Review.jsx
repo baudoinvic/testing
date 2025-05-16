@@ -170,7 +170,6 @@ const Review = () => {
                     <div className='flex-1'>
                       <h3 className='font-bold'>
                         {review.institution_name || "Java House Kigali Heights"}
-                        
                       </h3>
                       <p className='text-gray-600 text-sm'>
                         {review.institution_location ||
@@ -208,7 +207,7 @@ const Review = () => {
                               className='w-48 h-34 rounded-lg overflow-hidden'
                             >
                               <img
-                                src={`http://192.168.1.238:3000/${image.image_url}`}
+                                src={`http://192.168.50.81:3000/${image.image_url}`}
                                 alt={`Review image ${imgIndex + 1}`}
                                 className='w-full h-full object-cover'
                               />

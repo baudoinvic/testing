@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Star, Wifi, Car, Bed, UtensilsCrossed, Waves, X, MapPin, Phone, ArrowLeft } from 'lucide-react';
+import { Star, X, ArrowLeft } from 'lucide-react';
 import axios from 'axios';
 
 const HotelDetail = () => {
@@ -80,7 +80,7 @@ const HotelDetail = () => {
   };
   
   // Base URL for image paths
-  const API_BASE_URL = "http://192.168.1.238:3000/";
+  const API_BASE_URL = "http://192.168.50.81:3000/";
 
   if (loading) return <div className="w-full mx-auto px-4 sm:px-6 md:px-12 p-4 mb-8 text-center">Loading hotel details...</div>;
   if (error) return <div className="w-full mx-auto px-4 sm:px-6 md:px-12 p-4 mb-8 text-center text-red-500">{error}</div>;

@@ -91,7 +91,7 @@ const HomeserviceDetail = () => {
   };
 
   // Base URL for image paths
-  const API_BASE_URL = "http://192.168.1.238:3000/";
+  const API_BASE_URL = "http://192.168.50.81:3000/";
 
   if (loading)
     return (

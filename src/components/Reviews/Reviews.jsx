@@ -83,7 +83,7 @@ const Reviews = () => {
         {review.images && review.images.length > 0 && (
           <div className='mb-4'>
             <img
-              src={`http://192.168.1.238:3000/${review.images[0].image_url}`}
+              src={`http://192.168.50.81:3000/${review.images[0].image_url}`}
               alt='Review'
               className='w-full h-48 object-cover rounded'
             />

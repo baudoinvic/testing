@@ -25,8 +25,7 @@ const Writereview = () => {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-        
-       
+      
         console.log(res.data); 
         setInstitutions(res.data?.institutions || []);
       } catch (err) {

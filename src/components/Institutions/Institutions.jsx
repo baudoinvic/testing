@@ -1,21 +1,22 @@
+
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Institutions = () => {
- const ip = import.meta.env.VITE_IP;
+  const ip = import.meta.env.VITE_IP;
   const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchInstitutions = async () => {
+    const fetchInstitution = async () => {
       try {
-    
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          `http://${ip}:3000/api/search?q=q&page=1&pageSize=5`,
+          `http://${ip}:3000/api/institutions/${id}/view`,
+          // `http://${ip}:3000/api/search?q=q&page=1`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -29,38 +30,14 @@ const Institutions = () => {
           return;
         }
 
-        // Redirect based on institution type
-        switch (institution.type?.toLowerCase()) {
-          case "bank":
-            navigate(`/banks/${id}`, { replace: true });
-            break;
-          case "hotel":
-            navigate(`/hotels/${id}`, { replace: true });
-            break;
-          case "restaurant":
-          case "restaurent":
-            navigate(`/restaurents/${id}`, { replace: true });
-            break;
-          case "hospital":
-            navigate(`/hospitals/${id}`, { replace: true });
-            break;
-          case "homeservice":
-            navigate(`/homeservices/${id}`, { replace: true });
-            break;
-          default:
-            // If type not recognized, you can either:
-            setError(`Unknown institution type: ${institution.type}`);
-            setLoading(false);
-            break;
-        }
       } catch (err) {
-        console.error("Error fetching institution details:", err);
+        console.error("Error fetching institution:", err);
         setError(err.message || "Failed to load institution details");
         setLoading(false);
       }
     };
 
-    fetchInstitutions();
+    fetchInstitution();
   }, [id, navigate]);
 
   if (loading) {
@@ -86,7 +63,7 @@ const Institutions = () => {
     );
   }
 
-  return null; // Should not reach here as we should navigate away
+  return null;
 };
 
 export default Institutions;

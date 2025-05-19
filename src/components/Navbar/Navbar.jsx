@@ -7,7 +7,8 @@ import logo from '../../assets/img/logo.jpeg';
 import { useParams } from 'react-router-dom';
 
 const Navbar = () => {
-  const { id } = useParams;
+  const {id} = useParams ();
+
   const ip = import.meta.env.VITE_IP;
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -79,23 +80,27 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
+    if (!id) return;
     const fetchInstitutionView = async () => {
       const token = localStorage.getItem("token");
+      // console.log(id);
+      console.log("fetchInstitutionView, id:", id);
+      
       try {
         const res = await axios.get(
-          `http://${ip}:3000/api/institution/${id}/view`,
+          `http://${ip}:3000/api/institutions/${id}/view`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
+         
         );
-        // You can use res.data here if needed
       } catch (err) {
         console.error("Failed to register institution view", err);
       }
     };
 
     fetchInstitutionView();
-  }, []);
+  }, [id]);
   
 
   const navItems = [

@@ -59,7 +59,6 @@ const Home = () => {
       },
     })
       .then((response) => {
-        console.log("API Response:", response.data);
         if (response.data && response.data.categories) {
           setCategories(response.data.categories);
         } else {
